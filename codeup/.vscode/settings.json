@@ -88,6 +88,8 @@
         "unordered_set": "cpp",
         "valarray": "cpp",
         "filesystem": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "*.tcc": "cpp",
+        "memory_resource": "cpp"
     }
 }

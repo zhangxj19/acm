@@ -50,7 +50,7 @@ using namespace std;
 
 const int maxn = 1e5+1;
 
-int n, heap[maxn], size; // last non leaf is size/2 - 1
+int n, minh[maxn], size; // last non leaf is size/2 - 1
 
 #define lc(x) (2*x+1)
 #define rc(x) (2*(x+1))
@@ -70,7 +70,25 @@ int haverc(int x){
 }
 
 int down(int x){
-    
+    // x down to bottom, x should be the smallest among its children
+    // x is non leaf
+    while(!isleaf(x) and (minh[x] > minh[lc(x)] or (haverc(x) and minh[x] > minh[rc(x)]))){
+        if(haverc(x)){
+            if(minh[lc(x)] < minh[rc(x)]){
+                std::swap(minh[x], minh[lc(x)]);
+                x = lc(x);
+            }
+            else{
+                std::swap(minh[x], minh[rc(x)]);
+                x = rc(x);
+            }
+        }
+        else{
+            std::swap(minh[x], minh[lc(x)]);
+            x = lc(x);
+        }
+
+    }
 }
 
 
