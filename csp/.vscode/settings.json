@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "algorithm": "cpp",
+        "iostream": "cpp",
+        "queue": "cpp",
+        "ostream": "cpp",
+        "memory": "cpp",
+        "utility": "cpp",
+        "map": "cpp",
+        "iosfwd": "cpp",
+        "string": "cpp",
+        "stack": "cpp",
+        "vector": "cpp",
+        "bitset": "cpp",
+        "cstring": "cpp",
+        "ios": "cpp"
+    }
+}

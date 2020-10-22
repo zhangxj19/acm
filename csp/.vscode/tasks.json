@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "C/C++: clang++ build active file",
+			// "command": "/usr/local/opt/llvm/bin/clang++",
+			// "command": "/usr/bin/clang++",
+			"command": "/Library/Developer/CommandLineTools/usr/bin/c++",
+			// "command": "/usr/bin/g++",
+			"args": [
+				"-std=c++11",
+				// "-D CMAKE_CXX_COMPILER=/usr/local/bin/g++-8",
+				// "-DDEBUG",
+				// "-lncurses",
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		}
+	]
+}
