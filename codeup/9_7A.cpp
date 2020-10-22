@@ -91,6 +91,12 @@ void down(int x){
     }
 }
 
+void build(){
+    dd(i, size/2-1, -1){
+        down(i);
+    }
+}
+
 
 int main(){
     #ifndef DEBUG
@@ -102,6 +108,11 @@ int main(){
     uu(i, 0, n){
         cin >> minh[i];
     }
+    build();
+
+    #ifdef DEBUG
+    
+    #endif
 
 
     return 0;
