@@ -69,7 +69,7 @@ int haverc(int x){
     else return false;
 }
 
-int down(int x){
+void down(int x){
     // x down to bottom, x should be the smallest among its children
     // x is non leaf
     while(!isleaf(x) and (minh[x] > minh[lc(x)] or (haverc(x) and minh[x] > minh[rc(x)]))){
@@ -100,7 +100,7 @@ int main(){
     cin >> n;
     size = n;
     uu(i, 0, n){
-        cin >> heap[i];
+        cin >> minh[i];
     }
 
 

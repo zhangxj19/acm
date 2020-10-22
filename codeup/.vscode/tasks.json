@@ -5,6 +5,7 @@
 			"type": "shell",
 			"label": "C/C++: build with /usr/bin/clang++",
 			"command": "/usr/bin/clang++",
+			// "command": "/usr/bin/g++",
 			"args": [
 				"-std=c++11",
 				"-g",
