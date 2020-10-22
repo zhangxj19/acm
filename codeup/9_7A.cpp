@@ -22,7 +22,7 @@
 #include <unordered_set>
 #include <climits>
 
-#define DEBUG
+// #define DEBUG
 
 #define uu(i, a, b) for (int i = (a), _upper_bound = (b); i < _upper_bound; ++i)
 #define dd(i, a, b) for (int i = (a), _lower_bound = (b); i > _lower_bound; --i)
@@ -50,7 +50,7 @@ using namespace std;
 
 const int maxn = 1e5+1;
 
-int n, minh[maxn], size; // last non leaf is size/2 - 1
+int n, maxh[maxn], size; // last non leaf is size/2 - 1, maxheap, after heap sort, it's increasing order
 
 #define lc(x) (2*x+1)
 #define rc(x) (2*(x+1))
@@ -70,21 +70,21 @@ int haverc(int x){
 }
 
 void down(int x){
-    // x down to bottom, x should be the smallest among its children
+    // x down to bottom, x should be the largest among its children
     // x is non leaf
-    while(!isleaf(x) and (minh[x] > minh[lc(x)] or (haverc(x) and minh[x] > minh[rc(x)]))){
+    while(!isleaf(x) and (maxh[x] < maxh[lc(x)] or (haverc(x) and maxh[x] < maxh[rc(x)]))){
         if(haverc(x)){
-            if(minh[lc(x)] < minh[rc(x)]){
-                std::swap(minh[x], minh[lc(x)]);
+            if(maxh[lc(x)] > maxh[rc(x)]){
+                std::swap(maxh[x], maxh[lc(x)]);
                 x = lc(x);
             }
             else{
-                std::swap(minh[x], minh[rc(x)]);
+                std::swap(maxh[x], maxh[rc(x)]);
                 x = rc(x);
             }
         }
         else{
-            std::swap(minh[x], minh[lc(x)]);
+            std::swap(maxh[x], maxh[lc(x)]);
             x = lc(x);
         }
 
@@ -97,6 +97,14 @@ void build(){
     }
 }
 
+void heapSort(){
+    dd(i, size-1, -1){
+        std::swap(maxh[0], maxh[i]);
+        size -= 1;
+        down(0);
+    }
+}
+
 
 int main(){
     #ifndef DEBUG
@@ -106,13 +114,22 @@ int main(){
     cin >> n;
     size = n;
     uu(i, 0, n){
-        cin >> minh[i];
+        cin >> maxh[i];
     }
     build();
 
     #ifdef DEBUG
-    
+    uu(i, 0, size){
+        cout << maxh[i] << " ";
+    }
+    cout << endl;
     #endif
+    heapSort();
+    uu(i, 0, n){
+        cout << maxh[i] << " ";
+    }
+    cout << endl;
+    
 
 
     return 0;
