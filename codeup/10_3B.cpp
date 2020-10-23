@@ -51,11 +51,54 @@ int lcm(int a, int b){
 
 using namespace std;
 
+int n, m, *bk;
+
+struct Node{
+    int d;
+    unordered_set<int> n; // neighbor
+}*node;
+
+void dfs(int x){
+    bk[x] = 1;
+    for(const auto & it: node[x].n){
+        if(bk[it] == 0) dfs(it);
+    }
+}
+
+int ifYes(){
+    uu(i, 1, n+1){
+        if(bk[i] == 0) return false;
+    }
+    return true;
+}
+
 int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);
     #endif
     // std::cin.tie(nullptr);
+    
+    while(1){
+        cin >> n >> m;
+        if(n == 0) break;
+        node = new Node[n+1];
+        bk = new int[n+1];
+        memset(bk, 0, sizeof(int) * (n+1));
+        uu(i, 0, m){
+            int x, y;
+            cin >> x >> y;
+            node[x].n.insert(y);
+            node[y].n.insert(x);
+        }
+        dfs(1);
+        if(ifYes()){
+            cout << "YES" << endl;
+        }
+        else{
+            cout << "NO" << endl;
+        }
+
+    }
 
     return 0;
 }

@@ -47,47 +47,42 @@ int lcm(int a, int b){
 }
 
 using namespace std;
-const int maxn = 1000 + 999;
 
-int n, w[maxn], size;
+int n, size;
 
 struct Node{
-    int w, f, l, r, idx;
+    int w, idx;
+    Node *l, *r, *f;
+    char c;
     string huff;
     // friend bool operator < (const Node &n1, const Node &n2){
     //     return n1.w > n2.w;
     // }
-}node[maxn];
+    Node(char c, int w, Node* l=nullptr, Node* r=nullptr, Node* f=nullptr):c(c), w(w), l(l), r(r), f(f){};
+};
 
 struct cmp{
     bool operator()(const Node* n1, const Node* n2){
         if(n1->w != n2->w) return n1->w > n2->w;
-        else return n1->idx > n2->idx;
+        else return n1->c > n2->c;
     }
 };
 
 priority_queue<Node*, vector<Node*>, cmp> pq;
+vector<Node*> leaf;
 
-Node *newnode(int w, int l = -1, int r = -1, int f = -1){
-    int idx = size++;
-    node[idx].w = w;
-    node[idx].idx = idx;
-    node[idx].l = l;
-    node[idx].r = r;
-    node[idx].f = f;
-    return &node[idx];
-}
-
-ll re;
+string huff;
 
 void inorder(Node *root){
-    if(root->l != -1) inorder(&node[root->l]);
+    if(root == root->f->l) huff += '0';
+    if(root == root->f->r) huff += '1';
+    if(root->l != nullptr) inorder(root->l);
 
-    if(root->l != -1 or root->r != -1){ // nonleaf
-        re += root->w;
-    }
+    if(root->l == nullptr and root->r == nullptr) root->huff = huff;
 
-    if(root->r != -1) inorder(&node[root->r]);
+    if(root->r != nullptr) inorder(root->r);
+
+    huff.pop_back();
 }
 
 
@@ -98,27 +93,28 @@ int main(){
     // std::cin.tie(nullptr);
     while(cin >> n){
         size = 0;
-        re = 0;
         while(!pq.empty()) pq.pop();
+        leaf.clear();
         uu(i, 0, n){
+            char c;
             int w;
-            cin >> w;
-            Node *tmp = newnode(w);
+            cin >> c >> w;
+            Node *tmp = new Node(c, w);
+            leaf.push_back(tmp);
             pq.push(tmp);
         }
 
         while(pq.size() > 1){
             Node *n1 = pq.top(); pq.pop();
-
             Node *n2 = pq.top(); pq.pop();
-            Node *n = newnode(n1->w+n2->w, n1->idx, n2->idx);
+            Node *n = new Node(n1->c, n1->w + n2->w, n1, n2);
             #ifdef DEBUG
             pf("pick %d and %d, sum is %d\n", n1->w, n2->w, n->w);
             #endif
-            n1->f = n2->f = n->idx;
+            n1->f = n2->f = n;
             pq.push(n);
         }
-        Node *root = pq.top();
+        Node *root = pq.top(); pq.pop();
 
         #ifdef DEBUG
         queue<Node*> Q;
@@ -144,7 +140,10 @@ int main(){
         #endif
 
         inorder(root);
-        cout << re << endl;
+
+        uu(i, 0, n){
+            cout << leaf[i]->c << ":" << leaf[i]->huff << endl;
+        }
 
 
     

@@ -1,10 +1,7 @@
 // #include <bits/stdc++.h>
-// can mix cin/cout with scanf/printf with debug mode
-// can only use cin/cout or scanf/printf without debug mode
-// notice:
-// 1) static map or tree can use Node
-// 2) dynamic map or tree can only use Node* 
-// 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
+// 2 options:
+// 1) cin cout 
+// 2) scanf printf
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -51,11 +48,30 @@ int lcm(int a, int b){
 
 using namespace std;
 
+const int maxn = 1e5+1;
+int n, re;
+priority_queue<int, vector<int>, greater<int>> pq;
+
 int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);
     #endif
     // std::cin.tie(nullptr);
+    cin >> n;
+    uu(i, 0, n){
+        int x;
+        cin >> x;
+        pq.push(x);
+    }
 
+    while(pq.size() > 1){
+        int x = pq.top(); pq.pop();
+        int y = pq.top(); pq.pop();
+        int s = x+y;
+        re += s;
+        pq.push(s);
+    }
+
+    cout << re << endl;
     return 0;
 }
