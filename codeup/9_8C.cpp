@@ -78,27 +78,6 @@ Node *newnode(int w, int l = -1, int r = -1, int f = -1){
     return &node[idx];
 }
 
-string huff;
-
-
-void inorder(Node *root){
-    if(root->idx == node[root->f].l) huff += '1';
-    if(root->idx == node[root->f].r) huff += '0';
-    #ifdef DEBUG
-    cout << "visit at " << root->w << "huff now is " << huff << endl;
-    #endif
-
-    if(root->l != -1) inorder(&node[root->l]);
-
-    if(root->l == -1 and root->r == -1){
-        root->huff = huff;
-    }
-
-    if(root->r != -1) inorder(&node[root->r]);
-
-    huff.pop_back();
-}
-
 int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);
@@ -149,11 +128,9 @@ int main(){
         }
         #endif
 
-        inorder(root);
 
-        uu(i, 0, n){
-            cout << node[i].huff << endl;
-        }
+        cout << root->w << endl;
+
 
     
     }
