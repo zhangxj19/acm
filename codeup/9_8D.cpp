@@ -47,12 +47,13 @@ int lcm(int a, int b){
 }
 
 using namespace std;
-const int maxn = 1000 + 999;
+const int maxn = (96-32+1)*2;
 
-int n, w[maxn], size;
+int n, size;
 
 struct Node{
     int w, f, l, r, idx;
+    char c;
     string huff;
     // friend bool operator < (const Node &n1, const Node &n2){
     //     return n1.w > n2.w;
@@ -62,14 +63,15 @@ struct Node{
 struct cmp{
     bool operator()(const Node* n1, const Node* n2){
         if(n1->w != n2->w) return n1->w > n2->w;
-        else return n1->idx > n2->idx;
+        else return n1->c > n2->c;
     }
 };
 
 priority_queue<Node*, vector<Node*>, cmp> pq;
 
-Node *newnode(int w, int l = -1, int r = -1, int f = -1){
+Node *newnode(char c, int w, int l = -1, int r = -1, int f = -1){
     int idx = size++;
+    node[idx].c = c;
     node[idx].w = w;
     node[idx].idx = idx;
     node[idx].l = l;
@@ -80,14 +82,18 @@ Node *newnode(int w, int l = -1, int r = -1, int f = -1){
 
 ll re;
 
+string huff;
+
 void inorder(Node *root){
+    if(root->idx == node[root->f].l) huff += '0';
+    if(root->idx == node[root->f].r) huff += '1';
     if(root->l != -1) inorder(&node[root->l]);
 
-    if(root->l != -1 or root->r != -1){ // nonleaf
-        re += root->w;
-    }
+    if(root->l == -1 and root->r == -1) root->huff = huff;
 
     if(root->r != -1) inorder(&node[root->r]);
+
+    huff.pop_back();
 }
 
 
@@ -101,17 +107,17 @@ int main(){
         re = 0;
         while(!pq.empty()) pq.pop();
         uu(i, 0, n){
+            char c;
             int w;
-            cin >> w;
-            Node *tmp = newnode(w);
+            cin >> c >> w;
+            Node *tmp = newnode(c, w);
             pq.push(tmp);
         }
 
         while(pq.size() > 1){
             Node *n1 = pq.top(); pq.pop();
-
             Node *n2 = pq.top(); pq.pop();
-            Node *n = newnode(n1->w+n2->w, n1->idx, n2->idx);
+            Node *n = newnode(n1->c, n1->w+n2->w, n1->idx, n2->idx);
             #ifdef DEBUG
             pf("pick %d and %d, sum is %d\n", n1->w, n2->w, n->w);
             #endif
@@ -144,7 +150,10 @@ int main(){
         #endif
 
         inorder(root);
-        cout << re << endl;
+
+        uu(i, 0, n){
+            cout << node[i].c << ":" << node[i].huff << endl;
+        }
 
 
     
