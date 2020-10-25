@@ -157,6 +157,37 @@ int main(){
     ios::sync_with_stdio(false);
     #endif
     // std::cin.tie(nullptr);
-    
+
+    cin >> gf::N >>gf::M >> gf::S >> gf::E;
+
+
+    uu(i, 0, gf::M){
+        int x, y, dis, cost;
+        cin >> x >> y >> dis >> cost;
+        gf::node[x].edge.push_back(gf::Edge(x, y, dis, cost));
+        gf::node[y].edge.push_back(gf::Edge(y, x, dis, cost));
+    }
+
+    gf::Dijkstra();
+
+    gf::dfs(gf::E);
+
+    int mincost = INT_MAX;
+    vector<int> minpath;
+    uu(i, 0, gf::re.size()){
+        int cost = gf::sumcost(gf::re[i]);
+        if(cost < mincost){
+            mincost = cost;
+            minpath = gf::re[i];
+        }
+    }
+
+    dd(i, minpath.size()-1, -1){
+        cout << minpath[i] << " ";
+    }
+    cout << gf::dis[gf::E] << " ";
+    cout << mincost << endl;
+
+
     return 0;
 }

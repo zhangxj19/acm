@@ -135,21 +135,16 @@ namespace gf{ // graph
     }  
 
 
-    int sumcost(vector<int> &v){
+    int sumteam(vector<int> &v){
         int re = 0;
-        uu(i, 0, v.size()-1){
-            int from = v[i], to = v[i+1];
-            uu(j, 0, node[from].edge.size()){
-                if(to == node[from].edge[j].to){
-                    re += node[from].edge[j].cost;
-                    break;
-                }
-            }
+        uu(i, 0, v.size()){
+            re += node[v[i]].d;
         }
         return re;
     }
 }
 
+const int maxn= 500;
 
 
 int main(){
@@ -157,6 +152,30 @@ int main(){
     ios::sync_with_stdio(false);
     #endif
     // std::cin.tie(nullptr);
+    cin >> gf::N >> gf::M >> gf::S >> gf::E;
+    uu(i, 0, gf::N){
+        cin >> gf::node[i].d;
+    }  
+
+    uu(i, 0, gf::M){
+        int x, y, l;
+        cin >> x >> y >> l;
+        gf::node[x].edge.push_back(gf::Edge(x, y, l));
+        gf::node[y].edge.push_back(gf::Edge(y, x, l));
+    }
+
+    gf::Dijkstra();
+
+    gf::dfs(gf::E);
+
+    cout << gf::re.size();
+    cout << " ";
+    int maxteam = INT_MIN;
+    uu(i, 0, gf::re.size()){
+        int team = gf::sumteam(gf::re[i]);
+        maxteam = _max(team, maxteam);
+    }
+    cout << maxteam << endl;
     
     return 0;
 }

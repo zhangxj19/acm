@@ -100,8 +100,8 @@ void Dijkstra(){
             int dis = d[u] + w;
             if(dis <= d[to]){
                 d[to] = dis;
-                t[to] = _max(t[to], r[to] + t[u]);
                 nums[to] += nums[u];
+                t[to] = _max(t[to], r[to] + t[u]);
             }
             // if(dis < d[to]){
             //     d[to] = dis;
