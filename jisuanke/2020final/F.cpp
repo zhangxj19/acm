@@ -49,10 +49,16 @@ int lcm(int a, int b){
 using namespace std;
 
 const ll P = 998244353;
-const int maxn = 1e6+1;
 
-int n, m;
-int dp[2][maxn];
+ll n, m;
+
+ll cmn(ll n, ll m){
+    ll ans = 1;
+    for(ll i = 1; i <= m; ++i){
+        ans = ans * (n - m + i) % P / i;
+    }
+    return ans;
+}
 
 int main(){
     #ifndef DEBUG
@@ -60,44 +66,8 @@ int main(){
     #endif
     // std::cin.tie(nullptr);
     cin >> n >> m;
-    uu(i, 1, n+1) dp[0][i] = 1;
-    uu(i, 1, m+1){
-        int from, to;
-        if(i&1){
-            from = 0;
-            to = 1;
-        }
-        else{
-            from = 1;
-            to = 0;
-        }
-        uu(j, 1, n+1){
-            uu(k, 1, j+1){
-                dp[to][j] += dp[from][k] % P;
-            }
-        }
-        memset(dp[from], 0, sizeof(int) * (n+1));
-    }
-    #ifdef DEBUG2
-    uu(i, 0, 2){
-        uu(j, 0, n+1){
-            pf("%d ", dp[i][j]);
-        }
-        cout << endl;
-    }
-    #endif
-    int re = 0;
-    if(m & 1){
-        uu(i, 1, n+1){
-            re += dp[1][i]%P;
-        }
-    }
-    else{
-        uu(i, 1, n+1){
-            re += dp[0][i]%P;
-        }        
-    }
-    cout << re << endl;
+    
+    cout << cmn(n+m-1, n-1) << endl;
 
 
     return 0;
