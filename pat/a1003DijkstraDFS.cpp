@@ -32,7 +32,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-// #define DEBUG
+#define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -47,84 +47,62 @@ int gcd(int a, int b){
 using namespace std;
 
 namespace gf{ // graph
-    const ll maxn = 510;
-
-    ll N, M, S, E;
+    const int maxn = 500;
+    int N, M, S, E;
     struct Edge{
-        ll dis, cost;
-        ll from, to;
-        Edge(ll from, ll to, ll dis){
-            this->from = from;
-            this->to = to;
-            this->dis = dis;
-        }
+        int dis, cost;
+        int from, to;
+        Edge(int from, int to, int dis=0, int cost=0):from(from), to(to), dis(dis), cost(cost){};
     };
 
     struct Node{
-        ll d;
+        int d;
         vector<Edge> edge;
     }node[maxn];
 
-    ll bk[maxn], dis[maxn];
-    vector<ll> pre[maxn];
+    int bk[maxn], dis[maxn];
+    vector<int> pre[maxn];
 
-    ll num[maxn], w[maxn];
-    void init_bf(){
-        fill(dis, dis+maxn, INT_MAX);
+    int nextu(){
+        // if re == -1 then no u find
+        int re = -1, mind = INT_MAX;
+        uu(i, 0, N){
+            if(bk[i] == 0 and dis[i] < mind){
+                mind = dis[i];
+                re = i;
+            }
+        }
+        bk[re] = 1;
+        return re;
+    }
+
+    void init_Dijkstra(){
+        //init bk
+        memset(bk, 0, sizeof(bk));
+        // init dis, dis[0:end] = INT_MAXN, dis[S] = 0
+        uu(i, 0, N) dis[i] = INT_MAX;
+        // pre don't need to init;
         dis[S] = 0;
-        memset(num, 0, sizeof(num));
-        num[S] = 1;
-        memset(w, 0, sizeof(w));
-        w[S] = node[S].d;
     }
 
-    set<ll> pre_bf[maxn];
-    
-    bool bf(){
-        init_bf();
-        // N-1 round
-        uu(i, 0, N-1){
-            // all edges
-            int islose = false;
-            uu(from, 0, N){
-                for(const auto & edge : node[from].edge){
-                    ll to = edge.to, d = edge.dis;
-                    if(dis[from] + d < dis[to]){
-                        dis[to] = dis[from] + d;
-
-                        pre_bf[to].clear();
-                        pre_bf[to].insert(from);
-                        islose = true;
-                    }
-                    else if(dis[from] + d == dis[to]){
-                        pre_bf[to].insert(from);
-                        islose = true;
-                    }
-                }
-            }
-            if(!islose) break;
-        }
-
+    void Dijkstra(){
+        init_Dijkstra();
         uu(i, 0, N){
-            pre[i].clear();
-            for(const auto& it : pre_bf[i]){
-                pre[i].push_back(it);
-            }
-        }
-
-        uu(i, 0, N){
-            uu(j, 0, node[i].edge.size()){
-                ll from = node[i].edge[j].from, to = node[i].edge[j].to, d = node[i].edge[j].dis;
-                ll newdis = dis[from] + d;
+            int u = nextu();
+            uu(j, 0, node[u].edge.size()){
+                int to = node[u].edge[j].to;
+                int newdis = dis[u] + node[u].edge[j].dis;
                 if(newdis < dis[to]){
-                    return false; // negative cycle from S
+                    dis[to] = newdis;
+                    pre[to].clear();
+                    pre[to].push_back(u);
+                }
+                else if(newdis == dis[to]){
+                    pre[to].push_back(u);
                 }
             }
         }
-        return true;
-
     }
-
     vector<vector<int>> re;
     vector<int> tmp;
 
@@ -136,7 +114,6 @@ namespace gf{ // graph
         bk[idx] = 1;
         tmp.push_back(idx);
         if(pre[idx].size() == 0){
-        // if(pre_bf[idx].size() == 0){
             re.push_back(tmp);
             bk[idx] = 0;
             tmp.pop_back();
@@ -144,7 +121,6 @@ namespace gf{ // graph
         }
 
         uu(i, 0, pre[idx].size()){
-        // for(const auto from : pre_bf[idx]){
             int from = pre[idx][i];
             _dfs(from);
         }
@@ -170,6 +146,7 @@ namespace gf{ // graph
 
 const int maxn= 500;
 
+
 int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);
@@ -187,7 +164,8 @@ int main(){
         gf::node[y].edge.push_back(gf::Edge(y, x, l));
     }
 
-    gf::bf();
+    gf::Dijkstra();
+
     gf::dfs(gf::E);
 
     cout << gf::re.size();
@@ -198,24 +176,6 @@ int main(){
         maxteam = _max(team, maxteam);
     }
     cout << maxteam << endl;
-    #ifdef DEBUG
-    uu(i, 0, gf::N){
-        pf("%d ", gf::dis[i]);
-    }
-    cout << endl;
-    uu(i, 0, gf::N){
-        pf("%d ", gf::num[i]);
-    }
-    cout << endl;
-    uu(i, 0, gf::N){
-        pf("%d ", gf::w[i]);
-    }
-    cout << endl;
-    #endif
-
-    // cout << gf::num[gf::E] << " " << gf::w[gf::E];
-
-
     
     return 0;
 }
