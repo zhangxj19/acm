@@ -39,26 +39,26 @@ typedef long long ll;
 using namespace std;
 
 namespace gf{
-    const ll maxn = 500;
-    ll N, M, S, E;
+    const int maxn = 500, INF = 1e9;
+    int N, M, S, E;
     struct Edge{
-        ll dis, cost;
-        ll from, to;
-        Edge(ll from, ll to, ll dis=0, ll cost=0):from(from), to(to), dis(dis), cost(cost){};
+        int dis, cost;
+        int from, to;
+        Edge(int from, int to, int dis=0, int cost=0):from(from), to(to), dis(dis), cost(cost){};
     };
 
     struct Node{
-        ll d;
+        int d;
         vector<Edge> edge;
     }node[maxn];
 
-    ll bk[maxn], dis[maxn];
-    set<ll> pre[maxn];
+    int bk[maxn], dis[maxn];
+    set<int> pre[maxn];
     queue<int> Q; // queue of node
-    ll bk_time[maxn]; // times of node in Q
+    int bk_time[maxn]; // times of node in Q
 
     void init(){
-        fill(dis, dis+maxn, INT_MAX);
+        fill(dis, dis+maxn, INF);
         dis[S] = 0;
         memset(bk, 0, sizeof(bk));
         memset(bk_time, 0, sizeof(bk_time));
@@ -76,7 +76,7 @@ namespace gf{
             bk[from] = 0;
 
             for(const auto & edge : node[from].edge){
-                ll to = edge.to, newdis = dis[from] + edge.dis;
+                int to = edge.to, newdis = dis[from] + edge.dis;
                 if(newdis < dis[to]){
                     dis[to] = newdis;
                     pre[to].clear();
@@ -97,14 +97,14 @@ namespace gf{
     }
 
 
-    vector<vector<ll>> re; // routes from S to E
-    vector<ll> tmp;
+    vector<vector<int>> re; // routes from S to E
+    vector<int> tmp;
 
     void init_dfs(){
         memset(bk, 0, sizeof(bk));
     }
 
-    void _dfs(ll idx){
+    void _dfs(int idx){
         bk[idx] = 1;
         tmp.push_back(idx);
         if(pre[idx].size() == 0){
@@ -122,7 +122,7 @@ namespace gf{
         tmp.pop_back();
     }
 
-    void dfs(ll idx){
+    void dfs(int idx){
         // find routes from S to E store in re
         init_dfs();
         _dfs(idx);

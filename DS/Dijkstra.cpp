@@ -39,13 +39,13 @@ typedef long long ll;
 using namespace std;
 
 namespace gf{
-    const ll maxn = 510;
+    const int maxn = 510;
 
-    ll N, M, S, E;
+    int N, M, S, E;
     struct Edge{
-        ll dis, cost;
-        ll from, to;
-        Edge(ll from, ll to, ll dis){
+        int dis, cost;
+        int from, to;
+        Edge(int from, int to, int dis){
             this->from = from;
             this->to = to;
             this->dis = dis;
@@ -53,15 +53,15 @@ namespace gf{
     };
 
     struct Node{
-        ll d;
+        int d;
         vector<Edge> edge;
     }node[maxn];
 
-    ll bk[maxn], dis[maxn];
-    vector<ll> pre[maxn];
-        ll nextu(){
+    int bk[maxn], dis[maxn];
+    vector<int> pre[maxn];
+        int nextu(){
             // if re == -1 then no u find
-            ll re = -1, mind = INT_MAX;
+            int re = -1, mind = INT_MAX;
             uu(i, 0, N){
                 if(bk[i] == 0 and dis[i] < mind){
                     mind = dis[i];
@@ -72,14 +72,14 @@ namespace gf{
             return re;
         }
 
-        void init_Dijkstra(){
+        void init(){
             memset(bk, 0, sizeof(bk));
             fill(dis, dis+maxn, INT_MAX);
             dis[S] = 0;
         }
 
         void Dijkstra(){
-            init_Dijkstra();
+            init();
             uu(i, 0, N){
                 int from = nextu();
                 uu(j, 0, node[from].edge.size()){

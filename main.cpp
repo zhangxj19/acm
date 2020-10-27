@@ -13,6 +13,7 @@
 #include <bitset>
 #include <deque>
 #include <iostream>
+#include <iomanip>
 #include <limits>
 #include <list>
 #include <map>
@@ -49,8 +50,10 @@ using namespace std;
 int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
     #endif
-    // std::cin.tie(nullptr);
+    // cout << setiosflags(ios::fixed);
+    // cout << setprecision(2);
     
     return 0;
 }

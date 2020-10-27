@@ -1,1 +1,28 @@
-0 2 3 3 40
+pre[0]:
+2 3 4 
+pre[1]:
+5 
+pre[2]:
+1 
+pre[3]:
+5 
+pre[4]:
+5 
+pre[5]:
+
+detect at idx = 0
+detect at idx = 2
+detect at idx = 1
+detect at idx = 5
+detect at idx = 3
+detect at idx = 5
+detect at idx = 4
+detect at idx = 5
+dis:
+3 1 2 1 2 0 
+route 0:
+5 1 2 0 
+route 1:
+5 3 0 
+route 2:
+5 4 0 
