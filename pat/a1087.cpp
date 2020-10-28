@@ -33,7 +33,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-#define DEBUG
+// #define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -157,6 +157,30 @@ void dfs(int idx){
 }
 
 
+void hp_avg(vector<int> &v, int &hp, double &avg){
+    hp = 0;
+    uu(i, 0, v.size()-1){
+        hp += node[v[i]]->hp;
+    }
+    avg = (double)hp/(v.size() - 1);
+}
+
+
+
+struct Re{
+    vector<int> p;
+    int hp;
+    double avg;
+};
+
+vector<Re> res;
+
+bool cmp(const Re &r1, const Re &r2){
+    if(r1.hp != r2.hp) return r1.hp > r2.hp;
+    else return r1.avg > r2.avg;
+}
+
+
 int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);
@@ -196,7 +220,6 @@ int main(){
 
     #ifdef DEBUG
     pf("dis:\n");
-
     uu(i, 0, N){
         pf("%d ", dis[i]);
     }
@@ -210,6 +233,25 @@ int main(){
     }
     #endif
 
+    uu(i, 0, re.size()){
+        int hp;
+        double avg;
+        Re tmp;
+        hp_avg(re[i], hp, avg);
+        tmp.hp = hp;
+        tmp.avg = avg;
+        tmp.p = re[i];
+        res.push_back(tmp);
+    }
+
+    sort(res.begin(), res.end(), cmp);
+
+    cout << re.size() << " " << dis[Map[E]] << " " << res[0].hp << " " << (int)res[0].avg << endl;
+    dd(i, res[0].p.size()-1, -1){
+        if(i != 0) cout << node[res[0].p[i]]->name << "->";
+        else cout << node[res[0].p[i]]->name;
+    }
+    cout << endl;
 
 
 
