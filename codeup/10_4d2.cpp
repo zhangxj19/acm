@@ -47,7 +47,8 @@ int gcd(int a, int b){
 
 using namespace std;
 
-const int maxn = 1010, maxm = 1e4+10, INF = INT_MAX;
+const int maxn = 1010, maxm = 1e4+10, INF = 0x3fffffff;
+typedef pair<int, int> P;
 ll n, m, s, t;
 
 struct Edge{
@@ -71,10 +72,10 @@ struct cmp{
 
 ll nextu(){
     ll re = -1, mindis = INF;
-    uu(i, 0, n){
+    uu(i, 1, n+1){
         if(d[i] < mindis and bk[i] == 0){
-            re = i;
             mindis = d[i];
+            re = i;
         }
     }
     if(re != -1) bk[re] = 1;
@@ -88,29 +89,32 @@ void dijkstra(){
     d[s] = 0;
 
     // priority_queue<ll, vector<ll>, cmp> pq;
-    // pq.push(s);
-    uu(i, 1, n+1){
-        // ll from = pq.top(); pq.pop(); bk[from] = 1;
-        ll from = nextu();
+    priority_queue<P, vector<P>, greater<P>> pq;
+    pq.push(make_pair(d[s], s));
+    // uu(i, 1, n+1){
+    while(!pq.empty()){
+        // if(pq.empty()) return;
+        P p = pq.top(); pq.pop();
+        int from =p.second;
+        // ll from = nextu();
         if(from == -1) return;
         for(const auto& edge: node[from].edge){
             ll to = edge.t, newdis = d[from] + edge.d;
-            if(newdis < d[to]){
-                d[to] = newdis;
-                // pq.push(to);
-                pre[to] = from;
+            if(bk[to] == 0){
+                if(newdis < d[to]){
+                    d[to] = newdis;
+                    
+                    pre[to] = from;
+                    pq.push(make_pair(d[to], to));
+                }
+                else if (newdis == d[to] and from < pre[to]){
+                    pre[to] = from;
+                }
             }
-            else if (newdis == d[to] and from < pre[to]){
-                pre[to] = from;
-            }
+
         }
     }
 }
-
-vector<vector<ll>> re;
-vector<ll> tmp;
-
-
 
 void dfs(ll idx){
 
@@ -134,8 +138,10 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    // while(~sf("%d%d%d%d", &n, &m, &s, &t)){
     while(~sf("%lld%lld%lld%lld", &n, &m, &s, &t)){
+        uu(i, 1, n+1){
+            node[i].edge.clear();
+        }
         uu(i, 0, m){
             ll x, y, d;
             // cin >> x >> y >> d;

@@ -33,7 +33,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-// #define DEBUG
+#define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -60,8 +60,7 @@ struct Node{
     vector<Edge> edge;
 }node[maxn];
 
-int bk[maxn], d[maxn];
-vector<int> pre[maxn];
+int bk[maxn], d[maxn], pre[maxn];
 
 struct cmp{
     bool operator () (const int &i1, const int &i2){
@@ -70,76 +69,43 @@ struct cmp{
     }
 };
 
-void dijkstra(){
-    memset(bk, 0, sizeof(bk));
-    fill(d, d+maxn, INF);
-    d[s] = 0;
-    uu(i, 0, maxn) pre[i].clear();
+typedef pair<int, int> P;
 
-    priority_queue<int, vector<int>, cmp> pq;
-    pq.push(s);
-    uu(i, 0, n){
-        if(pq.empty()) return;
-        int from = pq.top(); pq.pop(); bk[from] = 1;
+void dijkstra(){
+    priority_queue<P, vector<P>, greater<P>> pq;
+    pq.push(make_pair(d[s], s));
+    while(!pq.empty()){
+        P p = pq.top(); pq.pop();
+        int from = p.second;
         for(const auto& edge: node[from].edge){
             int to = edge.t, newdis = d[from] + edge.d;
             if(newdis < d[to]){
                 d[to] = newdis;
-                pq.push(to);
-                pre[to].clear();
-                pre[to].push_back(from);
+                pq.push(make_pair(d[to], to));
+                pre[to] = from;
             }
-            else if (newdis == d[to]){
-                pre[to].push_back(from);
+            else if (newdis == d[to] and from < pre[to]){
+                pre[to] = from;
             }
         }
     }
 }
 
-vector<vector<int>> re;
-vector<int> tmp;
-
-void init_dfs(){
-    re.clear();
-    tmp.clear();
-    memset(bk, 0, sizeof(bk));
-}
 
 
-void _dfs(int idx){
-    bk[idx] = 1;
-    tmp.push_back(idx);
+void dfs(int idx){
 
     if(idx == s){
-        re.push_back(tmp);
-
-        bk[idx] = 0;
-        tmp.pop_back();
+        cout << idx << " ";
         return ;
     }
 
-    uu(i, 0, pre[idx].size()){
-        int to = pre[idx][i];
-        if(bk[to] == 0) _dfs(to);
-    }
+    dfs(pre[idx]);
+    cout << idx << " ";
 
-
-    bk[idx] = 0;
-    tmp.pop_back();
     return ;
 }   
 
-void dfs(int idx){
-    init_dfs();
-    _dfs(idx);
-}
-
-bool cmp(const vector<int> &v1, const vector<int> &v2){
-    uu(i, 0, v1.size()){
-        if(v1[i] != v2[i]) return v1[i] > v2[i];
-    }
-    return false;
-}
 
 int main(){
     #ifndef DEBUG
@@ -149,6 +115,12 @@ int main(){
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
     while(cin >> n >> m >> s >> t){
+        uu(i, 1, n+1) node[i].edge.clear();
+        memset(bk, 0, sizeof(bk));
+        fill(d, d+maxn, INF);
+        d[s] = 0;
+        uu(i, 1, n+1) pre[i] = i;
+
         uu(i, 0, m){
             int x, y, d;
             cin >> x >> y >> d;
@@ -157,27 +129,13 @@ int main(){
         }
 
         dijkstra();
-        dfs(t);
 
-        #ifdef DEBUG
-        pf("resize = %zu\n", re.size());
-        for(const auto& v : re){
-            for(const auto& e : v){
-                pf("%d ", e);
-            }
-            pf("\n");
-        }
-        #endif
-        if(re.size() == 0){
+        if(d[t] == INF){
             cout << "can't arrive" << endl;
         }
         else{
-            sort(re.begin(), re.end(), cmp);
             cout << d[t] << endl;
-            dd(i, re[0].size()-1, -1){
-                if(i == 0) cout << re[0][i];
-                else cout << re[0][i] << " ";
-            }
+            dfs(t);
             cout <<endl;
         }
     }

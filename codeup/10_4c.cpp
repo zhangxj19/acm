@@ -64,12 +64,6 @@ struct Node{
 
 int bk[maxn];
 string d[maxn];
-struct cmp{
-    bool operator () (const int &i1, const int &i2){
-        if(bk[i1] != bk[i2]) return bk[i1] > bk[i2];
-        else return d[i1] > d[i2];
-    }
-};
 
 void init(){
     memset(bk, 0, sizeof(bk));
@@ -98,12 +92,14 @@ string add(const string &s1, const string &s2){
     return re;
 }
 
+typedef pair<string, int> PR;
 
 void Dijkstra(int s){
-    priority_queue<int, vector<int>, cmp> pq;
-    pq.push(s);
-    uu(i, 0, N){
-        int from = pq.top(); pq.pop(); bk[from] = 1;
+    priority_queue<PR, vector<PR>, greater<PR>> pq;
+    pq.push(make_pair(d[s], s));
+    while(!pq.empty()){
+        PR p = pq.top(); pq.pop();
+        int from = p.second;
         for(const auto & edge : node[from].edge){
             int to = edge.t;
             string newdis = add(d[from], edge.d);
@@ -112,7 +108,7 @@ void Dijkstra(int s){
             #endif
             if(newdis < d[to]){
                 d[to] = newdis;
-                pq.push(to);
+                pq.push(make_pair(d[to], to));
             }
         }
     }

@@ -43,13 +43,8 @@ namespace gf{
 
     int N, M, S, E;
     struct Edge{
-        int dis, cost;
-        int from, to;
-        Edge(int from, int to, int dis){
-            this->from = from;
-            this->to = to;
-            this->dis = dis;
-        }
+        int f, t, d;
+        Edge(int f, int t, int d):f(f), t(t), d(d){};
     };
 
     struct Node{
@@ -57,14 +52,14 @@ namespace gf{
         vector<Edge> edge;
     }node[maxn];
 
-    int bk[maxn], dis[maxn];
+    int bk[maxn], d[maxn];
     vector<int> pre[maxn];
         int nextu(){
             // if re == -1 then no u find
             int re = -1, mind = INT_MAX;
             uu(i, 0, N){
-                if(bk[i] == 0 and dis[i] < mind){
-                    mind = dis[i];
+                if(bk[i] == 0 and d[i] < mind){
+                    mind = d[i];
                     re = i;
                 }
             }
@@ -72,30 +67,52 @@ namespace gf{
             return re;
         }
 
-        void init(){
-            memset(bk, 0, sizeof(bk));
-            fill(dis, dis+maxn, INT_MAX);
-            dis[S] = 0;
-        }
-
-        void Dijkstra(){
-            init();
-            uu(i, 0, N){
-                int from = nextu();
-                uu(j, 0, node[from].edge.size()){
-                    int to = node[from].edge[j].to;
-                    int newdis = dis[from] + node[from].edge[j].dis;
-                    if(newdis < dis[to]){
-                        dis[to] = newdis;
-                        pre[to].clear();
-                        pre[to].push_back(from);
-                    }
-                    else if(newdis == dis[to]){
-                        pre[to].push_back(from);
-                    }
+    void Dijkstra(){
+        memset(bk, 0, sizeof(bk));
+        fill(d, d+maxn, INT_MAX);
+        d[S] = 0;
+        uu(i, 0, N){
+            int from = nextu();
+            uu(j, 0, node[from].edge.size()){
+                int to = node[from].edge[j].t;
+                int newdis = d[from] + node[from].edge[j].d;
+                if(newdis < d[to]){
+                    d[to] = newdis;
+                    pre[to].clear();
+                    pre[to].push_back(from);
+                }
+                else if(newdis == d[to]){
+                    pre[to].push_back(from);
                 }
             }
         }
+    }
+
+    typedef pair<int, int> P;
+    void Dijkstra_pq(){
+        fill(d, d+maxn, INT_MAX);
+        d[S] = 0;
+        priority_queue<P, vector<P>, greater<P>> pq;
+        pq.push(make_pair(d[S], S));
+        while(!pq.empty()){
+            
+            P p = pq.top(); pq.pop();
+            int from = p.second;
+            uu(j, 0, node[from].edge.size()){
+                int to = node[from].edge[j].t;
+                int newdis = d[from] + node[from].edge[j].d;
+                if(newdis < d[to]){
+                    d[to] = newdis;
+                    pre[to].clear();
+                    pre[to].push_back(from);
+                    pq.push(make_pair(d[to], to));
+                }
+                else if(newdis == d[to]){
+                    pre[to].push_back(from);
+                }
+            }
+        }
+    }
 
     vector<vector<int>> re;
     vector<int> tmp;
@@ -115,7 +132,8 @@ namespace gf{
         }
 
         uu(i, 0, pre[idx].size()){
-            int from = pre[idx][i];
+            int from = pre[idx]
+            [i];
             _dfs(from);
         }
 
