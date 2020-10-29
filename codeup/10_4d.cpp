@@ -33,7 +33,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-#define DEBUG
+// #define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -47,8 +47,8 @@ int gcd(int a, int b){
 
 using namespace std;
 
-const int maxn = 50, INF = 1e9;
-int n, s;
+const int maxn = 1010, maxm = 1e4+10, INF = 1e9;
+int n, m, s, t;
 
 struct Edge{
     int f, t, d;
@@ -61,6 +61,8 @@ struct Node{
 }node[maxn];
 
 int bk[maxn], d[maxn];
+vector<int> pre[maxn];
+
 struct cmp{
     bool operator () (const int &i1, const int &i2){
         if(bk[i1] != bk[i2]) return bk[i1] > bk[i2];
@@ -68,28 +70,75 @@ struct cmp{
     }
 };
 
-void init(){
+void dijkstra(){
     memset(bk, 0, sizeof(bk));
     fill(d, d+maxn, INF);
     d[s] = 0;
-}
+    uu(i, 0, maxn) pre[i].clear();
 
-
-
-void Dijkstra(){
-    init();
     priority_queue<int, vector<int>, cmp> pq;
     pq.push(s);
     uu(i, 0, n){
+        if(pq.empty()) return;
         int from = pq.top(); pq.pop(); bk[from] = 1;
-        for(const auto & edge : node[from].edge){
+        for(const auto& edge: node[from].edge){
             int to = edge.t, newdis = d[from] + edge.d;
             if(newdis < d[to]){
                 d[to] = newdis;
                 pq.push(to);
+                pre[to].clear();
+                pre[to].push_back(from);
+            }
+            else if (newdis == d[to]){
+                pre[to].push_back(from);
             }
         }
     }
+}
+
+vector<vector<int>> re;
+vector<int> tmp;
+
+void init_dfs(){
+    re.clear();
+    tmp.clear();
+    memset(bk, 0, sizeof(bk));
+}
+
+
+void _dfs(int idx){
+    bk[idx] = 1;
+    tmp.push_back(idx);
+
+    if(idx == s){
+        re.push_back(tmp);
+
+        bk[idx] = 0;
+        tmp.pop_back();
+        return ;
+    }
+
+    uu(i, 0, pre[idx].size()){
+        int to = pre[idx][i];
+        if(bk[to] == 0) _dfs(to);
+    }
+
+
+    bk[idx] = 0;
+    tmp.pop_back();
+    return ;
+}   
+
+void dfs(int idx){
+    init_dfs();
+    _dfs(idx);
+}
+
+bool cmp(const vector<int> &v1, const vector<int> &v2){
+    uu(i, 0, v1.size()){
+        if(v1[i] != v2[i]) return v1[i] > v2[i];
+    }
+    return false;
 }
 
 int main(){
@@ -99,27 +148,41 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    cin >> n >> s;
-    uu(from, 0, n){
-        uu(to, 0, n){
-            int d;
-            cin >> d;
-            if(d > 0) node[from].edge.push_back(Edge(from, to, d));
+    while(cin >> n >> m >> s >> t){
+        uu(i, 0, m){
+            int x, y, d;
+            cin >> x >> y >> d;
+            node[x].edge.push_back(Edge(x, y, d));
+            node[y].edge.push_back(Edge(y, x, d));
         }
-    }
 
-    Dijkstra();
-    uu(i, 0, n){
-        if(i != s){
-            if(d[i] == INF){
-                cout << -1 << " ";
+        dijkstra();
+        dfs(t);
+
+        #ifdef DEBUG
+        pf("resize = %zu\n", re.size());
+        for(const auto& v : re){
+            for(const auto& e : v){
+                pf("%d ", e);
             }
-            else{
-                cout << d[i] << " ";
+            pf("\n");
+        }
+        #endif
+        if(re.size() == 0){
+            cout << "can't arrive" << endl;
+        }
+        else{
+            sort(re.begin(), re.end(), cmp);
+            cout << d[t] << endl;
+            dd(i, re[0].size()-1, -1){
+                if(i == 0) cout << re[0][i];
+                else cout << re[0][i] << " ";
             }
+            cout <<endl;
         }
     }
-    cout << endl;
+    
+
     
     return 0;
 }
