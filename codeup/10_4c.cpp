@@ -181,5 +181,6 @@ int main(){
         else cout << _value(d[i]) << endl;
     }
     
+    
     return 0;
 }
