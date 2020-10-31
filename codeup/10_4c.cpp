@@ -57,10 +57,17 @@ struct Edge{
     Edge(int f, int t, string d):f(f), t(t), d(d){};
 };
 
+vector<Edge> edge;
+
 struct Node{
     int d;
-    vector<Edge> edge;
+    vector<int> edge;
 }node[maxn];
+
+void addedge(int from, int to, string d){
+    node[from].edge.push_back(edge.size());
+    edge.push_back(Edge(from, to ,d));
+}
 
 int bk[maxn];
 string d[maxn];
@@ -77,6 +84,10 @@ void init(){
         d[i] = INF;
     }
     d[0] = zero;
+    edge.clear();
+    uu(i, 0, N){
+        node[i].edge.clear();
+    }   
 }
 
 string add(const string &s1, const string &s2){
@@ -85,7 +96,7 @@ string add(const string &s1, const string &s2){
         if(s1[i] == '1' or s2[i] == '1'){
             re += "1";
         }
-        else if(s1[i] == '0' and s2[i] == '0'){
+        else{
             re += "0";
         }
     }
@@ -100,11 +111,11 @@ void Dijkstra(int s){
     while(!pq.empty()){
         PR p = pq.top(); pq.pop();
         int from = p.second;
-        for(const auto & edge : node[from].edge){
-            int to = edge.t;
-            string newdis = add(d[from], edge.d);
+        for(const auto & id : node[from].edge){
+            int to = edge[id].t;
+            string newdis = add(d[from], edge[id].d);
             #ifdef DEBUG
-            pf("f=%d, t=%d\nd[from]=%s\nedge.d=%s\nnewdis=%s\n", from, to, d[from].c_str(), edge.d.c_str(), newdis.c_str());
+            pf("f=%d, t=%d\nd[from]=%s\nedge.d=%s\nnewdis=%s\n", from, to, d[from].c_str(), edge[id].d.c_str(), newdis.c_str());
             #endif
             if(newdis < d[to]){
                 d[to] = newdis;
@@ -143,44 +154,45 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    cin >> N >> M;
-    init();
-    uu(k, 0, M){
-        int x, y;
-        cin >> x >> y;
-        string tmp = zero;
+    while(cin >> N >> M){
+        init();
+        uu(k, 0, M){
+            int x, y;
+            cin >> x >> y;
+            string tmp = zero;
 
-        tmp.replace(tmp.begin()+maxm-1-k, tmp.begin()+maxm-k, "1");
-        #ifdef DEBUG
-        cout << tmp << endl;
-        #endif
-        node[x].edge.push_back(Edge(x, y, tmp));
-        node[y].edge.push_back(Edge(y, x, tmp));
-    }
-    #ifdef DEBUG
-    uu(i, 0, N){
-        pf("%d: ", i);
-        for(const auto& edge: node[i].edge){
-            pf("%d ", edge.t);
+            tmp.replace(tmp.begin()+maxm-1-k, tmp.begin()+maxm-k, "1");
+            #ifdef DEBUG
+            cout << tmp << endl;
+            #endif
+            addedge(x, y, tmp);
+            addedge(y, x, tmp);
         }
-        cout <<endl;
-    }
-    #endif
+        #ifdef DEBUG
+        uu(i, 0, N){
+            pf("%d: ", i);
+            for(const auto& edge: node[i].edge){
+                pf("%d ", edge.t);
+            }
+            cout <<endl;
+        }
+        #endif
 
-    Dijkstra(0);
+        Dijkstra(0);
 
-    #ifdef DEBUG
-    cout << "dis" << endl;
-    uu(i, 0, N){
-        cout << d[i] << endl;
-    }
-    #endif
+        #ifdef DEBUG
+        cout << "dis" << endl;
+        uu(i, 0, N){
+            cout << d[i] << endl;
+        }
+        #endif
 
-    uu(i, 1, N){
-        if(d[i] == INF) cout << -1 << endl;
-        else cout << _value(d[i]) << endl;
-    }
+        uu(i, 1, N){
+            if(d[i] == INF) cout << -1 << endl;
+            else cout << _value(d[i]) << endl;
+        }
     
     
+    }
     return 0;
 }
