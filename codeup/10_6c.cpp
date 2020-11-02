@@ -46,8 +46,10 @@ int gcd(int a, int b){
 }
 
 using namespace std;
-const int maxn = 501;
-int n, m, mp[maxn][maxn];
+const int maxn = 110;
+int n, m, ind[maxn];
+
+vector<int> node[maxn];
 
 int main(){
     #ifndef DEBUG
@@ -56,39 +58,37 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    while(cin >> n >> m, !(n == 0 and m == 0)){
-        int ind[maxn];
+    while(cin >> n >> m, n){
+        // memset(mp, 0, sizeof(mp));
+        uu(i, 0, n) node[i].clear();
         memset(ind, 0, sizeof(ind));
-        memset(mp, 0, sizeof(int) * maxn * maxn);
         uu(i, 0, m){
             int x, y;
             cin >> x >> y;
-            mp[x][y] = 1;
+            // mp[x][y] = 1;
+            node[x].push_back(y);
             ind[y]++;
         }
 
-        // 
-        priority_queue<int, vector<int>, greater<int>> Q;
-        vector<int> re;
-        uu(i, 1, n+1) if(!ind[i]) Q.push(i);
+        queue<int> Q;
+        uu(i, 0, n) if(!ind[i]) Q.push(i);
+        int cnt = 0;
         while(!Q.empty()){
-            int from = Q.top(); Q.pop();
-            re.push_back(from);
-
-            uu(to, 1, n+1){
-                if(mp[from][to] == 1){
-                    ind[to]--;
-                    if(!ind[to]) Q.push(to);
-                }
+            int from = Q.front(); Q.pop();
+            cnt++;
+            uu(i, 0, node[from].size()){
+                int to = node[from][i];
+                ind[to]--;
+                if(!ind[to]) Q.push(to);
+                // if(mp[from][to] == 1){
+                    // ind[to]--;
+                    // if(!ind[to]) Q.push(to);
+                // }
             }
         }
+        if(cnt == n) cout << "YES" <<endl;
+        else cout << "NO" << endl;
 
-        uu(i, 0, re.size()){
-            if(i == 0) cout << re[i];
-            else cout << " " << re[i];
-        }
-        cout << endl;
-        
     }
     
     return 0;

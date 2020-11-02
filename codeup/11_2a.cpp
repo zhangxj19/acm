@@ -46,8 +46,6 @@ int gcd(int a, int b){
 }
 
 using namespace std;
-const int maxn = 501;
-int n, m, mp[maxn][maxn];
 
 int main(){
     #ifndef DEBUG
@@ -56,40 +54,6 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    while(cin >> n >> m, !(n == 0 and m == 0)){
-        int ind[maxn];
-        memset(ind, 0, sizeof(ind));
-        memset(mp, 0, sizeof(int) * maxn * maxn);
-        uu(i, 0, m){
-            int x, y;
-            cin >> x >> y;
-            mp[x][y] = 1;
-            ind[y]++;
-        }
-
-        // 
-        priority_queue<int, vector<int>, greater<int>> Q;
-        vector<int> re;
-        uu(i, 1, n+1) if(!ind[i]) Q.push(i);
-        while(!Q.empty()){
-            int from = Q.top(); Q.pop();
-            re.push_back(from);
-
-            uu(to, 1, n+1){
-                if(mp[from][to] == 1){
-                    ind[to]--;
-                    if(!ind[to]) Q.push(to);
-                }
-            }
-        }
-
-        uu(i, 0, re.size()){
-            if(i == 0) cout << re[i];
-            else cout << " " << re[i];
-        }
-        cout << endl;
-        
-    }
     
     return 0;
 }
