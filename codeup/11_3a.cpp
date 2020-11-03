@@ -46,44 +46,9 @@ int gcd(int a, int b){
 }
 
 using namespace std;
+const int maxn = 1001;
+int n, a[maxn], dp[maxn];
 
-const int maxk = 1e4+1;
-int k, a[maxk];
-
-struct Node
-{
-    int beg, v;
-}dp[maxk];
-
-
-int allneg(){
-    uu(i, 0, k){
-        if(a[i] >= 0) return false;
-    }
-    return true;
-}
-
-int solve(int idx){
-    if(idx == 0){
-        dp[idx].beg = 0;
-        dp[idx].v = a[0];
-        return dp[idx].v;
-    }
-
-    if(dp[idx].v != 0) return dp[idx].v;
-    else{
-        if(solve(idx-1) + a[idx] > a[idx]){
-            dp[idx].beg = dp[idx-1].beg;
-            dp[idx].v = dp[idx-1].v + a[idx];
-        }
-        else{
-            dp[idx].beg = idx;
-            dp[idx].v = a[idx];
-        }
-        return dp[idx].v;
-    }
-
-}
 
 int main(){
     #ifndef DEBUG
@@ -92,28 +57,22 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    while(cin >> k, k){
-        memset(dp, 0, sizeof(dp));
-
-        uu(i, 0, k) cin >> a[i];
-        if(allneg()){
-            cout << 0 << " " << a[0] << " " << a[k-1] << endl;
-            continue;
-        }
-        solve(k-1);
-
-        int beg = 0, end = 0, maxsum = INT_MIN;
-        uu(i, 0, k){
-            if(dp[i].v > maxsum){
-                beg = dp[i].beg;
-                end = i;
-                maxsum = dp[i].v;
+    while(cin >> n){
+        fill(dp, dp+n, 1);
+        uu(i, 0, n) cin >> a[i];
+        int ans = 0;
+        uu(i, 0, n){
+            uu(j, 0, i){
+                if(a[j] <= a[i]){
+                    dp[i] = _max(dp[j] +1, dp[i]);
+                }
             }
+            ans = _max(dp[i], ans);
         }
-        cout << maxsum << " " << a[beg] << " " << a[end] << endl;
-
-
+        cout << ans << endl;
     }
     
+
+
     return 0;
 }

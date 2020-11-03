@@ -92,28 +92,28 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    while(cin >> k, k){
-        memset(dp, 0, sizeof(dp));
+    cin >> k;
+    memset(dp, 0, sizeof(dp));
 
-        uu(i, 0, k) cin >> a[i];
-        if(allneg()){
-            cout << 0 << " " << a[0] << " " << a[k-1] << endl;
-            continue;
-        }
-        solve(k-1);
-
-        int beg = 0, end = 0, maxsum = INT_MIN;
-        uu(i, 0, k){
-            if(dp[i].v > maxsum){
-                beg = dp[i].beg;
-                end = i;
-                maxsum = dp[i].v;
-            }
-        }
-        cout << maxsum << " " << a[beg] << " " << a[end] << endl;
-
-
+    uu(i, 0, k) cin >> a[i];
+    if(allneg()){
+        cout << 0 << " " << a[0] << " " << a[k-1] << endl;
+        return 0;
     }
+    solve(k-1);
+
+    int beg = 0, end = 0, maxsum = INT_MIN;
+    uu(i, 0, k){
+        if(dp[i].v > maxsum){
+            beg = dp[i].beg;
+            end = i;
+            maxsum = dp[i].v;
+        }
+    }
+    cout << maxsum << " " << a[beg] << " " << a[end] << endl;
+
+
+
     
     return 0;
 }

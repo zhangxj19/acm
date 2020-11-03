@@ -5,6 +5,10 @@
 // 1) static map or tree can use Node
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
+
+/*
+不在“最喜欢的颜色”范围内的颜色不加入LIS数组
+*/
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -33,7 +37,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-#define DEBUG
+// #define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -46,44 +50,8 @@ int gcd(int a, int b){
 }
 
 using namespace std;
-
-const int maxk = 1e4+1;
-int k, a[maxk];
-
-struct Node
-{
-    int beg, v;
-}dp[maxk];
-
-
-int allneg(){
-    uu(i, 0, k){
-        if(a[i] >= 0) return false;
-    }
-    return true;
-}
-
-int solve(int idx){
-    if(idx == 0){
-        dp[idx].beg = 0;
-        dp[idx].v = a[0];
-        return dp[idx].v;
-    }
-
-    if(dp[idx].v != 0) return dp[idx].v;
-    else{
-        if(solve(idx-1) + a[idx] > a[idx]){
-            dp[idx].beg = dp[idx-1].beg;
-            dp[idx].v = dp[idx-1].v + a[idx];
-        }
-        else{
-            dp[idx].beg = idx;
-            dp[idx].v = a[idx];
-        }
-        return dp[idx].v;
-    }
-
-}
+const int maxn = 210, maxl = 1e4+100;
+int n, m, l, rk[maxn], a[maxl], dp[maxl]; // less is better
 
 int main(){
     #ifndef DEBUG
@@ -92,28 +60,38 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    while(cin >> k, k){
-        memset(dp, 0, sizeof(dp));
-
-        uu(i, 0, k) cin >> a[i];
-        if(allneg()){
-            cout << 0 << " " << a[0] << " " << a[k-1] << endl;
-            continue;
-        }
-        solve(k-1);
-
-        int beg = 0, end = 0, maxsum = INT_MIN;
-        uu(i, 0, k){
-            if(dp[i].v > maxsum){
-                beg = dp[i].beg;
-                end = i;
-                maxsum = dp[i].v;
+    fill(rk, rk+maxn, INT_MAX);
+    cin >> n;
+    cin >> m;
+    uu(i, 0, m){
+        int v;
+        cin >> v;
+        rk[v] = i;
+    }
+    cin >> l;
+    int num = 0;
+    uu(i, 0, l){
+        int color;
+        cin >> color;
+        if(rk[color] != INT_MAX) a[num++] = color;
+    }
+    int ans = -1;
+    fill(dp, dp+maxl, 1);
+    uu(i, 0, num){
+        uu(j, 0, i){
+            if(rk[a[j]] <= rk[a[i]] and dp[j] + 1 > dp[i]){
+                dp[i] = dp[j] + 1;
             }
         }
-        cout << maxsum << " " << a[beg] << " " << a[end] << endl;
-
-
+        ans = _max(dp[i], ans);
     }
+    #ifdef DEBUG
+    uu(i, 0, l){
+        pf("%d ", dp[i]);
+    }
+    cout << endl;
+    #endif
     
+    cout << ans << endl;
     return 0;
 }

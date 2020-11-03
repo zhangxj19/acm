@@ -33,7 +33,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-#define DEBUG
+// #define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -46,43 +46,28 @@ int gcd(int a, int b){
 }
 
 using namespace std;
+const int maxn = 101;
+string a, b;
+int dp[maxn][maxn];
 
-const int maxk = 1e4+1;
-int k, a[maxk];
+int solve(int i, int j){
+    // i nums j nums
+    if(i == 0 or j == 0) return 0;
 
-struct Node
-{
-    int beg, v;
-}dp[maxk];
-
-
-int allneg(){
-    uu(i, 0, k){
-        if(a[i] >= 0) return false;
-    }
-    return true;
-}
-
-int solve(int idx){
-    if(idx == 0){
-        dp[idx].beg = 0;
-        dp[idx].v = a[0];
-        return dp[idx].v;
-    }
-
-    if(dp[idx].v != 0) return dp[idx].v;
+    if(dp[i][j] != 0) return dp[i][j];
     else{
-        if(solve(idx-1) + a[idx] > a[idx]){
-            dp[idx].beg = dp[idx-1].beg;
-            dp[idx].v = dp[idx-1].v + a[idx];
+        if(a[i-1] == b[j-1]){
+            dp[i][j] = solve(i-1, j-1) + 1;
         }
         else{
-            dp[idx].beg = idx;
-            dp[idx].v = a[idx];
+            int x = solve(i, j-1), y = solve(i-1, j);
+            dp[i][j] = _max(x, y);
         }
-        return dp[idx].v;
+        #ifdef DEBUG
+        pf("now we have dp[%d][%d] = %d\n", i, j , dp[i][j]);
+        #endif
+        return dp[i][j];
     }
-
 }
 
 int main(){
@@ -92,27 +77,22 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    while(cin >> k, k){
+    while(cin >> a >> b){
         memset(dp, 0, sizeof(dp));
-
-        uu(i, 0, k) cin >> a[i];
-        if(allneg()){
-            cout << 0 << " " << a[0] << " " << a[k-1] << endl;
-            continue;
-        }
-        solve(k-1);
-
-        int beg = 0, end = 0, maxsum = INT_MIN;
-        uu(i, 0, k){
-            if(dp[i].v > maxsum){
-                beg = dp[i].beg;
-                end = i;
-                maxsum = dp[i].v;
+        // solve(a.size(), b.size());
+        int n = a.size(), m = b.size();
+        uu(i, 1, n+1){
+            uu(j, 1, m+1){
+                if(a[i-1] == b[j-1]){
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+                else{
+                    dp[i][j] = _max(dp[i][j-1], dp[i-1][j]);
+                }
             }
         }
-        cout << maxsum << " " << a[beg] << " " << a[end] << endl;
 
-
+        cout << dp[a.size()][b.size()] << endl;
     }
     
     return 0;
