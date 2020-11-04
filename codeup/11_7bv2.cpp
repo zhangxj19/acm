@@ -47,7 +47,7 @@ int gcd(int a, int b){
 
 using namespace std;
 const int maxv = 1e3+1, maxn = 1e2+1;
-int V, n, w[maxn], c[maxn], dp[maxn][maxv];
+int V, n, w[maxn], c[maxn], dp[maxv];
 
 int main(){
     #ifndef DEBUG
@@ -63,25 +63,24 @@ int main(){
         uu(i, 1, n+1){
             cin >> w[i] >> c[i];
         }
+
         uu(i, 1, n+1){
-            uu(v, w[i], V+1){
+            dd(v, V, w[i]-1){
                 // pf("process (num, vol)(%d, %d)\n", i, v);
-                dp[i][v] = _max(dp[i-1][v], dp[i-1][v-w[i]] + c[i]);
+                dp[v] = _max(dp[v],  dp[v - w[i]] + c[i]);
             }
         }
         #ifdef DEBUG
-        uu(i, 0, n+1){
-            uu(j, 0, V+1){
-                pf("%d(%d) ", dp[i][j], j);
-            }
-            cout << endl;
+
+        uu(j, 0, V+1){
+            pf("%d(%d) ", dp[j], j);
         }
+        cout << endl;
+
         #endif
-        int ans = INT_MIN;
-        uu(i, 1, n+1){
-            ans = _max(dp[i][V], ans );
-        }
-        cout << ans << endl;
+
+        cout << dp[V] << endl;
+        
 
     }   
     
