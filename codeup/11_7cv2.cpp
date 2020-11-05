@@ -47,7 +47,9 @@ int gcd(int a, int b){
 
 using namespace std;
 const int maxv = 26, maxN = 1e4+1;
-ll V, N, v[maxv], dp[maxN];
+int V, N, v[maxv], dp[maxN];
+
+
 
 int main(){
     #ifndef DEBUG
@@ -60,16 +62,15 @@ int main(){
         memset(dp, 0, sizeof(dp));
         uu(i, 1, V+1) cin >> v[i];
 
-        dp[0] = 1;
         uu(i, 1, V+1){
-            uu(n, v[i], N+1){
-                dp[n] += dp[n - v[i]];
+            dd(n, N, v[i]-1){
+                dp[n] = _max(dp[n-v[i]]+1, dp[n]);
             }
         }
         cout << dp[N] << endl;
         #ifdef DEBUG
         uu(j, 0, N+1){
-            pf("%lld ", dp[j]);
+            pf("%d ", dp[j]);
         }
         cout << endl;
         #endif

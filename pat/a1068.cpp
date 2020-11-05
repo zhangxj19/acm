@@ -33,7 +33,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-// #define DEBUG
+#define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -46,8 +46,36 @@ int gcd(int a, int b){
 }
 
 using namespace std;
-const int maxv = 26, maxN = 1e4+1;
-ll V, N, v[maxv], dp[maxN];
+const int maxn = 1e4+1, maxm = 1e2+1;
+int n, m, a[maxn], bk[maxn];
+
+vector<int> re, tmp;
+int isfind;
+
+void dfs(int idx, int sum){
+    bk[idx] = 1;
+    tmp.push_back(a[idx]);
+
+    if(!isfind){
+        if(sum == m){
+            re = tmp;
+            isfind =1;
+            tmp.pop_back();
+            bk[idx] = 0;
+            return ;
+        }
+        else{
+            for(int i = idx+1; i < n; ++i){
+                if(bk[i] == 0) dfs(i, sum + a[i]);
+            }
+        }
+    }
+
+
+    tmp.pop_back();
+    bk[idx] = 0;
+    return ;
+}
 
 int main(){
     #ifndef DEBUG
@@ -56,25 +84,24 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    while(cin >> V >> N){
-        memset(dp, 0, sizeof(dp));
-        uu(i, 1, V+1) cin >> v[i];
-
-        dp[0] = 1;
-        uu(i, 1, V+1){
-            uu(n, v[i], N+1){
-                dp[n] += dp[n - v[i]];
-            }
-        }
-        cout << dp[N] << endl;
-        #ifdef DEBUG
-        uu(j, 0, N+1){
-            pf("%lld ", dp[j]);
-        }
-        cout << endl;
-        #endif
-
+    cin >> n >> m;
+    uu(i, 0, n){
+        cin >> a[i];
     }
-    
+    sort(a, a+n);
+    for(int i = 0; i < n; ++i){
+        if(bk[i] == 0) dfs(i, a[i]);
+    }
+    if(re.size()){
+        uu(i, 0, re.size()){
+            if(i == 0) cout << re[i];
+            else cout << " " << re[i];
+        }
+    }
+    else{
+        cout << "No Solution";
+    }
+
+    cout << endl;    
     return 0;
 }
