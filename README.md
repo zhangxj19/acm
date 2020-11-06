@@ -8,6 +8,8 @@
 - [jusuanke](https://github.com/zhangxj19/acm/tree/master/jisuanke)
 - ...
 
+*Only .cpp files matters.*
+
 ------
 
 
