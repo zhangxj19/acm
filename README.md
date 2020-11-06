@@ -1,4 +1,4 @@
-# Solutions for Acm Probloems
+# Solutions for Acm Problems
 
 - [CCSP](https://github.com/zhangxj19/acm/tree/master/ccsp)
 - [CSP](https://github.com/zhangxj19/acm/tree/master/csp)
