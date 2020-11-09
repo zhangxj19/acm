@@ -33,7 +33,7 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-#define DEBUG
+// #define DEBUG
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -47,7 +47,9 @@ int gcd(int a, int b){
 
 using namespace std;
 const int maxn = 101;
-int n, a[maxn][maxn], dp[maxn][maxn];
+int n, a[maxn][maxn], dp[maxn], b[maxn];
+
+
 
 int main(){
     #ifndef DEBUG
@@ -58,12 +60,47 @@ int main(){
     // cout << setprecision(2);
     while(cin >> n){
         memset(dp, 0, sizeof(dp));
+        memset(b, 0, sizeof(b));
         uu(i, 1, n+1){
             uu(j, 1, n+1){
                 cin >> a[i][j];
             }
         }
-        
+        int ans = INT_MIN;
+        uu(i, 1, n+1){
+            uu(j, i, n+1){
+               // [i,  j] rows 
+                uu(k, 1, n+1){
+                    b[k] = 0;
+                    dp[k] = INT_MIN;
+                    uu(l, i, j+1){
+                        b[k] += a[l][k];
+                    }
+                } 
+                // dp for b
+
+
+                uu(l, 1, n+1){
+                   dp[l] = _max(dp[l-1] + b[l], b[l]);
+                   ans = _max(dp[l], ans);
+                }
+                #ifdef DEBUG
+                cout << "b and dp now is" << endl;
+                uu(k, 1, n+1){
+                    cout << b[k] << " ";
+                }
+                cout << ";";
+                uu(k, 1, n+1){
+                    cout << dp[k] << " ";
+                }
+                cout << endl;
+                
+                #endif
+
+            }
+        }
+        cout << ans << endl;
+
 
     }
     
