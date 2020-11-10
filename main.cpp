@@ -5,6 +5,7 @@
 // 1) static map or tree can use Node
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
+// 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -33,17 +34,16 @@
 #define _max(a, b) ((a) > (b) ? (a) : (b))
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
-#define DEBUG
-
 typedef long long ll;
 const double eps = 1e-8;
-
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
-
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
+#define lowbit(x) (x&(-x));
+
+#define DEBUG
 
 using namespace std;
 

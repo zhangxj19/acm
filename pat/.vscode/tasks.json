@@ -3,10 +3,13 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "pat clang++",
+			"label": "pat clang++ clang and lldb flags",
 			"command": "/usr/bin/clang++",
 			"args": [
 				"-std=c++14",
+				"-fstandalone-debug",
+				// "-glldb",
+				// "-D_GLIBCXX_DEBUG",
 				"-g",
 				"${file}",
 				"-o",

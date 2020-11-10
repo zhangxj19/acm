@@ -46,8 +46,8 @@ int gcd(int a, int b){
 }
 
 using namespace std;
-const int maxn = 1e5+1;
-int n, table[maxn], block[maxn];
+const int maxn = 1e5+1, maxb = 317;
+int n, table[maxn], block[maxb];
 int bn, en;
 stack<int> S;
 
@@ -69,18 +69,19 @@ int main(){
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
 
-    cin >> n;
-    bn = sqrt(n);
-    en = sqrt(n);
+    cin >> n; 
+    // n is just n times operation not the upperbound of the input number, sor the bn should be
+    // (int)ceil(sqrt(maxn)) not (int)ceil(sqrt(n)) as well as en.
+    bn = (int)ceil(sqrt(maxn));
+    en = (int)floor(sqrt(maxn));
     
-    while(n--){
+    while(n--){ 
         string cmd;
         cin >> cmd;
         if(cmd == "Push"){
             int x;
             cin >> x;
             table[x]++;
-            
             block[x / en]++;
             S.push(x);
         }
@@ -100,18 +101,18 @@ int main(){
                 cout << "Invalid" << endl;
                 continue;
             }
-            int mid = (S.size()%2&1) ? (S.size()+1)/2 : S.size()/2;
+            int mid = ((S.size()%2&1) ? (S.size()+1)/2 : S.size()/2);
             int sum = 0, i, re;
-            for(i = 0; i < bn; ++i){
-                sum += block[i];
-                if(sum < mid) continue;
-                else if(sum >= mid){
+            for(i = 0; i < bn; ++i){ // i is block id
+                if(sum + block[i] < mid){
+                    sum += block[i];
+                    continue;
+                }
+                else if(sum + block[i] >= mid){
                     // at block i
-                    sum -= block[i];
                     re = findnum(i, sum, mid);
                     break;
-                }
-                
+                }  
             }
             cout << re << endl;
 

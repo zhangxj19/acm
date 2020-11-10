@@ -21,3 +21,5 @@ if [ -f ".cpp" ]
 then
 rm .cpp
 fi
+
+rm -r ./*.dSYM
