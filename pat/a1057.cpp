@@ -90,7 +90,7 @@ int main(){
                 continue;
             }
             int x = S.top(); S.pop();
-
+            cout << x << endl;
             block[x / en]--;
             table[x]--;
 
