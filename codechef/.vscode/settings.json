@@ -5,5 +5,6 @@
         "random": "cpp",
         "ios": "cpp",
         "ostream": "cpp"
-    }
+    },
+    "python.pythonPath": "/usr/local/bin/python3"
 }

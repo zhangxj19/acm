@@ -46,9 +46,6 @@ int gcd(int a, int b){
 #define DEBUG
 
 using namespace std;
-const int maxn = 5;
-
-int T, N, a[maxn], b[2];
 
 int main(){
     #ifndef DEBUG
@@ -57,22 +54,6 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    cin >> T;
-    while(T--){
-        cin >> N;
-        b[0] = b[1] = 0;
-        uu(i, 0, N){
-            cin >> a[i];
-        }
-        sort(a, a+N, greater<int>());
-
-        uu(i, 0, N){
-            int beg = _min(b[0], b[1]), end = beg + a[i];
-            if(b[0] == beg) b[0] = end;
-            else b[1] = end;
-        }
-        cout << _max(b[0], b[1]) << endl;
-    }
     
     return 0;
 }
