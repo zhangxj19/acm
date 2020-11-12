@@ -34,6 +34,7 @@
 #define _min(a, b) ((a) < (b) ? (a) : (b))
 
 // #define DEBUG
+#define LOCAL
 
 typedef long long ll;
 const double eps = 1e-8;
@@ -57,6 +58,10 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
+    #ifdef LOCAL
+    freopen("in", "r", stdin);
+    freopen("o", "w", stdout);
+    #endif
     cin >> T;
     uu(casenum, 1, T+1){
         int a[maxn] = {0}, block[bn] = {0};

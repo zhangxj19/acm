@@ -44,6 +44,7 @@ int gcd(int a, int b){
 #define lowbit(x) (x&(-x));
 
 #define DEBUG
+#define LOCAL
 
 using namespace std;
 
@@ -51,6 +52,10 @@ int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
+    #endif
+    #ifdef LOCAL
+    freopen("in", "r", stdin);
+    freopen("o", "w", stdout);
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
