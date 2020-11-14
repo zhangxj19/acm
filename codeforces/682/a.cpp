@@ -47,12 +47,12 @@ int gcd(int a, int b){
 #define LOCAL
 
 using namespace std;
-const int maxk = 1001, maxn = 21;
-int N, M, K, Q, a[maxk], q[maxn];
+const int maxn = 101;
+int t, n, a[maxn];
 
-struct Node{
-    int beg, end, p;
-}node[maxk];
+int dfs(int idx){
+    
+}
 
 int main(){
     #ifndef DEBUG
@@ -65,19 +65,11 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    cin >> N >> M >> K >> Q;
-    uu(i, 0, K){
-        cin >> node[i].p;
-    }
-    while(Q--){
-        int x;
-        cin >> x;
-        x--;
-        
+    cin >> t;
+    while(t--){
+        cin >> n;
 
     }
-
-
     
     return 0;
 }
