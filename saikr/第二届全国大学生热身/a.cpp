@@ -44,8 +44,6 @@ int gcd(int a, int b){
 #define lowbit(x) (x&(-x));
 
 using namespace std;
-const int maxn = 101, maxm = 101;
-int t, n, m, a[maxn][maxm];
 
 int main(){
     #ifndef DEBUG
@@ -58,38 +56,21 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    cin >> t;
-    while(t--){
 
-        cin >> n >> m;
-        uu(i, 0, n){
-            uu(j, 0, m){
-                cin >> a[i][j];
-            }
-        }
-
-        uu(i, 0, n){
-            uu(j, 0, m){
-                if(((i+j) & 1) == 0){ // even position be even
-                    if((a[i][j] & 1) == 1) a[i][j]++;
-                }
-                else{ // odd position be odd
-                    if((a[i][j] & 1) == 0) a[i][j]++;
+    ll ans = 0;
+    for(int i = 1; i <= 300; i++){
+        for(int j = 1; j <= 300; j++){
+            for(int k = 1; k <= 300; k++){
+                if(i + 33*j + 582/k == 2982){
+                    #ifdef DEBUG
+                    cout << i << " " << j << " " << k << endl;
+                    #endif
+                    ans++;
                 }
             }
-        }
-
-        
-        uu(i, 0, n){
-            uu(j, 0, m){
-                if(j == 0) cout << a[i][j];
-                else cout << " " << a[i][j];
-            }
-            cout << endl;
         }
     }
-
-    
+    cout << ans << endl;
     
     return 0;
 }

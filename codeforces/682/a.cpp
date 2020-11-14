@@ -43,8 +43,8 @@ int gcd(int a, int b){
 }
 #define lowbit(x) (x&(-x));
 
-#define DEBUG
-#define LOCAL
+// #define DEBUG
+// #define LOCAL
 
 using namespace std;
 const int maxn = 101;
@@ -68,7 +68,11 @@ int main(){
     cin >> t;
     while(t--){
         cin >> n;
-
+        uu(i, 0, n){
+            if(i == 0) cout << 1;
+            else cout << " " << 1;
+        }
+        cout << endl;
     }
     
     return 0;

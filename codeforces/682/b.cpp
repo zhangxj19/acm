@@ -43,23 +43,10 @@ int gcd(int a, int b){
 }
 #define lowbit(x) (x&(-x));
 
-// #define DEBUG
-// #define LOCAL
 
 using namespace std;
 const int maxn = 1001;
-int t, n, a[maxn], b[maxn];
-
-
-int issame(vector<int> &v1, vector<int> &v2){
-    if(v1.size() != v2.size()) return 0;
-    else{
-        uu(i, 0, v1.size()){
-            if(v1[i] != v2[i]) return 0;
-        }
-        return 1;
-    }
-}
+int t, n, b[maxn];
 
 
 
@@ -81,58 +68,17 @@ int main(){
             cin >> b[i];
         }
 
-        #ifdef DEBUG2
-        vector<int> v(b+1, b+n);
-        sort(v.begin(), v.end());
-        uu(i, 0, v.size()){
-            cout << v[i] << " ";
-        }
-        cout << endl;
-        #endif
+        
         int isfind = false;
-        uu(l1, 0, n){
-            uu(r1, l1, n){
-                uu(l2, r1+1, n){
-                    uu(r2, l2, n){
-                        // b[l1:r1], b[l2:r2]
-                        vector<int> v1(b+l1, b+r1+1), v2(b+l2, b+r2+1);
-                        sort(v1.begin(), v1.end());
-                        sort(v2.begin(), v2.end());
-                        string s1, s2;
-                        for(int r = 0, size = v1.size(); r < size; ){
-                            if(r < size - 1 and v1[r] == v1[r+1]){
-                                s1 += to_string(v1[r]+1);
-                                r += 2;
-                            }
-                            else{
-                                s1 += to_string(v1[r]);
-                                r++;
-                            }                          
-                        }
-                        for(int r = 0, size = v2.size(); r < size; ){
-                            if(r < size - 1 and v2[r] == v2[r+1]){
-                                s2 += to_string(v2[r]+1);
-                                r += 2;
-                            }
-                            else{
-                                s2 += to_string(v2[r]);
-                                r++;
-                            }                          
-                        }
-                        if(s1 == s2) isfind = true;
-                        #ifdef DEBUG
-                        if(isfind){
-                            pf("s1=%s, s2=%s\n", s1.c_str(), s2.c_str());
-                        }
-                        #endif
-                        if(isfind) break;
-                    }
-                    if(isfind) break;
-                }
-                if(isfind) break;
+
+        sort(b, b+n);
+        uu(i, 0, n-1){
+            if(b[i] == b[i+1]){
+                isfind = true;
+                break;
             }
-            if(isfind) break;
         }
+        
         if(isfind) cout << "YES" << endl;
         else cout << "NO" <<endl;
 

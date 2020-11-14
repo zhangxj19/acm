@@ -8,8 +8,10 @@
 			"args": [
 				"-std=c++14",
 				"-fstandalone-debug",
+				"-DDEBUG",
+				"-DLOCAL",
 				// "-glldb",
-				// "-D_GLIBCXX_DEBUG",
+				// "-D_GLIBCXX_DEBUG", 
 				"-g",
 				"${file}",
 				"-o",

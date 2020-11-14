@@ -44,8 +44,9 @@ int gcd(int a, int b){
 #define lowbit(x) (x&(-x));
 
 using namespace std;
-const int maxn = 101, maxm = 101;
-int t, n, m, a[maxn][maxm];
+const int maxn = 2010;
+
+ll n, m , k, a[maxn];
 
 int main(){
     #ifndef DEBUG
@@ -58,38 +59,32 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    cin >> t;
-    while(t--){
-
-        cin >> n >> m;
-        uu(i, 0, n){
-            uu(j, 0, m){
-                cin >> a[i][j];
-            }
-        }
-
-        uu(i, 0, n){
-            uu(j, 0, m){
-                if(((i+j) & 1) == 0){ // even position be even
-                    if((a[i][j] & 1) == 1) a[i][j]++;
-                }
-                else{ // odd position be odd
-                    if((a[i][j] & 1) == 0) a[i][j]++;
-                }
-            }
-        }
-
+    cin >> n >> m >> k;
+    uu(i, 0, n){
+        cin >> a[i];
+    }
+    vector<ll> remain;
+    ll ans = 0, strike = 0;
+    for(ll i = 0; i < n; i += k){
+        // a[i, i+k)
+        if(strike >= m) break;
+        else strike++;
+        ll maxe = 0, maxi = i;
+        for(ll j = i; j < i + k and j < n; ++j) if(a[j] > maxe) maxe = a[maxi=j];
+        ans += maxe;
         
-        uu(i, 0, n){
-            uu(j, 0, m){
-                if(j == 0) cout << a[i][j];
-                else cout << " " << a[i][j];
-            }
-            cout << endl;
-        }
+        for(ll j = i; j < i + k and j < n; ++j) if(j != maxi) remain.push_back(a[j]);
     }
 
-    
-    
+    ll remaine = m - (ll)ceil((n+0.0)/k);
+    // ll remaine = m - (n%k == 0 ? n/k : n/k+1);
+    sort(remain.begin(), remain.end(), greater<ll>());
+
+    for(ll i = 0; i < remaine; ++i){
+        ans += remain[i];
+    }
+
+    cout << ans << endl;
+
     return 0;
 }

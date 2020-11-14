@@ -44,8 +44,28 @@ int gcd(int a, int b){
 #define lowbit(x) (x&(-x));
 
 using namespace std;
-const int maxn = 101, maxm = 101;
-int t, n, m, a[maxn][maxm];
+const int maxn = 1e5 + 1;
+
+int n, a[maxn];
+
+void solve(int n, int isprint){
+    // a[1, n]
+    for(int i = 1; i + 2 <= n; i+=2){
+        int t = a[i] ^ a[i+1] ^ a[i+2];
+        a[i] = a[i+1] = a[i+2] = t;
+        if(isprint)
+        cout << i << " " << i+1 << " " << i+2 << endl;
+    }
+
+    // a[n-1] is answer
+
+    for(int i = 1; i < n; i += 2){
+        a[i] = a[i+1] = a[n];
+        if(isprint)
+        cout << i << " " << i+1 << " " << n << endl;
+    }
+
+}
 
 int main(){
     #ifndef DEBUG
@@ -58,38 +78,29 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    cin >> t;
-    while(t--){
-
-        cin >> n >> m;
-        uu(i, 0, n){
-            uu(j, 0, m){
-                cin >> a[i][j];
-            }
-        }
-
-        uu(i, 0, n){
-            uu(j, 0, m){
-                if(((i+j) & 1) == 0){ // even position be even
-                    if((a[i][j] & 1) == 1) a[i][j]++;
-                }
-                else{ // odd position be odd
-                    if((a[i][j] & 1) == 0) a[i][j]++;
-                }
-            }
-        }
-
-        
-        uu(i, 0, n){
-            uu(j, 0, m){
-                if(j == 0) cout << a[i][j];
-                else cout << " " << a[i][j];
-            }
-            cout << endl;
-        }
+    cin >> n;
+    uu(i, 1, n+1){
+        cin >> a[i];
     }
 
-    
+    if(n % 2 == 1){
+        cout << "YES" << endl;
+        cout << n-1 << endl;
+        solve(n, 1);
+    }
+    else{
+        solve(n-1, 0);
+        if(a[n] == a[n-1]){
+            cout << "YES" << endl;
+            cout << n-2 << endl;
+            solve(n-1, 1);
+        }
+        else{
+            cout << "NO" << endl;
+        }
+        
+    }
+
     
     return 0;
 }
