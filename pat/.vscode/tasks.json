@@ -8,6 +8,8 @@
 			"args": [
 				"-std=c++14",
 				"-fstandalone-debug",
+				"-DLOCAL",
+				"-DDEBUG",
 				// "-glldb",
 				// "-D_GLIBCXX_DEBUG",
 				"-g",

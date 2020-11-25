@@ -44,6 +44,9 @@ int gcd(int a, int b){
 #define lowbit(x) (x&(-x))
 
 using namespace std;
+const int maxn = 500 + 1;
+int N, M;
+
 
 int main(){
     #ifndef DEBUG

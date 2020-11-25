@@ -41,7 +41,7 @@ const double eps = 1e-8;
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
-#define lowbit(x) (x&(-x))
+#define lowbit(x) (x&(-x));
 
 using namespace std;
 

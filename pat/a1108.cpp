@@ -41,9 +41,16 @@ const double eps = 1e-8;
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
-#define lowbit(x) (x&(-x))
+#define lowbit(x) (x&(-x));
 
 using namespace std;
+
+const int maxn = 101;;
+int N, k;
+string s1, s2;
+double sum, num;
+char cs[100];
+
 
 int main(){
     #ifndef DEBUG
@@ -54,9 +61,37 @@ int main(){
     freopen("in", "r", stdin);
     freopen("o", "w", stdout);
     #endif
-    // cout << setiosflags(ios::fixed);
-    // cout << setprecision(2);
+    cout << setiosflags(ios::fixed);
+    cout << setprecision(2);
     // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
+    cin >> N;
+    uu(i, 0, N){
+        cin >> s1;
+        sscanf(s1.c_str(), "%lf", &num);
+        sprintf(cs, "%.2f", num);
+        s2 = cs;
+        bool islegal = true;
+        for(int i = 0; i < s1.size(); ++i){
+            if(s1[i] != s2[i]) islegal = false;
+        }
+        
+        if(!islegal or num > 1000 or num < -1000){
+            cout << "ERROR: " << s1 << " is not a legal number"  << endl;
+        }
+        else{
+            k++;
+            sum += num;
+        }
+    }
+    if(k == 0){
+        cout << "The average of 0 numbers is Undefined" << endl;
+    }
+    else if(k == 1){
+        cout << "The average of 1 number is " << sum << endl;
+    }
+    else{
+        cout << "The average of "<< k << " numbers is " << sum / k << endl;
+    }
     
     return 0;
-}
+}   

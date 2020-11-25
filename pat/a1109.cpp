@@ -43,26 +43,20 @@ int gcd(int a, int b){
 }
 #define lowbit(x) (x&(-x));
 
-// #define DEBUG
-// #define LOCAL
-
 using namespace std;
-const int maxk = 1001, maxn = 21;
-int N, M, K, Q, a[maxk], q[maxn];
+const int maxn = 1e4+1;
 
+int N, K, n, r;
 struct Node{
-    int p, end;
-}node[maxk];
+    string name;
+    int h;
+}node[maxn];
 
-struct Window{
-    int end, pop;
-    queue<int> q;
-}w[maxn];
-
-int minute(int &h, int &m){
-    return h*60 + m;
+bool cmp(Node &n1, Node &n2){
+    if(n1.h != n2.h) return n1.h > n2.h;
+    else return n1.name < n2.name;
 }
-const int begt = 8*60, endt = 17*60;
+
 
 int main(){
     #ifndef DEBUG
@@ -75,59 +69,58 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    // cout << setw(2) << setfill('0');  // add this every time cout int with width and left padding '0'
+    // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
 
-    cin >> N >> M >> K >> Q;
-    // sf("%d%d%d%d", &N, &M, &K, &Q);
-    uu(i, 0, K){
-        cin >> node[i].p;
-        // sf("%d", &node[i].p);
-    }
-    // init
-    uu(i, 0, N){
-        w[i].end = begt;
-        w[i].pop = begt;
-    }
-    int idx = 0;
+    cin >> N >> K;
 
-    uu(i, 0, _min(M*N, K)){
-        int wid = idx % N;
-        w[wid].q.push(idx); 
-        w[wid].end += node[idx].p;
-        node[idx].end = w[wid].end;  
-
-        if(idx < N) w[wid].pop = node[idx].end;
-
-        idx++;
+    uu(i, 0 , N){
+        cin >> node[i].name >> node[i].h;
     }
 
-    uu(i, idx, K){
-        int minpop = INT_MAX, id;
-        uu(j, 0, N) if(w[j].pop < minpop) minpop = w[id=j].pop;
+    sort(node, node+N, cmp);
 
-        w[id].q.pop();
-        w[id].q.push(i);
-        w[id].end += node[i].p;
-        node[i].end = w[id].end;
-        w[id].pop = node[w[id].q.front()].end;
-    }
+    n = N / K;
+    r = N % K;
 
+    // K rows, n people per row, n+r people at last row;
 
-    while(Q--){
-        int x;
-        cin >> x;
-        x--;
-        if(node[x].end - node[x].p >= endt){
-            cout << "Sorry" << endl;
-            // pf("Sorry\n");
+    vector<vector<string>> ans(K);
+
+    // last row;
+    // int mid = (n+r) / 2 + 1, d = -1; // direction
+    ans[0].push_back(node[0].name);
+    for(int i = 1; i < n+r; ++i){
+        // int offset = 
+        if(i % 2 == 1){
+            ans[0].insert(ans[0].begin(), node[i].name);
         }
         else{
-            cout << setw(2)<< setfill('0') << (node[x].end) / 60 << ":" << setw(2)<< setfill('0') << (node[x].end) % 60 << endl;
-            // pf("%02d:%02d\n", node[x].end/60, node[x].end%60);
+            ans[0].push_back(node[i].name);
         }
     }
+
+    // next rows
+    int p = n+r;
+    for(int i = 1; i < K; ++i){
+        ans[i].push_back(node[p++].name);
+        for(int j = 1; j < n; ++j){
+            if(j % 2 == 1) ans[i].insert(ans[i].begin(), node[p++].name);
+            else ans[i].push_back(node[p++].name);
+        }
+    }
+
+    uu(i, 0, K){
+        uu(j, 0, ans[i].size()){
+            if(j == 0) cout << ans[i][j];
+            else cout << " " << ans[i][j];
+        }
+        cout << endl;
+    }
+
 
 
     
+
+
     return 0;
 }
