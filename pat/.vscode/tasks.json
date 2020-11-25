@@ -8,10 +8,8 @@
 			"args": [
 				"-std=c++14",
 				"-fstandalone-debug",
-				"-DLOCAL",
 				"-DDEBUG",
-				// "-glldb",
-				// "-D_GLIBCXX_DEBUG",
+				"-DLOCAL",
 				"-g",
 				"${file}",
 				"-o",
@@ -23,15 +21,19 @@
 			"problemMatcher": [
 				"$gcc"
 			],
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"detail": "compiler: /usr/bin/clang++"
 		},
 		{
 			"type": "shell",
 			"label": "lldb test",
 			"command": "lldb ${fileBasenameNoExtension}",
-			"problemMatcher": []
-		},
-		
+			"problemMatcher": [],
+			"group": "build"
+				
+		}
 	]
 }
