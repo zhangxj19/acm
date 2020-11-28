@@ -41,28 +41,14 @@ const double eps = 1e-8;
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
-#define lowbit(x) (x&(-x));
+#define lowbit(x) (x&(-x))
 
 using namespace std;
+const int maxn = 2*1e2+1;
+int N, M, K;
 
-int N, K, M;
-
-struct Node{
-    int a, s, vip, p; // arrive time, serve time, vip, play time
-};
-vector<Node> node;
-
-int second(int h, int m, int s){
-    return h*3600 + m*60 + s;
-}
-
-struct Table{
-    int cnt, vip;
-};
-
-vector<Table> table;
-
-int endt;
+int mp[maxn][maxn];
+vector<int> circle;
 
 int main(){
     #ifndef DEBUG
@@ -76,26 +62,51 @@ int main(){
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
     // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
-    cin >> N;
-    node.resize(N);
-    endt = second(21, 0, 0);
-    uu(i, 0, N){
-        int h, m, s, p, tag;
-        char c;
-        cin >> h >> c >> m >> c >> s >> p >> tag;
-        node[i].a = second(h, m, s);
-        node[i].p = second(0, p, 0);
-        node[i].vip = tag;
-    }
-
-    cin >> K >> M;
-    table.resize(K);
+    cin >> N >> M;
     uu(i, 0, M){
-        int x;
-        cin >> x;
-        table[x-1].vip = 1;
+        int x, y;
+        cin >> x >> y;
+        mp[x][y] = 1;
+        mp[y][x] = 1;
     }
 
+    cin >> K;
+    while(K--){
+        int n;
+        cin >> n;
+        circle.clear();
+        uu(i, 0, n){
+            int x;
+            cin >> x;
+            circle.push_back(x);
+        }
+
+        // test
+        if(n != N+1){ // rule 1
+            cout << "NO" << endl;
+            continue;
+        }
+        else if(circle[0] != circle[n-1]){ // rule 2
+            cout << "NO" << endl;
+            continue;
+        }
+
+        // rule3
+        // rule4
+        set<int> S;
+        S.insert(circle[0]);
+        int is_circle = true;
+        for(int i = 1; i < n; ++i){
+            S.insert(circle[i]);
+            if(!mp[circle[i]][circle[i-1]]){
+                 is_circle = false;
+                 break;
+            }
+        }
+        if(is_circle and S.size() == N) cout << "YES" << endl;
+        else cout << "NO" << endl;
+
+    }
 
 
     

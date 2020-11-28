@@ -41,28 +41,14 @@ const double eps = 1e-8;
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
-#define lowbit(x) (x&(-x));
+#define lowbit(x) (x&(-x))
 
 using namespace std;
 
-int N, K, M;
+int N, M;
 
-struct Node{
-    int a, s, vip, p; // arrive time, serve time, vip, play time
-};
-vector<Node> node;
-
-int second(int h, int m, int s){
-    return h*3600 + m*60 + s;
-}
-
-struct Table{
-    int cnt, vip;
-};
-
-vector<Table> table;
-
-int endt;
+map<int, int> mp;
+set<int> S;
 
 int main(){
     #ifndef DEBUG
@@ -76,27 +62,41 @@ int main(){
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
     // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
-    cin >> N;
-    node.resize(N);
-    endt = second(21, 0, 0);
-    uu(i, 0, N){
-        int h, m, s, p, tag;
-        char c;
-        cin >> h >> c >> m >> c >> s >> p >> tag;
-        node[i].a = second(h, m, s);
-        node[i].p = second(0, p, 0);
-        node[i].vip = tag;
+    // cin >> N;
+    sf("%d", &N);
+    while(N--){
+        int x, y;
+        // cin >> x >> y;
+        sf("%d%d", &x, &y);
+        mp[x] = y;
+        mp[y] = x;
     }
-
-    cin >> K >> M;
-    table.resize(K);
-    uu(i, 0, M){
+    // cin >> M;
+    sf("%d", &M);
+    vector<int> ans;
+    while(M--){
         int x;
-        cin >> x;
-        table[x-1].vip = 1;
+        // cin >> x;
+        sf("%d", &x);
+        S.insert(x);
     }
 
-
+    for(auto& g : S){
+        int p = mp[g];
+        if(S.find(p) == S.end()) ans.push_back(g);
+    }
+    sort(ans.begin(), ans.end());
+    // cout << ans.size() << endl;
+    pf("%lu\n", ans.size());
+    for(auto it = ans.begin(); it != ans.end(); ++it){
+        // cout << setw(5) << setfill('0');
+        // if(it == ans.begin()) cout << *it;
+        // else cout  << " " << *it;
+        if(it == ans.begin()) pf("%05d", *it);
+        else pf(" %05d", *it);
+    }
+    // cout << endl;
+    if(ans.size()) pf("\n");
 
     
     return 0;
