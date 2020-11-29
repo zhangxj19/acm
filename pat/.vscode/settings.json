@@ -19,7 +19,7 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "random": "cpp",
-        "set": "cpp",
-        "iomanip": "cpp"
+        "cmath": "cpp",
+        "cctype": "cpp"
     }
 }

@@ -48,8 +48,10 @@ using namespace std;
 int N, K, M;
 
 struct Node{
-    int a, s, vip, p; // arrive time, serve time, vip, play time
+    int a, s, vip, p, w; // arrive time, serve time, vip, play time, waiting time
+
 };
+
 vector<Node> node;
 
 int second(int h, int m, int s){
@@ -58,11 +60,41 @@ int second(int h, int m, int s){
 
 struct Table{
     int cnt, vip;
+    int end;
+    Table(){
+        cnt = 0; vip = 0; end = 0;
+    }
 };
 
 vector<Table> table;
 
-int endt;
+int endt, startt, two, p, pvip; // player and vip player
+
+int next_vip_player(int s){
+    for(int i = s ; i < N; ++i) if(node[i].vip) return i;
+}
+
+void min_end_vip_table(int &idx, int& t){
+    idx = -1, t = INT_MAX;
+    for(int i = 0; i < K; ++i){
+        if(table[i].end < t and table[i].vip){
+            t = table[i].end;
+            idx = i;
+        }
+    }
+}
+
+void min_end_normal_table(int &idx, int& t){
+    idx = -1, t = INT_MAX;
+    for(int i = 0; i < K; ++i){
+        if(table[i].end < t and !table[i].vip){
+            t = table[i].end;
+            idx = i;
+        }
+    }
+}
+
+
 
 int main(){
     #ifndef DEBUG
@@ -79,6 +111,8 @@ int main(){
     cin >> N;
     node.resize(N);
     endt = second(21, 0, 0);
+    startt = second(8, 0, 0);
+    two = second(2, 0, 0);
     uu(i, 0, N){
         int h, m, s, p, tag;
         char c;
@@ -88,14 +122,121 @@ int main(){
         node[i].vip = tag;
     }
 
+    sort(node.begin(), node.end(), [](const Node& n1, const Node& n2){
+        return n1.a < n2.a;
+    });
+    #ifdef DEBUG
+    uu(i, 0, N){
+        pf("id:%d, a=%d, p=%d, is vip %d\n", i, node[i].a, node[i].p, node[i].vip);
+    }
+    
+    #endif
+
     cin >> K >> M;
+
     table.resize(K);
+    uu(i, 0, K) table[i].end = startt;
     uu(i, 0, M){
-        int x;
-        cin >> x;
-        table[x-1].vip = 1;
+        int id;
+        cin >> id;
+        id--;
+        table[id].vip = 1;
     }
 
+    #ifdef DEBUG
+    uu(i, 0, K){
+        pf("table %d is vip %d\n", i, table[i].vip);
+    }
+    #endif
+
+    // pvip = next_vip_player(0);
+    for(int i = 0; i < N; ++i){
+        int end, endvip, idx, idxvip;
+        min_end_normal_table(idx, end);
+        min_end_vip_table(idxvip, endvip);
+
+        #ifdef DEBUG
+        pf("end =%d idx=%d,  endvip=%d, vipidx = %d\n", end, idx, endvip, idxvip);
+        #endif
+        // 
+        if(node[i].s != 0) continue;
+
+        if(node[i].vip){
+            if(endvip <= node[i].a){ // serve 
+                node[i].w = 0;
+                node[i].s = node[i].a;
+                table[idxvip].end = node[i].s + _min(node[i].p, two);      
+                continue;
+            }            
+            
+            if(end <= node[i].a){
+                node[i].w = 0;
+                node[i].s = node[i].a;
+                table[idx].end = node[i].s + _min(node[i].p, two);
+                table[idx].cnt++;
+                continue;
+            }
+
+            if(end < endvip){
+                node[i].w = end - node[i].a;
+                node[i].s = end;
+                table[idx].end = node[i].s + _min(node[i].p, two);
+                table[idx].cnt++;
+            }
+            else{
+                node[i].w = endvip - node[i].a;
+                node[i].s = endvip;
+                table[idxvip].end = node[i].s + _min(node[i].p, two);
+                table[idxvip].cnt++;
+            }
+
+        }
+        else{ // not vip
+            pvip = next_vip_player(i);
+          
+            if(end <= node[i].a){
+                node[i].s = node[i].a;
+                table[idx].end = node[i].s + _min(node[i].p, two);
+                table[idx].cnt++;
+                continue;
+            }
+            else{
+                if(endvip <= node[pvip].a and node[pvip].s == 0){
+                    node[pvip].w = 0;
+                    node[pvip].s = endvip;
+                    table[idxvip].end = node[pvip].s + _min(node[pvip].p, two);
+                    table[idxvip].cnt++;               
+                }
+                
+                node[i].w = end - node[i].a;
+                node[i].s = end;
+                table[idx].end = node[i].s + _min(node[i].p, two);
+                table[idx].cnt++;
+                continue;    
+            }
+
+
+         
+        }
+    }   
+
+
+    sort(node.begin(), node.end(), [](const Node &n1, const Node &n2){
+        return n1.s < n2.s;
+    });
+
+    uu(i, 0, node.size()){
+        if(node[i].s >= endt) continue;
+        cout << setw(2) << setfill('0') << node[i].a/3600 << ":" << setw(2) << setfill('0') << node[i].a/60 % 60 << ":" << setw(2) << setfill('0') << node[i].a%60 << " ";
+        cout << setw(2) << setfill('0') << node[i].s/3600 << ":" << setw(2) << setfill('0') << node[i].s/60 % 60 << ":" << setw(2) << setfill('0') << node[i].s%60 << " ";
+        cout << (int)ceil(node[i].w / 60) << endl;
+    }
+
+    uu(i, 0, K){
+        if(i == 0)cout << table[i].cnt;
+        else cout << " " << table[i].cnt;
+    }
+    cout << endl;
 
 
     
