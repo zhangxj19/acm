@@ -20,6 +20,8 @@
         "unordered_set": "cpp",
         "random": "cpp",
         "cmath": "cpp",
-        "cctype": "cpp"
+        "cctype": "cpp",
+        "ios": "cpp",
+        "map": "cpp"
     }
 }
