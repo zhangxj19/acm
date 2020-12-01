@@ -57,44 +57,33 @@ vector<string> re;
 
 int find_root(){
     int b[maxn] = {0};
-    uu(i, 0, N){
+    uu(i, 1, N+1){
         if(node[i].l != -1) b[node[i].l] = 1;
         if(node[i].r != -1) b[node[i].r] = 1;
     }
-    uu(i, 0, N){
+    uu(i, 1, N+1){
         if(b[i] == 0) return i;
     }
 }
-int isop(string s){
-    if(s.size() == 1){
-        char c = s[0];
-        // if(!isalpha(c) and !isalnum(c) and c != '.') return true;
-        // else return false;
-        if(c == '+' or c == '-' or c == '*' or c == '/' or c == '%') return true;
-        else return false;
-    }
-    else if(s.size() == 2){
-        if(s == "**" or s == "+=" or s == "*=" or s == "/=" or s == "-=" or s == "<<" or s == ">>") return true;
-    else return false;
-    }
-    else{
-        return false;
-    }
 
+int isleaf(int root){
+    if(node[root].l == -1 and node[root].r == -1) return true;
+    else return false;
 }
 
 void inorder(int root){
     if(root == -1) return;
-    if(isop(node[root].d))
+    if(!isleaf(root))
         re.push_back("(");
     inorder(node[root].l);
 
     re.push_back(node[root].d);
 
     inorder(node[root].r);
-    if(isop(node[root].d))
+    if(!isleaf(root))
         re.push_back(")");
 }
+
 int main(){
     #ifndef DEBUG
     ios::sync_with_stdio(false);

@@ -21,9 +21,14 @@
         "random": "cpp",
         "cmath": "cpp",
         "cctype": "cpp",
+<<<<<<< HEAD
         "*.tcc": "cpp",
         "optional": "cpp",
         "system_error": "cpp",
         "iomanip": "cpp"
+=======
+        "ios": "cpp",
+        "map": "cpp"
+>>>>>>> d0ab16ce6d35d936eac1c47860e606254640ef2b
     }
 }

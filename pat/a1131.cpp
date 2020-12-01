@@ -78,21 +78,24 @@ void Dijstra(int s){
 
     while(!pq.empty()){
        pii x = pq.top(); pq.pop();
-       
+       bk[x.second] = 1;       
        int from = x.second;
        for(auto & eid : node[from].n){
             int to = edge[eid].t, newdis = x.first + edge[eid].d;
-            
-            if(newdis < d[to]){
 
-                d[to] = newdis;
-                pre[to].clear();
-                pre[to].push_back(from);
-                pq.push(make_pair(newdis, to));
+            if(bk[to] == 0){
+                if(newdis < d[to]){
+
+                    d[to] = newdis;
+                    pre[to].clear();
+                    pre[to].push_back(from);
+                    pq.push(make_pair(newdis, to));
+                }
+                else if(newdis == d[to]){
+                    pre[to].push_back(from);
+                }
             }
-            else if(newdis == d[to]){
-                pre[to].push_back(from);
-            }
+
        }
     } 
 }
@@ -121,13 +124,15 @@ void dfs(int x, int s){
     return;
 }
 
-unordered_map<int, int> mp;
+
+map<pii, int> mp;
 
 
 int line_cnt(vector<int> &v){
     int re = 1;
-    for(int i = 1; i < v.size(); ++i){
-        if(mp[v[i]] != mp[v[i-1]]) re++;
+    for(int i = 1; i < v.size()-1; ++i){
+        int from = v[i-1], now = v[i], to = v[i+1];
+        if(mp[make_pair(from , now)] != mp[make_pair(now, to)]) re++;
     }
     return re;
 }
@@ -143,7 +148,7 @@ int main(){
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
-    // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
+    // cout << setw(4) << setfill('0');  // add this every time when cout int with width and left padding '0'
     cin >> N;
     uu(i, 0, N){
         int line = i+1;
@@ -153,10 +158,12 @@ int main(){
         v.resize(M);
         uu(j, 0, M){
             cin >> v[j];
-            mp[v[j]] = line;
+            // mp[v[j]] = line;
         }
         uu(j, 1, M){
             int from = v[j-1], to = v[j];
+            mp[make_pair(from, to)] = line;
+            mp[make_pair(to, from)] = line;
             add_edge(from, to);
             add_edge(to, from);
         }
@@ -169,31 +176,62 @@ int main(){
         int s, e;
         cin >> s >> e;
 
-
-        
-
         Dijstra(s);
         memset(bk, 0, sizeof(bk));
         re.clear();
         tmp.clear();
         dfs(e, s);
 
+        #ifdef DEBUG
+
+        #endif
+
         int mincnt = INF;
         vector<int> minre;
-        for(auto & v : re){
-            int cnt = line_cnt(v);
+        for(auto & vd : re){ // vector(duplicated)
+            int cnt = line_cnt(vd);
+
             if(cnt < mincnt){
                 mincnt = cnt;
-                minre = v;
+                minre = vd;
             }
         }
         reverse(minre.begin(), minre.end());
 
-        #ifdef DEBUG
+        #ifdef DEBUG2
         for(auto& it: minre) cout << " " << it;
         cout << endl;
         #endif
-        vector<int> 
+
+        set<int> S;
+        if(minre.size() < 1){
+            return 0;
+        }
+
+        cout << minre.size()-1 << endl;
+
+        uu(i, 1, minre.size()){
+            int from = minre[i-1], now = minre[i];
+            int line = mp[make_pair(from, now)];
+            if(S.find(line) == S.end()){
+                S.insert(line);
+                cout << "Take Line#"<< line <<" from "<< setw(4) << setfill('0') << minre[i-1];
+            }
+            if(i == minre.size() - 1){
+                cout << " to " << setw(4) << setfill('0') << minre[i] << "." << endl;
+            }
+            else{
+                int to = minre[i+1];
+                int line2 = mp[make_pair(now, to)];
+                if(S.find(line2) == S.end()){
+                    cout << " to " << setw(4) << setfill('0') << minre[i] << "." << endl;
+                }
+            }
+            
+        }
+
+
+
 
 
 
@@ -201,4 +239,4 @@ int main(){
     }
     
     return 0;
-}
+}   

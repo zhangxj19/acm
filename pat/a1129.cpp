@@ -45,25 +45,22 @@ int gcd(int a, int b){
 
 using namespace std;
 int N, K;
-struct Node{
-    int id, cnt;
-    bool operator < (const Node& n){
-        if(cnt != n.cnt) return cnt > n.cnt;
-        else return id < n.id;
+
+#define pii pair<int, int>
+
+map<int, int> mp; // id to freq
+
+struct cmp{
+    bool operator()(const pii &p1, const pii &p2) const {
+        if(p1.second != p2.second) return p1.second > p2.second;
+        else return p1.first < p2.first;
     }
 };
 
-#define pin pair<int, Node>
-struct cmp
-{
-    bool operator()(const pin &pin1, const pin &pin2){
-        if(pin1.second.cnt != pin2.second.cnt) return pin1.second.cnt > pin2.second.cnt;
-        else return pin1.second.id < pin2.second.id;
-    }
-};
+// map<pii, int, cmp> S; // idd and freq
+set<pii, cmp> S; // idd and freq
 
 
-unordered_map<int, Node> mp; // value to node
 
 int main(){
     #ifndef DEBUG
@@ -78,32 +75,30 @@ int main(){
     // cout << setprecision(2);
     // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
     cin >> N >> K;
-    Node x;
+
     int v;
     cin >> v;
-    x.id = v;
-    x.cnt = 1;
-    mp[v] = x;
-
+    mp[v] = 1;
+    // S[make_pair(v, 1)] = 1;
+    S.insert(make_pair(v, 1));
     uu(i, 1, N){
         cin >> v;
         cout << v << ":";
-        vector<pair<int, Node>> tmp(mp.begin(), mp.end());
-        sort(tmp.begin(), tmp.end(), cmp());
-        if(tmp.size() < K){
-            for(auto & v_node : tmp){
-                cout << " " << v_node.first;
+
+        if(S.size() < K){
+            for(auto & id_freq : S){
+                cout << " " << id_freq.first;
                 #ifdef DEBUG
-                cout << ":" << v_node.second.cnt;
+                cout << ":" << id_freq.second;
                 #endif
             }               
         }
         else{
             int cnt = 0;
-            for(auto & v_node : tmp){
-                cout << " " << v_node.first;
+            for(auto & id_freq : S){
+                cout << " " << id_freq.first;
                 #ifdef DEBUG
-                cout << ":" << v_node.second.cnt;
+                cout << ":" << id_freq.second;
                 #endif
                 cnt++;
                 if(cnt == K) break;
@@ -113,13 +108,16 @@ int main(){
 
         
         if(mp.find(v) == mp.end()){
-            Node x;
-            x.cnt = 1;
-            x.id = v;
-            mp[v] = x;
+            mp[v] = 1;
+            // S[make_pair(v, 1)] = 1;
+            S.insert(make_pair(v, 1));
         }
         else{
-            mp[v].cnt += 1;
+            int freq = mp[v];
+            mp[v]++;
+            S.erase(make_pair(v, freq));
+            // S[make_pair(v, freq+1)] = 1;
+            S.insert(make_pair(v, freq+1));
         }
     }
 

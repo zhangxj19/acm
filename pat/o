@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 33218 -4 68237
 68237 -6 48652
 48652 -2 12309
@@ -7,3 +8,15 @@
 23333 10 00100
 00100 18 27777
 27777 11 -1
+=======
+2
+Take Line#3 from 3011 to 3013.
+10
+Take Line#4 from 6666 to 1306.
+Take Line#3 from 1306 to 2302.
+Take Line#2 from 2302 to 2001.
+6
+Take Line#2 from 2004 to 1204.
+Take Line#1 from 1204 to 1306.
+Take Line#3 from 1306 to 3001.
+>>>>>>> d0ab16ce6d35d936eac1c47860e606254640ef2b
