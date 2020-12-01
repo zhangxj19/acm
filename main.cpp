@@ -29,6 +29,7 @@
 
 #define uu(i, a, b) for (int i = (a), _upper_bound = (b); i < _upper_bound; ++i)
 #define dd(i, a, b) for (int i = (a), _lower_bound = (b); i > _lower_bound; --i)
+#define each(it, a) for(auto & (it) : (a))
 #define pf printf
 #define sf scanf
 #define _max(a, b) ((a) > (b) ? (a) : (b))
@@ -36,12 +37,20 @@
 
 typedef long long ll;
 const double eps = 1e-8;
+#define lowbit(x) (x&(-x))
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
-#define lowbit(x) (x&(-x))
+
+void print(std::vector<int> &v){
+    uu(i, 0, v.size()){
+        if(i == 0) std::cout << v[i];
+        else std::cout << " " << v[i];
+    }
+    std::cout << std::endl;
+}
 
 using namespace std;
 
