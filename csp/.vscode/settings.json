@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "list": "cpp",
+        "algorithm": "cpp",
+        "random": "cpp",
+        "ios": "cpp",
+        "ostream": "cpp",
+        "cmath": "cpp",
+        "unordered_map": "cpp",
+        "complex": "cpp",
+        "iosfwd": "cpp",
+        "iomanip": "cpp",
+        "deque": "cpp"
+    }
+}

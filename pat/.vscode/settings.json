@@ -20,6 +20,10 @@
         "unordered_set": "cpp",
         "random": "cpp",
         "cmath": "cpp",
-        "cctype": "cpp"
+        "cctype": "cpp",
+        "*.tcc": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp",
+        "iomanip": "cpp"
     }
 }
