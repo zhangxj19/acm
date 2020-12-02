@@ -54,8 +54,82 @@ void print(std::vector<int> &v){
 
 using namespace std;
 
+const int maxn = 2*1e2+1;
+
+int Nv, Ne, M, K, mp[maxn][maxn];
+
+int isclique(vector<int>& v){
+    int cnt = 0;
+    // is clique
+    uu(i, 0, v.size()){
+        uu(j, i+1, v.size()){
+            int from = v[i], to = v[j];
+            if(mp[from][to] == 1) cnt++;
+        }
+    }
+    return cnt == (v.size()-1)*v.size()/2;
+}
+
+struct Node{
+    vector<int> n;
+}node[maxn];
+
 void solve(){
-    
+    cin >> Nv >> Ne;
+    uu(i, 0, Ne){
+        int x, y;
+        cin >> x>> y;
+        mp[x][y] = 1;
+        mp[y][x] = 1;
+        node[x].n.push_back(y);
+        node[y].n.push_back(x);
+    }
+
+    cin >> M;
+    while(M--){
+        cin >> K;
+        set<int> S;
+        uu(i, 0, K){
+            int x;
+            cin >> x;
+            S.insert(x);
+        }
+        
+        int ismax = true, is_clique = true;
+        
+        vector<int> tmp(S.begin(), S.end());
+        if(!isclique(tmp)){
+            is_clique = false;
+        }
+
+        if(is_clique){
+            vector<int> vertics(S.begin(), S.end()); 
+            each(v, S){                
+                each(nei, node[v].n){
+                    if(S.find(nei) == S.end()){
+                        vertics.push_back(nei);
+                        if(isclique(vertics)){
+                            ismax = false;
+                        }
+                        vertics.pop_back();
+                        if(!ismax) break;
+                    }
+                }
+                if(!ismax) break;
+            }
+        }
+        if(!is_clique){
+            cout << "Not a Clique" << endl;
+        }
+        else if(isclique and !ismax){
+            cout << "Not Maximal" << endl;
+        }
+        else{
+            cout << "Yes" << endl;
+        }
+
+     
+    }
 }
 
 int main(){

@@ -54,8 +54,42 @@ void print(std::vector<int> &v){
 
 using namespace std;
 
-void solve(){
+const int maxn = 10;
+
+string d;
+int n;
+
+string change(string x){
+    // map<string, int> mp;
+    string re;
     
+    x += "$";
+    int cnt = 1;
+    uu(i, 1, x.size()){
+        if(x[i] != x[i-1]){
+            re += x[i-1];
+            re += to_string(cnt);
+            cnt = 1;
+        }
+        else cnt++;
+    }
+
+    return re;
+}
+
+void solve(){
+    cin >> d >> n;
+    #ifdef DEBUG
+    cout << d << endl;
+    #endif
+    while(n-- > 1){
+        d = change(d);
+        #ifdef DEBUG
+        cout << d << endl;
+        #endif
+        
+    }
+    cout << d << endl;
 }
 
 int main(){

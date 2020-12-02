@@ -54,8 +54,94 @@ void print(std::vector<int> &v){
 
 using namespace std;
 
+int n;
+
+struct Node{
+    int ns;
+    string name;
+    ll b, a, t;
+    ll tws;
+    int rk;
+    Node(){
+        b = a = t= 0;
+        tws = 0;
+        ns = 0;
+    }
+};
+vector<Node*> node;
+
+unordered_map<string, Node*> mp;
+
+Node* getnode(string &name){
+    if(mp.find(name) == mp.end()){
+        Node *x = new Node;
+        x->name = name;
+        node.push_back(x);
+        mp[name] = x;
+        return x;
+    }
+    else{
+        return mp[name];
+    }
+}
+
 void solve(){
-    
+    cin >> n;
+    uu(i, 0, n){
+        string id, name;
+        int s;
+        cin >> id >> s >> name;
+
+        char cname[10];
+        sscanf(name.c_str(), "%s", cname);
+        for(int j = 0; cname[j]!='\0'; ++j){
+            cname[j] = tolower(cname[j]);
+        }
+        name = cname;
+
+        Node * x = getnode(name);
+        
+        if(id[0] == 'B'){
+            x->b += s;
+        }
+        else if(id[0] == 'A'){
+            x->a += s;
+        } 
+        else{
+            x->t += s;
+        }
+        x->ns++;
+    }
+
+    each(x, node){
+        x->tws = (ll)(x->b*1.0/1.5 + x->a*1.0 + x->t*1.5);
+    }
+
+    // getod is abandoned after sort the node
+    sort(node.begin(), node.end(), [](Node* &n1, Node* &n2){
+        if(n1->tws != n2->tws) return n1->tws > n2->tws;
+        else{
+            if(n1->ns != n2->ns) return n1->ns < n2->ns;
+            else return n1->name < n2->name;
+        }
+    });
+
+    cout << node.size() << endl;
+    int rk = 1;
+    node[0]->rk = rk;
+    cout << 1 << " " << node[0]->name << " " << node[0]->tws << " " << node[0]->ns << endl;
+    uu(i, 1, node.size()){
+        rk++;
+        if(node[i]->tws == node[i-1]->tws){
+            node[i]->rk = node[i-1]->rk;
+        }
+        else{
+            node[i]->rk = rk;
+        }
+        cout << node[i]->rk << " " << node[i]->name << " " << node[i]->tws << " " << node[i]->ns << endl;
+    }
+
+
 }
 
 int main(){
