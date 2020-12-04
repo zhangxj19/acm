@@ -55,46 +55,30 @@ void print(std::vector<int> &v){
 using namespace std;
 const int maxn = 1e5;
 int N, M;
-vector<int> a;
 
-int f(int x){
-    if(a[x] == x) return x;
-    else{
-        int F = f(a[x]);
-        a[x] = F;
-        return F;
-    }
-}
-
-void Union(int x, int y){
-    int fx = f(x), fy = f(y);
-    if(fx != fy){
-        a[fy] = fx;
-    }
-}
-
+unordered_map<int, set<int>> mp;
 
 void solve(){
     cin >> N >> M;
-    a.resize(maxn, 0);
-    uu(i, 1, N+1) a[i] = i; 
     uu(i, 0, N){
         int x, y;
         cin >> x >> y;
-        Union(x, y);
+        mp[x].insert(y);
+        mp[y].insert(x);
     }
     while(M--){
         int n;
         cin >> n;
         vector<int> b;
+        int bk[maxn] = {0};
         b.resize(n, 0);
-        uu(i, 0, n) cin >> b[i];
+        uu(i, 0, n){
+            cin >> b[i];
+            bk[b[i]] = 1;
+        }
         int isyes = true;
         uu(i, 0, n){
-            uu(j , i+1, n){
-                int f1 = f(b[i]), f2 = f(b[j]);
-                if(f1 == f2) isyes =false;
-            }
+            each(it, mp[b[i]]) if(bk[it] == 1) isyes = false;
         }
         if(isyes) cout << "Yes" << endl;
         else cout << "No" << endl;

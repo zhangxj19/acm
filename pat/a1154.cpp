@@ -53,35 +53,48 @@ void print(std::vector<int> &v){
 }
 
 using namespace std;
-int N;
-vector<int> a, b; // 0 for human and 1 for wolf
-#define pii pair<int, int>
-vector<pii> re;
-void solve(){
-    cin >> N;
-    a.resize(N+1, 0);
-    b.resize(N+1, 0);
-     // 1 for human and 2 for wolf
-    uu(i, 1, N+1) cin >> a[i];
-    uu(i, 1, N+1){
-        uu(j, i+1, N+1){
-            // i and j is wolf;
-            uu(k, 1, N+1) b[k] = 0;
-            b[i] = b[j] = 1;
-            vector<int> liar;
-            uu(k, 1, N+1) if((a[k] > 0 and b[a[k]] != 0) or (a[k] < 0 and b[-a[k]] != 1)) liar.push_back(k);
-            if(liar.size() == 2) if((liar[0] == i and liar[1] != j) or (liar[0] != i and liar[1] == j)) re.push_back({i, j});
+int N, M;
+struct Node{
+    int d;
+    vector<int> n;
+};
+vector<Node> node;
 
+int iskcolor(){
+    each(x, node){
+        each(to, x.n){
+            if(node[to].d == x.d) return false;
         }
     }
-    #ifdef DEBUG
-    cout << re.size() << endl;
-    #endif
-    if(re.size())
-        cout << re[0].first << " " << re[0].second << endl;
-    else
-        cout << "No Solution" << endl;
+    return true;
+}
 
+void solve(){
+    cin >> N >> M;
+    node.resize(N);
+    uu(i, 0, M){
+        int x, y;
+        cin >>x >> y;
+        node[x].n.push_back(y);
+        node[y].n.push_back(x);
+    }
+
+    int K;
+    cin >> K;
+    while(K--){
+        set<int> S;
+        uu(i, 0, N){
+            int x;
+            cin >>x;
+            node[i].d = x;
+            S.insert(x);
+        }
+
+        if(iskcolor()){
+            cout << S.size() <<  "-coloring" << endl;
+        }
+        else cout << "No" << endl;
+    }
 }
 
 int main(){

@@ -1,6 +1,12 @@
-LCA of 2 and 6 is 3.
-8 is an ancestor of 1.
-ERROR: 9 is not found.
-ERROR: 12 and -3 are not found.
-ERROR: 0 is not found.
-ERROR: 99 and 99 are not found.
+Case 1: 1 A
+A107180908108 100
+A107180908021 98
+A112180318002 98
+Case 2: 2 107
+3 260
+Case 3: 3 180908
+107 2
+123 2
+102 1
+Case 4: 2 999
+NA

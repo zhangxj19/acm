@@ -54,33 +54,66 @@ void print(std::vector<int> &v){
 
 using namespace std;
 int N;
-vector<int> a, b; // 0 for human and 1 for wolf
-#define pii pair<int, int>
-vector<pii> re;
+vector<int> a;
+#define lc(x) (2*(x)+1)
+#define rc(x) (2*(x)+2)
+
+int havelc(int x){
+    return lc(x) < N;
+}
+
+int haverc(int x){
+    return rc(x) < N;
+}
+
+int isleaf(int x){
+    return !havelc(x) and !haverc(x);
+}
+
+vector<vector<int>> re;
+vector<int> tmp;
+int ismax, ismin;
+
+void dfs(int x){
+    tmp.push_back(a[x]);
+    if(isleaf(x)){
+        re.push_back(tmp);
+
+        tmp.pop_back();
+        return ;
+    }
+    else{
+        if(haverc(x)){
+            if(a[x] < a[rc(x)]) ismax = 0;
+            if(a[x] > a[rc(x)]) ismin = 0;
+            dfs(rc(x));
+        }
+        if(havelc(x)){
+            if(a[x] < a[lc(x)]) ismax = 0;
+            if(a[x] > a[lc(x)]) ismin = 0;
+            dfs(lc(x));
+        }
+
+        tmp.pop_back();
+        return ;
+    }
+
+}
+
 void solve(){
     cin >> N;
-    a.resize(N+1, 0);
-    b.resize(N+1, 0);
-     // 1 for human and 2 for wolf
-    uu(i, 1, N+1) cin >> a[i];
-    uu(i, 1, N+1){
-        uu(j, i+1, N+1){
-            // i and j is wolf;
-            uu(k, 1, N+1) b[k] = 0;
-            b[i] = b[j] = 1;
-            vector<int> liar;
-            uu(k, 1, N+1) if((a[k] > 0 and b[a[k]] != 0) or (a[k] < 0 and b[-a[k]] != 1)) liar.push_back(k);
-            if(liar.size() == 2) if((liar[0] == i and liar[1] != j) or (liar[0] != i and liar[1] == j)) re.push_back({i, j});
+    a.resize(N);
+    uu(i, 0, N) cin >> a[i];
 
-        }
+    ismax = ismin = 1;
+    dfs(0);
+    each(v, re){
+        print(v);
     }
-    #ifdef DEBUG
-    cout << re.size() << endl;
-    #endif
-    if(re.size())
-        cout << re[0].first << " " << re[0].second << endl;
-    else
-        cout << "No Solution" << endl;
+    if(ismax) cout << "Max Heap" << endl;
+    else if(ismin) cout << "Min Heap" << endl;
+    else cout << "Not Heap" << endl;
+
 
 }
 
