@@ -40,27 +40,63 @@ const double eps = 1e-8;
 #define lowbit(x) (x&(-x))
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
-#define vi vector<int>
-#define pii pari<int, int>
-
-using namespace std;
-
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
 
-void print(vi &v){
+void print(std::vector<int> &v){
     uu(i, 0, v.size()){
-        if(i == 0) cout << v[i];
-        else cout << " " << v[i];
+        if(i == 0) std::cout << v[i];
+        else std::cout << " " << v[i];
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
+using namespace std;
 
+string s, p;
+
+int issub(const string &a, const string &b){
+    int m = a.size(), n = b.size();
+    vector<vector<int>> dp(m+1, vector<int>(n+1, 0));
+    uu(i, 1, m+1){
+        uu(j, 1, n+1){
+            if(a[i-1] == b[j-1]) dp[i][j] = dp[i-1][j-1] + 1;
+            else{
+                dp[i][j] = _max(dp[i-1][j-1], _max(dp[i-1][j], dp[i][j-1]));
+            }
+        }
+    }
+    return dp[m][n] == m;
+}
 
 void solve(){
-    
+    cin >> s >> p;
+    // cout << issub(p, s) << endl;
+    int m = p.size(), n = s.size();
+    int minre = INT_MAX, mini = 0 , minj = 0;
+    uu(i, 0, n-m+1){
+        #ifdef DEBUG
+        cout << "start from " << i << " " << s[i] << endl; 
+        #endif
+        uu(j, i+m-1, n){ // s[i:j]
+            #ifdef DEBUG
+            pf("check %s\n", s.substr(i, j-i+1).c_str());
+            #endif
+            if(issub(p, s.substr(i, j-i+1))){
+                if(j-i+1 < minre){
+                    minre = j-i+1;
+                    mini = i;
+                    minj = j;
+                    #ifdef DEBUG
+                    cout << s.substr(mini, minj - mini +1) << endl;
+                    #endif
+                    break;
+                }
+            }
+        }
+    }
+    cout << s.substr(mini, minj - mini +1) << endl;
 }
 
 int main(){

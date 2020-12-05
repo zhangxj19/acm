@@ -40,27 +40,42 @@ const double eps = 1e-8;
 #define lowbit(x) (x&(-x))
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
-#define vi vector<int>
-#define pii pari<int, int>
-
-using namespace std;
-
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
 
-void print(vi &v){
+void print(std::vector<int> &v){
     uu(i, 0, v.size()){
-        if(i == 0) cout << v[i];
-        else cout << " " << v[i];
+        if(i == 0) std::cout << v[i];
+        else std::cout << " " << v[i];
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
+using namespace std;
 
+void fib(int x, int& lo, int& hi){
+    int a = 0, b = 1;
+    while(b < x){
+        int tb = b;
+        b = a + b;
+        a = tb;
+    }
+    lo = a;
+    hi = b;
+}
 
 void solve(){
-    
+    int N;
+    cin >> N;
+    int lo, hi;
+    fib(N, lo, hi);
+    if(abs(N - lo) <= abs(N - hi)){
+        cout << lo << endl;
+    }
+    else{
+        cout << hi << endl;
+    }
 }
 
 int main(){
