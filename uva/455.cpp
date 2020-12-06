@@ -56,46 +56,34 @@ void print(vi &v){
     }
     cout << endl;
 }
-int T, N;
 
-int width(int x){
-    return to_string(x).size();
-}
-
-int upper(int x){
-    return x + width(x)*9;
-}
-
-int value(int x){
-    string s = to_string(x);
-    int re = 0;
-    each(c, s){
-        re += c - '0';
+int ispreodic(int n, string & x){
+    string meta = x.substr(0, n);
+    for(int i = 0, size = x.size(); i < size; i += n){
+        if(x.substr(i, n) != meta) return false;
     }
-    return x + re;
-}
-
-
-int generator(int x){
-    int y = x, re = INT_MAX;
-    while(upper(y) > x){
-        y -= 1;
-        if(value(y) == x){
-            re = y;
-        }
-    }
-    if(re != INT_MAX) return re;
-    else return 0;
+    return true;
 }
 
 void solve(){
-    cin >> T;
-    while(T--){
-        cin >> N;
-        int re = generator(N);
+    int N;
+    string s;
+    cin >> N;
+    while(N--){
+        cin >> s;
+        int size = s.size();
+        int re = 1;
+        for(int i = 1; i <= size; ++i){
+            if(size % i == 0){
+                if(ispreodic(i, s)){
+                    re = i;
+                    break;
+                }
+            }
+        }
         cout << re << endl;
+        if(N != 0) cout << endl;
     }
-    
 }
 
 int main(){

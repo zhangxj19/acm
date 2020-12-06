@@ -56,45 +56,47 @@ void print(vi &v){
     }
     cout << endl;
 }
-int T, N;
 
-int width(int x){
-    return to_string(x).size();
-}
+const int maxn = 2*1e4+1;
 
-int upper(int x){
-    return x + width(x)*9;
-}
-
-int value(int x){
-    string s = to_string(x);
-    int re = 0;
-    each(c, s){
-        re += c - '0';
-    }
-    return x + re;
-}
-
-
-int generator(int x){
-    int y = x, re = INT_MAX;
-    while(upper(y) > x){
-        y -= 1;
-        if(value(y) == x){
-            re = y;
-        }
-    }
-    if(re != INT_MAX) return re;
-    else return 0;
-}
 
 void solve(){
-    cin >> T;
-    while(T--){
-        cin >> N;
-        int re = generator(N);
-        cout << re << endl;
+    int n, m;
+    while(cin >> n >> m, !(n == 0 and m == 0)){
+        vector<int> a, b;
+        uu(i, 0, n){
+            int x;
+            cin >> x;
+            a.push_back(x);
+        }
+        uu(i, 0, m){
+            int x;
+            cin >> x;
+            b.push_back(x);
+        }
+        if(b.size() < a.size()){
+            cout << "Loowater is doomed!" << endl;
+            continue;
+        }
+        sort(a.begin(), a.end());
+        sort(b.begin(), b.end());
+        int re = 0, i = 0, j = 0;
+        for(int size1 = a.size(), size2 = b.size(); i < size1 and j < size2;){
+            if(a[i] <= b[j]){
+                re += b[j];
+                i++;
+                j++;
+            }
+            else{
+                j++;
+            }
+        }
+        if(i != a.size()) cout << "Loowater is doomed!" << endl;
+        else cout << re << endl;
+        
     }
+
+
     
 }
 

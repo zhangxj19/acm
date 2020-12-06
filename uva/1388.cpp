@@ -56,46 +56,19 @@ void print(vi &v){
     }
     cout << endl;
 }
-int T, N;
-
-int width(int x){
-    return to_string(x).size();
-}
-
-int upper(int x){
-    return x + width(x)*9;
-}
-
-int value(int x){
-    string s = to_string(x);
-    int re = 0;
-    each(c, s){
-        re += c - '0';
-    }
-    return x + re;
-}
 
 
-int generator(int x){
-    int y = x, re = INT_MAX;
-    while(upper(y) > x){
-        y -= 1;
-        if(value(y) == x){
-            re = y;
-        }
-    }
-    if(re != INT_MAX) return re;
-    else return 0;
-}
 
 void solve(){
-    cin >> T;
-    while(T--){
-        cin >> N;
-        int re = generator(N);
-        cout << re << endl;
+    int n, m;
+    while(cin >> n >> m){
+        double re = 0;
+        uu(i, 1, n){
+            double pos = (double)i / n * (n+m);
+            re += fabs(pos - floor(pos + 0.5)) / (n+m);
+        }
+        cout << re*1e4 << endl;
     }
-    
 }
 
 int main(){
@@ -107,8 +80,8 @@ int main(){
     freopen("in", "r", stdin);
     freopen("o", "w", stdout);
     #endif
-    // cout << setiosflags(ios::fixed);
-    // cout << setprecision(2);
+    cout << setiosflags(ios::fixed);
+    cout << setprecision(4);
     // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
     solve();
     

@@ -56,46 +56,29 @@ void print(vi &v){
     }
     cout << endl;
 }
-int T, N;
 
-int width(int x){
-    return to_string(x).size();
-}
+const int maxn = 1e5+1;
 
-int upper(int x){
-    return x + width(x)*9;
-}
-
-int value(int x){
-    string s = to_string(x);
-    int re = 0;
-    each(c, s){
-        re += c - '0';
-    }
-    return x + re;
-}
-
-
-int generator(int x){
-    int y = x, re = INT_MAX;
-    while(upper(y) > x){
-        y -= 1;
-        if(value(y) == x){
-            re = y;
-        }
-    }
-    if(re != INT_MAX) return re;
-    else return 0;
-}
+int a[maxn];
 
 void solve(){
+    int T, N;
     cin >> T;
+    uu(i, 1, maxn+1){
+        int x = i, re = i;
+        while(x){
+            re += x%10;
+            x /= 10;
+        }
+        if(a[re] == 0 or i < a[re]){
+            a[re] = i;
+        }
+    }
     while(T--){
         cin >> N;
-        int re = generator(N);
-        cout << re << endl;
+        cout << a[N] << endl;
     }
-    
+
 }
 
 int main(){
@@ -113,4 +96,4 @@ int main(){
     solve();
     
     return 0;
-}
+}   

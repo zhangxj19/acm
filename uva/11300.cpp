@@ -56,43 +56,36 @@ void print(vi &v){
     }
     cout << endl;
 }
-int T, N;
-
-int width(int x){
-    return to_string(x).size();
-}
-
-int upper(int x){
-    return x + width(x)*9;
-}
-
-int value(int x){
-    string s = to_string(x);
-    int re = 0;
-    each(c, s){
-        re += c - '0';
-    }
-    return x + re;
-}
 
 
-int generator(int x){
-    int y = x, re = INT_MAX;
-    while(upper(y) > x){
-        y -= 1;
-        if(value(y) == x){
-            re = y;
-        }
-    }
-    if(re != INT_MAX) return re;
-    else return 0;
-}
 
 void solve(){
-    cin >> T;
-    while(T--){
-        cin >> N;
-        int re = generator(N);
+    int n;
+    while(cin >> n){
+        ll re = 0, total = 0;
+        vector<ll> a(n, 0), c(n, 0);
+        uu(i, 0, n){
+            cin >> a[i];
+            total += a[i];
+        }
+        ll m = total / n;
+        // uu(i, 1, n) c[i] = m - a[i-1] - c[i-1];
+        uu(i, 1, n) c[i] = a[i-1] + c[i-1] - m;
+        #ifdef DEBUG
+        each(it, c){
+            cout << it << " ";
+        }
+        cout << endl;
+        #endif
+        sort(c.begin(), c.end());
+        #ifdef DEBUG
+        each(it, c){
+            cout << it << " ";
+        }
+        cout << endl;
+        #endif
+        ll mid = c[n/2];
+        uu(i, 0, n) re += abs(mid - c[i]);
         cout << re << endl;
     }
     

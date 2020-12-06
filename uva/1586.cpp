@@ -56,46 +56,43 @@ void print(vi &v){
     }
     cout << endl;
 }
-int T, N;
 
-int width(int x){
-    return to_string(x).size();
-}
-
-int upper(int x){
-    return x + width(x)*9;
-}
-
-int value(int x){
-    string s = to_string(x);
+int toint(const string &x){
     int re = 0;
-    each(c, s){
+    each(c, x){
+        re *= 10;
         re += c - '0';
     }
-    return x + re;
-}
-
-
-int generator(int x){
-    int y = x, re = INT_MAX;
-    while(upper(y) > x){
-        y -= 1;
-        if(value(y) == x){
-            re = y;
-        }
-    }
-    if(re != INT_MAX) return re;
-    else return 0;
+    return re;
 }
 
 void solve(){
+    int T;
     cin >> T;
     while(T--){
-        cin >> N;
-        int re = generator(N);
+        string s;
+        cin >> s;
+        map<char, int> mp;
+        for(int i = 0, size = s.size(); i < size; ){
+
+            int j = i + 1;
+            while(j < size and '0' <= s[j] and s[j] <= '9') ++j;
+            if(j == i + 1) mp[s[i]]++;
+            else{
+                mp[s[i]] += toint(s.substr(i+1, j - i - 1));
+            }
+            i = j;
+
+        }
+        double re = 0;
+        each(c_cnt, mp){
+            if(c_cnt.first == 'C') re += 12.01 * c_cnt.second;
+            if(c_cnt.first == 'H') re += 1.008 * c_cnt.second;
+            if(c_cnt.first == 'O') re += 16.00 * c_cnt.second;
+            if(c_cnt.first == 'N') re += 14.01 * c_cnt.second;
+        }
         cout << re << endl;
     }
-    
 }
 
 int main(){
@@ -107,8 +104,8 @@ int main(){
     freopen("in", "r", stdin);
     freopen("o", "w", stdout);
     #endif
-    // cout << setiosflags(ios::fixed);
-    // cout << setprecision(2);
+    cout << setiosflags(ios::fixed);
+    cout << setprecision(3);
     // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
     solve();
     
