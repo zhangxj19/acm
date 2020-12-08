@@ -27,9 +27,8 @@
 #include <unordered_set>
 #include <climits>
 
-#define rep(i, n) for (int i = 0, size = (n); i < size; ++i)
-#define repu(i, a, b) for (int i = (a), _upper_bound = (b); i < _upper_bound; ++i)
-#define repd(i, a, b) for (int i = (a), _lower_bound = (b); i > _lower_bound; --i)
+#define uu(i, a, b) for (int i = (a), _upper_bound = (b); i < _upper_bound; ++i)
+#define dd(i, a, b) for (int i = (a), _lower_bound = (b); i > _lower_bound; --i)
 #define each(it, a) for(auto & (it) : (a))
 #define pf printf
 #define sf scanf
@@ -51,7 +50,7 @@ int gcd(int a, int b){
 }
 
 void print(vi &v){
-    rep(i, v.size()){
+    uu(i, 0, v.size()){
         if(i == 0) cout << v[i];
         else cout << " " << v[i];
     }
@@ -59,8 +58,14 @@ void print(vi &v){
 }
 
 
+
 void solve(){
-    
+    double i;
+    // for(i = 0; i != 10; i += 0.1){
+    for(i = 0; !equ(i, 10); i += 0.1){
+        pf("%.1f\n", i);
+    }
+    return ;
 }
 
 int main(){
