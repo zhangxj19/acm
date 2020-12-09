@@ -58,67 +58,30 @@ void print(vi &v){
     cout << endl;
 }
 
-void divide(int up, int down, int &cnt, string &re, string &rear){
+vector<vi> re;
+vi tmp;
 
-    int isdot = false;
-    map<int, int> mp;
-    int idx = 0;
-    while(up){  // up / down
+void search(int x, vi &v){
+    if(x == v.size()){
+        re.push_back(tmp);
+    }
+    else{
+        // not include v[x]
+        search(x+1, v); 
 
-        if(isdot){ // record the reminder (up)   
-            if(mp.find(up) != mp.end()){
-                int idx_before = mp[up];
-                cnt = idx - idx_before;
-                rear.insert(idx_before, "(");
-                if(cnt > 50){
-                    rear = rear.substr(0, 51);
-                    rear += "...";
-                }
-                rear += ')';  
-                break;
-            }
-            else{
-                mp[up] = idx;
-            }
-        }  
-
-        if(!isdot) re += to_string(up / down);
-        else{
-            rear += to_string(up / down);
-            idx++;
-        }
-        up = up % down;
-
-        if(up < down and !isdot){
-            re += '.';
-            isdot = true;
-        }
-
-        if(up < down and isdot){
-            up *= 10;               
-        }
+        // include v[x]
+        tmp.push_back(v[x]);
+        search(x+1, v);
+        tmp.pop_back();
 
     }
-    if(cnt == 0 and isdot){
-        rear += "(0)";
-        cnt = 1;
-    }
-    else if(cnt == 0 and !isdot){
-        rear += ".(0)";
-        cnt = 1;
-    }
-
 }
 
 void solve(){
-    int a, b;
-    while(cin >> a >> b){
-        int cnt = 0;
-        string re, rear;
-        divide(a, b, cnt, re, rear);
-        cout << a << "/" << b << " = " << re << rear << endl;
-        cout << "   " << cnt << " = number of digits in repeating cycle" << endl; 
-        cout << endl;
+    vi v = {12,15,214,5,2351,3};
+    search(0, v);
+    each(v, re){
+        print(v);
     }
 }
 

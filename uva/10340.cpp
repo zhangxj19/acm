@@ -58,67 +58,26 @@ void print(vi &v){
     cout << endl;
 }
 
-void divide(int up, int down, int &cnt, string &re, string &rear){
-
-    int isdot = false;
-    map<int, int> mp;
-    int idx = 0;
-    while(up){  // up / down
-
-        if(isdot){ // record the reminder (up)   
-            if(mp.find(up) != mp.end()){
-                int idx_before = mp[up];
-                cnt = idx - idx_before;
-                rear.insert(idx_before, "(");
-                if(cnt > 50){
-                    rear = rear.substr(0, 51);
-                    rear += "...";
-                }
-                rear += ')';  
-                break;
-            }
-            else{
-                mp[up] = idx;
-            }
-        }  
-
-        if(!isdot) re += to_string(up / down);
+int issubsequence(string &s, string &t){
+    int i = 0, j = 0;
+    while(i < t.size() and j < s.size()){
+        if(t[i] == s[j]){
+            i++;
+            j++;
+        }
         else{
-            rear += to_string(up / down);
-            idx++;
+            i++;
         }
-        up = up % down;
-
-        if(up < down and !isdot){
-            re += '.';
-            isdot = true;
-        }
-
-        if(up < down and isdot){
-            up *= 10;               
-        }
-
     }
-    if(cnt == 0 and isdot){
-        rear += "(0)";
-        cnt = 1;
-    }
-    else if(cnt == 0 and !isdot){
-        rear += ".(0)";
-        cnt = 1;
-    }
-
+    return j == s.size();
 }
 
 void solve(){
-    int a, b;
-    while(cin >> a >> b){
-        int cnt = 0;
-        string re, rear;
-        divide(a, b, cnt, re, rear);
-        cout << a << "/" << b << " = " << re << rear << endl;
-        cout << "   " << cnt << " = number of digits in repeating cycle" << endl; 
-        cout << endl;
+    string s, t;
+    while(cin >> s >> t){
+        // if s is a subsequence of t
+        if(issubsequence(s, t)) cout << "Yes" << endl;
+        else cout << "No" << endl;
     }
 }
 

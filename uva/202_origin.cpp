@@ -63,9 +63,9 @@ void divide(int up, int down, int &cnt, string &re, string &rear){
     int isdot = false;
     map<int, int> mp;
     int idx = 0;
-    while(up){  // up / down
+    while(up){ 
 
-        if(isdot){ // record the reminder (up)   
+        if(isdot){
             if(mp.find(up) != mp.end()){
                 int idx_before = mp[up];
                 cnt = idx - idx_before;
@@ -89,15 +89,39 @@ void divide(int up, int down, int &cnt, string &re, string &rear){
         }
         up = up % down;
 
+        if(up == 0) break;
         if(up < down and !isdot){
             re += '.';
             isdot = true;
         }
+        int isout = false;
+        while(up < down){
+            up *= 10;
+            if(isdot and up < down and mp.find(up) != mp.end()){
+                isout = true;
+                break;
+            }
+            if(isdot and up < down and mp.find(up) == mp.end()) mp[up] = idx;
 
-        if(up < down and isdot){
-            up *= 10;               
+            if(up < down){  
+                if(!isdot) re += '0';           
+                else{
+                    rear += '0';
+                    idx++;
+                }
+            } 
         }
-
+        if(isout){
+            int idx_before = mp[up];
+            cnt = idx - idx_before;
+            rear.insert(idx_before, "(");
+            if(cnt > 50){
+                rear = rear.substr(0, 51);
+                rear += "...";
+            }
+            rear += ')';                
+            break;
+        }
     }
     if(cnt == 0 and isdot){
         rear += "(0)";
