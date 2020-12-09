@@ -5,6 +5,7 @@
         "random": "cpp",
         "ios": "cpp",
         "ostream": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "limits": "cpp"
     }
 }
