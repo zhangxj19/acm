@@ -58,62 +58,9 @@ void print(vi &v){
     cout << endl;
 }
 
-struct Node{
-    int w, h;
-    int s;
-};
-vector<Node> node;
-
-const char* msg[] = {
-    "POSSIBLE",
-    "IMPOSSIBLE",
-};
-
-int same(Node & n1, Node & n2){
-    return n1.h == n2.h and n1.w == n2.w;
-}
-
 
 void solve(){
     
-    int w, h;
-    while(cin >> w >> h){
-        Node x;
-        if(w <= h){
-            x.w = w;
-            x.h = h;
-        }
-        else{
-            x.w = h;
-            x.h = w;
-        }
-        x.s = x.w * x.h;
-        node.push_back(x);
-        if(node.size() == 6){
-            // process here
-            sort(node.begin(), node.end(), [](Node & n1, Node & n2){
-                return (n1.h != n2.h) ? n1.h > n2.h : n1.w > n2.w;
-            });
-            int ok = 1;
-            if(same(node[0], node[1]) and same(node[2], node[3]) and same(node[4], node[5])){
-
-            }
-            else{
-                ok = 0;
-            }
-
-            if(ok){
-                if((node[0].h != node[2].h) or (node[0].w != node[4].h) or (node[2].w != node[4].w)){
-                    ok = 0;
-                }
-            }
-            if(ok) cout << msg[0] << endl;
-            else cout << msg[1] << endl;
-            
-            node.clear();
-        }
-   
-    }
 }
 
 int main(){

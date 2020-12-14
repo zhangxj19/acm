@@ -6,6 +6,7 @@
         "ios": "cpp",
         "ostream": "cpp",
         "iostream": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "*.tcc": "cpp"
     }
 }

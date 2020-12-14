@@ -58,61 +58,57 @@ void print(vi &v){
     cout << endl;
 }
 
-struct Node{
-    int w, h;
-    int s;
-};
-vector<Node> node;
-
-const char* msg[] = {
-    "POSSIBLE",
-    "IMPOSSIBLE",
-};
-
-int same(Node & n1, Node & n2){
-    return n1.h == n2.h and n1.w == n2.w;
+int match(char c1, char c2){
+    return !(c1 == '2' and c2 == '2');
 }
 
+int f(string &s1, string &s2){
+    int re = INT_MAX;
+    // s2     <-212122
+    // s1       12122121 
+    rep(i, s2.size()){
+        int fit = 1;
+        rep(j, s2.size() - i){
+            if(!match(s2[j + i], s1[j])){
+                fit = 0;
+                break;
+            }
+        }
+        if(fit){
+            re = _min(re, i + s1.size());
+            break;
+        }
+    }
+
+    // s2  212122->
+    // s1  12122121
+    rep(i, s1.size()){
+        int fit = 1;
+        rep(j, s2.size()){
+            if(j + i >= s1.size()) break;
+            if(!match(s1[j + i], s2[j])){
+                fit = 0;
+                break;
+            }
+        }
+        if(fit){
+            re = _min(re, max(s1.size(), i + s2.size()));
+            break;
+        }
+    }
+    return re == INT_MAX ? s1.size() + s2.size() : re;
+}
 
 void solve(){
-    
-    int w, h;
-    while(cin >> w >> h){
-        Node x;
-        if(w <= h){
-            x.w = w;
-            x.h = h;
-        }
-        else{
-            x.w = h;
-            x.h = w;
-        }
-        x.s = x.w * x.h;
-        node.push_back(x);
-        if(node.size() == 6){
-            // process here
-            sort(node.begin(), node.end(), [](Node & n1, Node & n2){
-                return (n1.h != n2.h) ? n1.h > n2.h : n1.w > n2.w;
-            });
-            int ok = 1;
-            if(same(node[0], node[1]) and same(node[2], node[3]) and same(node[4], node[5])){
-
-            }
-            else{
-                ok = 0;
-            }
-
-            if(ok){
-                if((node[0].h != node[2].h) or (node[0].w != node[4].h) or (node[2].w != node[4].w)){
-                    ok = 0;
-                }
-            }
-            if(ok) cout << msg[0] << endl;
-            else cout << msg[1] << endl;
-            
-            node.clear();
-        }
-   
+    string s1, s2;
+    while(cin >> s1 >> s2){
+        int re = 0;
+        if(s1.size() < s2.size()) std::swap(s1, s2);  // l1 >= l2
+        re = f(s1, s2);
+        reverse(s2.begin(), s2.end());
+        // reverse(s1.begin(), s1.begin());
+        re = min(re, f(s1, s2));
+        cout << re << endl;        
     }
 }
 

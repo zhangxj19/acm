@@ -10,6 +10,7 @@
         "complex": "cpp",
         "iosfwd": "cpp",
         "iomanip": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "iostream": "cpp"
     }
 }
