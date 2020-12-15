@@ -42,7 +42,6 @@ const double eps = 1e-8;
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
 #define vi vector<int>
-#define vvi vector<vector<int>>
 #define pii pair<int, int>
 
 using namespace std;
@@ -61,7 +60,10 @@ void print(vi &v){
 
 
 void solve(){
-    
+    string a;
+    while(cin >> a){
+        cout << a << endl;
+    }
 }
 
 int main(){

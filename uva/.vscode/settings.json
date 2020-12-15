@@ -6,6 +6,8 @@
         "ios": "cpp",
         "ostream": "cpp",
         "iostream": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "__config": "cpp",
+        "istream": "cpp"
     }
 }

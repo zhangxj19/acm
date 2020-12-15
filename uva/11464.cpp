@@ -42,10 +42,11 @@ const double eps = 1e-8;
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
 #define vi vector<int>
-#define vvi vector<vector<int>>
 #define pii pair<int, int>
 
 using namespace std;
+const int INF = 1e9;
+const int maxn = 15;
 
 int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
@@ -59,9 +60,59 @@ void print(vi &v){
     cout << endl;
 }
 
+int A[maxn][maxn], B[maxn][maxn];
+int n;
+
+int check(int s){
+    memset(B, 0, sizeof(B));
+    rep(c, n){
+        if(s & (1 << c)) B[0][c] = 1;
+        else if(A[0][c] == 1) return INF; // A[0][c] = 1 and B[0][c] = 0
+    }
+
+    repu(r, 1, n){
+        rep(c, n){
+            int sum = 0;
+            if(r-2 >= 0) sum += B[r-2][c];
+            if(c-1 >= 0) sum += B[r-1][c-1];
+            if(c+1 < n) sum += B[r-1][c+1];
+            B[r][c] = sum % 2;
+            if(A[r][c] == 1 and B[r][c] == 0) return INF;
+        }
+    }
+    int cnt = 0;
+    rep(r, n){
+        rep(c, n){
+            if(A[r][c] != B[r][c]) cnt++;
+        }
+    }
+    return cnt;
+
+}
 
 void solve(){
-    
+    int T;
+    cin >> T;
+    repu(kcase, 1, T+1){
+        cin >> n;
+        rep(i, n){
+            rep(j, n){
+                cin >> A[i][j];
+            }
+        }
+        int re = INF;
+        rep(s, (1<<n)){
+            int cnt = check(s);
+            re = min(re, cnt);
+        }
+        cout << "Case " << kcase << ": ";
+        if(re == INF){
+            cout << -1 << endl;
+        }
+        else{
+            cout << re << endl;
+        }
+    }
 }
 
 int main(){
