@@ -4,7 +4,7 @@ f=$1
 f=${f%.*}
 
 if [ ! -f "./$f.cpp" ]; then
-    cp ../main.cpp ./$f.cpp
+    cp ../../main.cpp ./$f.cpp
 fi 
 open $f.cpp
 

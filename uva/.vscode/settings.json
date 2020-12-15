@@ -7,7 +7,11 @@
         "ostream": "cpp",
         "iostream": "cpp",
         "limits": "cpp",
+<<<<<<< HEAD
         "__config": "cpp",
         "istream": "cpp"
+=======
+        "*.tcc": "cpp"
+>>>>>>> 62ca85afc20b0b72833bdfe59b1a7cc608eed6cb
     }
 }
