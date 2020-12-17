@@ -6,14 +6,6 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
-// override the () operator
-// struct cmp{
-//     bool operator()(const T &a, const T &b) const{
-//         return ;
-//     }
-// };
-// some useful functions:
-// unique upper_bound lower_bound
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -58,8 +50,7 @@ int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
 
-template<typename T>
-void print(vector<T> &v){
+void print(vi &v){
     rep(i, v.size()){
         if(i == 0) cout << v[i];
         else cout << " " << v[i];
@@ -67,23 +58,97 @@ void print(vector<T> &v){
     cout << endl;
 }
 
-template<typename T>
-T sum(T* begin, T* end){
-    T re = 0;
-    for(T *p = begin; p != end; ++p) re = re + *p;
+int m;
+
+struct Net{
+    int ad[4]; // 1.2.3.4
+    string ads[4]; // 00000001.00000010.00000011.00000100
+};
+
+string to2(int x){
+    string re;
+    while(x){
+        re += to_string(x%2);
+        x /= 2;
+    }
+    rep(i, 8 - re.size()){
+        re += "0";
+    }
+    reverse(re.begin(), re.end());
     return re;
 }
 
-template<typename T>
-T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
-    T re = 0;
-    for(auto p = begin; p != end; ++p) re = re + *p;
-    return re;
+vector<Net> net;
+
+int up2downsame(char c, int i, int j){
+    rep(t, net.size()-1){
+        if(net[t].ads[i][j] != net[t+1].ads[i][j]) return false;
+    }
+    return true;
 }
 
+int toint(string &x){
+    int re = 0;
+    each(c, x){
+        re *= 2;
+        if(c == '1') re += 1;
+    }
+    return re;
+}
 
 void solve(){
-    
+    while(cin >> m){
+        net.clear();
+        rep(i, m){
+            string s;
+            cin >> s;
+            Net x;
+            sscanf(s.c_str(), "%d.%d.%d.%d", &x.ad[0], &x.ad[1], &x.ad[2], &x.ad[3]);
+            rep(j, 4) x.ads[j] = to2(x.ad[j]);
+            net.push_back(x);
+        }
+        string x[4], mask[4];
+        int out = false;
+        rep(i, 4){
+            rep(j, 8){
+                if(!up2downsame(net[0].ads[i][j], i, j)){
+                    out = true;
+                    break;
+                }
+                else{
+                    x[i] += net[0].ads[i][j];
+                    mask[i] += "1";
+                }
+            }
+            if(out){
+                rep(j, 8 - x[i].size()){
+                    x[i] += "0";
+                    mask[i] += "0";
+                }
+                
+                repu(j, i+1, 4){
+                    x[j] = "00000000";
+                    mask[j] = "00000000";
+                }
+                break;
+            }
+        }
+        rep(i, 4){
+            if(i == 0)
+                cout << toint(x[i]);
+            else
+                cout << "." << toint(x[i]); 
+        }
+        cout << endl;
+        rep(i, 4){
+            if(i == 0)
+                cout << toint(mask[i]);
+            else
+                cout << "." << toint(mask[i]); 
+        }
+        cout << endl;
+
+    }
 }
 
 int main(){

@@ -6,14 +6,6 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
-// override the () operator
-// struct cmp{
-//     bool operator()(const T &a, const T &b) const{
-//         return ;
-//     }
-// };
-// some useful functions:
-// unique upper_bound lower_bound
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -58,8 +50,7 @@ int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
 
-template<typename T>
-void print(vector<T> &v){
+void print(vi &v){
     rep(i, v.size()){
         if(i == 0) cout << v[i];
         else cout << " " << v[i];
@@ -67,23 +58,74 @@ void print(vector<T> &v){
     cout << endl;
 }
 
-template<typename T>
-T sum(T* begin, T* end){
-    T re = 0;
-    for(T *p = begin; p != end; ++p) re = re + *p;
-    return re;
+string s1, s2;
+
+void left(string &s){
+    char c = s[1];
+    s[1] = s[3];
+    s[3] = s[4];
+    s[4] = s[2];
+    s[2] = c; 
 }
 
-template<typename T>
-T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
-    T re = 0;
-    for(auto p = begin; p != end; ++p) re = re + *p;
-    return re;
+void up(string &s){
+    char c = s[1];
+    s[1] = s[5];
+    s[5] = s[4];
+    s[4] = s[0];
+    s[0] = c;
 }
 
+int _360rotate(string &s, string &s2){
+    rep(i, 4){
+        if(s == s2) return 1;
+        left(s);        
+    }
+    return 0;
+}
 
 void solve(){
-    
+    string s;
+    while(cin >> s){
+        s1 = s.substr(0, 6);
+        s2 = s.substr(6, 6);
+        string to_rotate = s1;
+
+        // left * 4
+        if(_360rotate(to_rotate, s2)){
+            cout << "TRUE" << endl;
+            continue;
+        }
+
+        // up * 1
+        up(to_rotate);
+        if(_360rotate(to_rotate, s2)){
+            cout << "TRUE" << endl;
+            continue;
+        }
+
+        up(to_rotate);
+        if(_360rotate(to_rotate, s2)){
+            cout << "TRUE" << endl;
+            continue;
+        } 
+
+        up(to_rotate);
+        if(_360rotate(to_rotate, s2)){
+            cout << "TRUE" << endl;
+            continue;
+        }   
+
+        up(to_rotate);
+        if(_360rotate(to_rotate, s2)){
+            cout << "TRUE" << endl;
+            continue;
+        }        
+
+
+        cout << "FALSE" << endl;
+
+    }
 }
 
 int main(){
