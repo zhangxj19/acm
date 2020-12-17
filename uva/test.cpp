@@ -6,14 +6,6 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
-// override the () operator
-// struct cmp{
-//     bool operator()(const T &a, const T &b) const{
-//         return ;
-//     }
-// };
-// some useful functions:
-// unique upper_bound lower_bound
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -50,7 +42,6 @@ const double eps = 1e-8;
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
 #define vi vector<int>
-#define vvi vector<vector<int>>
 #define pii pair<int, int>
 
 using namespace std;
@@ -59,8 +50,7 @@ int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
 
-template<typename T>
-void print(vector<T> &v){
+void print(vi &v){
     rep(i, v.size()){
         if(i == 0) cout << v[i];
         else cout << " " << v[i];
@@ -68,23 +58,12 @@ void print(vector<T> &v){
     cout << endl;
 }
 
-template<typename T>
-T sum(T* begin, T* end){
-    T re = 0;
-    for(T *p = begin; p != end; ++p) re = re + *p;
-    return re;
-}
-
-template<typename T>
-T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
-    T re = 0;
-    for(auto p = begin; p != end; ++p) re = re + *p;
-    return re;
-}
-
 
 void solve(){
-    
+    string a;
+    while(cin >> a){
+        cout << a << endl;
+    }
 }
 
 int main(){
