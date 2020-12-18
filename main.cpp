@@ -13,7 +13,7 @@
 //     }
 // };
 // some useful functions:
-// unique upper_bound lower_bound
+// unique upper_bound lower_bound equal_range
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
