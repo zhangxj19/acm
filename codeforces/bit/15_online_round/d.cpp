@@ -104,22 +104,30 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
-const int P = 998244353, maxn = 1e5+1;
+const int P = 998244353, maxn = 1e5+1, maxp = 1e6+1;
+
+int isprime[maxp];
+
+void makeprime(){
+    fill(isprime, isprime+maxp, 1);
+    isprime[0] = isprime[1] = 0;
+    repu(i, 2, maxp){
+        if(isprime[i]) for(int j = i + i; j < maxp; j+=i) isprime[j] = 0;
+    }
+}
+
+
+
 
 struct Node{
-    int c;
+    ll c;
     vi n;
-    ll ola;
-    ll isprime;
+    set<ll> fac;
+    Node(){
+        fac.clear();
+    }
 }node[maxn];
 
-int isprime(int x){
-    if(x <= 1)return 0;
-    repu(i, 2, sqrt(x)+1){
-        if(x % i == 0) return 0;
-    }
-    return 1;
-}
 
 long long ola(long long n) {
     long long res = n;
@@ -136,53 +144,119 @@ long long ola(long long n) {
 }
 
 
-int bk[maxn];
+ll bk[maxn];
+
+struct QueueElement{
+    ll idx;
+    ll re;
+    set<ll> fac;
+    QueueElement(){
+        fac.clear();
+    }
+};
+
+ll cal(ll re, set<ll>& fac_added, set<ll>& fac_add){
+    #ifdef DEBUG
+    cout << "new cal" << endl;
+    cout << re << endl;
+    each(x, fac_added) cout << x << " ";
+    cout << endl;
+    each(x, fac_add) cout << x << " ";
+    cout << endl;
+    #endif
+    each(x, fac_add){
+        if(fac_added.find(x) == fac_added.end()){
+            re = re / x;
+            re = re * (x - 1);
+        }
+    }
+    return re;
+}
+
+set<ll> add_fac(set<ll>& f1, set<ll>& f2){
+    set<ll> re;
+    each(x, f1) re.insert(x);
+    each(x, f2) re.insert(x);
+    return re;
+}
 
 void solve(){
-    int n, p, q;
+    ll n, p, q;
     cin >> n >> p >> q;
+    makeprime();
     repu(i, 1, n+1){
         cin >> node[i].c;
-        // node[i].ola = node[i].ola = ola(node[i].c);
-        // node[i].isprime = isprime(node[i].c);
-        // if(node[i].isprime) node[i].ola = ola(node[i].c);
-        // else node[i].ola = 1;
+        ll tc = node[i].c;
+        for(int j = 2; j * j <= tc; ++j){
+            if(tc %j == 0){
+                while(tc % j == 0) tc /= j;
+                node[i].fac.insert(j);
+            }
+            
+
+            // if(isprime[j]){
+            //     while(tc % j == 0){
+            //         node[i].fac.insert(j);
+            //         tc /= j;
+            //     }
+            // }
+        }
+        if(tc != 1) node[i].fac.insert(tc);
     }
-    int root = 0;
+    #ifdef DEBUG
+    repu(i, 1, n+1){
+        cout << node[i].c << " ";
+        each(x, node[i].fac) cout << "(" << x << ") ";
+        cout << endl;
+    }
+    #endif
     rep(i, n-1){
-        int u,v;
+        ll u,v;
         cin >> u >> v;
         node[u].n.push_back(v);
         node[v].n.push_back(u);
     }
-    #ifdef DEBUG2
+    #ifdef DEBUG
     // cout << ola(1000000) << endl;
     // repu(i, 1, 22) cout << "ola(" << i << ")=" << ola(i) << endl;
     #endif
 
     // find a route from u to v;
-    queue<pll> Q;
 
-    // Q.push(make_pair(p, node[p].ola));
-    Q.push(make_pair(p, node[p].c));
+    queue<QueueElement> Q;
+    QueueElement e;
+    e.idx = p;
+    e.re = node[p].c;
+    e.re = cal(e.re, e.fac, node[p].fac);
+
+    e.fac = node[p].fac;
+    Q.push(e);
 
     bk[p] = 1;
     while(!Q.empty()){
-        pll x = Q.front(); Q.pop();
-        if(x.first == q){
+        QueueElement x = Q.front(); Q.pop();
+        if(x.idx == q){
             // cout << x.second << endl;
-            cout << ola(x.second) << endl;
+            ll re = x.re;
+            cout << re << endl;
             return ;
         }
 
-        each(y, node[x.first].n){
+        each(y, node[x.idx].n){
             if(bk[y] == 0){
                 #ifdef DEBUG
                 // cout << node[y].c << " " << node[y].ola << endl;
                 // pf("cx=%d, node[y[.c = %d, node[y].ola = %d\n", node[x.first].c, node[y].c, node[y].ola);
                 #endif
-                Q.push(make_pair(y, x.second * node[y].c % P));
-                // Q.push(make_pair(y, x.second * node[y].ola % P));
+                QueueElement e;
+                e.idx = y;
+                e.re = x.re * node[y].c % P;
+
+                e.re = cal(e.re, x.fac, node[y].fac);
+
+                e.fac = add_fac(x.fac, node[y].fac);
+                Q.push(e);
+                
             }
         }
 

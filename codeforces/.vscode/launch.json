@@ -4,15 +4,6 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
-        {
-            "name": "Python: 当前文件",
-            "type": "python",
-            "request": "launch",
-            // "program": "${workspaceFolder}/bit/15_online_round/${file}",
-            "program": "${file}",
-            "console": "integratedTerminal"
-        },
         {
             "name": "(lldb) 启动",
             "type": "cppdbg",

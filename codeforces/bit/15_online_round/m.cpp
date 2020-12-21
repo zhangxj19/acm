@@ -142,98 +142,203 @@ deque<int> d[2];
 int idx[2];
 
 void add1(int player){
-    idx[player]++;
-    idx[player] %= p[player].size();
-}
-
-void summon(vector<Node>& v, int type, int i, int player){  // insert at i
-    Node x(type);
-    v.push_back(x);
-    if(i < idx[player]) add1(player);
-    if(type == CARDE){
-        cnt_carde[player]++;
+    if(p[player].size() != 0){
+        idx[player]++;
+        idx[player] %= p[player].size();
     }
 }
 
+
+void summon(vector<Node>& v, int type, int i, int player){  // insert at i
+    Node x(type);
+    if(i == -1) v.push_back(x);
+    else{
+        v.insert(v.begin() + i, x);
+        if(i <= idx[player]) add1(player);
+    }    
+    if(type == CARDE) cnt_carde[player]++;
+    
+}
+
 void die(vector<Node>& v, int i, int player){
+    #ifdef DEBUG2
+    pf("player%d's %d unit died\n", player, i);
+    #endif
     if(v[i].type == EGG){
 
-        int cnt = cnt_carde[player];
+        int cnt = pow(2, cnt_carde[player]);
         while(v.size() < 7 and cnt > 0){
             summon(v, DRAGON, i+1, player);
             cnt--;
         }
 
-        d[player].push_back(EGG);
     }
     else if(v[i].type == DRAGON){
 
-        d[player].push_back(DRAGON);
     }
     else if(v[i].type == JUNIOR){
-        
-        rep(i, min(2, (int)d[player].size())){
-            int cnt = cnt_carde[player];
+        #ifdef DEBUG2
+        cout << "summon from junior" << endl;
+        #endif
+        int CNT = 0;
+        rep(j, min(2, (int)d[player].size())){
+            int cnt = pow(2, cnt_carde[player]);
             while(v.size() < 7 and cnt > 0){
+                #ifdef DEBUG2
+                cout << "summon a " << d[player].front() << endl;
+                #endif
                 summon(v, d[player].front(), i+1, player);
-                d[player].pop_front();
+                CNT = j+1;
                 cnt--;
             }
+            #ifdef DEBUG2
+            each(x, v){
+                pf("(%d, %d, %d) ", x.type, x.h, x.v);
+            }
+            cout << endl;
+            #endif
+        }
+        while(CNT--){
+            #ifdef DEBUG2
+            cout << "d delete a " << d[player].front() << endl;
+            #endif
+            d[player].pop_front();
         }
 
-        d[player].push_back(JUNIOR);
     }
     else if(v[i].type == CARDE){
 
-        d[player].push_back(CARDE);
         cnt_carde[player]--;
     }
 
+    #ifdef DEBUG2
+    cout << "d push back a type " << v[i].type << endl;
+    #endif
+    d[player].push_back(v[i].type);
+
 }
+
+vi a[2];
 
 void solve(){
     cin >> seed;
     int n;
     cin >> n;
-    rep(i, n){
-        int x;
-        cin >> x;
-        summon(p[0], x, 0, 0);
-    }
+    a[0].resize(n);
+    rep(i, n) cin >> a[0][i];
     cin >> n;
-    rep(i, n){
-        int x;
-        cin >> x;
-        summon(p[1], x, 0, 1);
-    }
+    a[1].resize(n);
+    rep(i, n) cin >> a[1][i];
 
+    int re = 0;
     rep(i, 10000){
-        int re = 0;
+        #ifdef DEBUG2
+        cout << "=========================" << endl;
+        cout << "new round" << " " << i+1 << endl;
+        #endif
+        p[0].clear(); p[1].clear();
+        cnt_carde[0] = cnt_carde[1] = 0;
+        d[0].clear(); d[1].clear();
+        idx[0] = idx[1] = 0;
+        each(x, a[0]) summon(p[0], x, -1, 0);
+        
+        each(x, a[1]) summon(p[1], x, -1, 1);
+        
 
         int first = myrand(2);
+        #ifdef DEBUG2
+        cout << "first = " << first << endl;
+
+        #endif
         int rd = 0;
         while(p[0].size() != 0 and p[1].size() != 0){
+            #ifdef DEBUG2
+            cout << endl;
+            each(x, p[0]){
+                pf("(%d, %d, %d) ", x.type, x.h, x.v);
+            }
+            cout << "; d: ";
+            each(x, d[0]) cout << x << " ";
+            cout << "; idx = " << idx[0] << "; cnt carde = " << cnt_carde[0];
+            cout << endl;
+
+            each(x, p[1]){
+                pf("(%d, %d, %d) ", x.type, x.h, x.v);
+            }
+            cout << "; d: ";
+            each(x, d[1]) cout << x << " ";
+            cout << "; idx = " << idx[1] << "; cnt carde = " << cnt_carde[1];
+            cout << endl;
+            #endif
+            idx[0] = idx[0] % p[0].size();
+            idx[1] = idx[1] % p[1].size();
             if(rd % 2 == first){
                 // player 0 attack 
                 int tar = myrand(p[1].size());
+                #ifdef DEBUG2
+                pf("player0's %d attack %d\n", idx[0], tar);
+                #endif
                 
                 p[1][tar].h -= p[0][idx[0]].v;
+                p[0][idx[0]].h -= p[1][tar].v;
 
-                if(p[1][tar].h < 0){
-
+                if(p[1][tar].h <= 0){
+                    die(p[1], tar, 1);
+                    p[1].erase(p[1].begin() + tar);
+                    if(tar < idx[1]) idx[1]--;
+                    if(idx[1] == -1) idx[1] = p[1].size() - 1;
                 }
+
+                if(p[0][idx[0]].h <= 0){
+                    die(p[0], idx[0], 0);
+                    p[0].erase(p[0].begin() + idx[0]);
+                }
+                else{
+                    add1(0);
+                }
+
+                
+
+                
 
 
             }
             else{
-                // player 1 attack 
+                // player 1 attack
+                int tar = myrand(p[0].size());
+                #ifdef DEBUG2
+                pf("player1's %d attack %d\n", idx[1], tar);
+                #endif
+                
+                p[0][tar].h -= p[1][idx[1]].v;
+                p[1][idx[1]].h -= p[0][tar].v;
+
+                if(p[0][tar].h <= 0){
+                    die(p[0], tar, 0);
+                    p[0].erase(p[0].begin() + tar);
+                    if(tar < idx[0]) idx[0]--;
+                    if(idx[0] == -1) idx[0] = p[0].size() - 1;
+                } 
+
+                if(p[1][idx[1]].h <= 0){
+                    die(p[1], idx[1], 1);
+                    p[1].erase(p[1].begin() + idx[1]);
+                }
+                else{
+                    add1(1);
+                }
+
+                
             }
 
             rd++;
         }
 
-        cout << re << endl;
+        if(p[0].size() != 0 and p[1].size() == 0) re++;
+
+        
     }
+    cout << re << endl;
 }
 
 int main(){
