@@ -103,9 +103,37 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
+int t, n;
+vector<pii> a;
 
 void solve(){
-    
+    cin >> t;
+    while(t--){
+        a.clear();
+        cin >> n;
+        a.resize(n);
+        rep(i, n) cin >> a[i].first >> a[i].second; // (time, position)
+        int time = 0, cnt = 0, p = 0;
+        int re = 0;
+        pii stand;
+        rep(i, n){
+            if(i == n-1) re++;
+            else if(i > 0){
+                if(a[i].first >= stand.second) re++;
+            }
+            if(time <= a[i].first){ // command shoot
+                time = a[i].first + abs(p - a[i].second);
+                p = a[i].second;
+                stand.first = p;
+                stand.second = time;
+            }
+            else{ // time > a[i].first
+            
+            }
+        }
+        cout << re << endl;
+
+    }    
 }
 
 int main(){

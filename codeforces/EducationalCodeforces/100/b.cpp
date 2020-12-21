@@ -85,12 +85,7 @@ T sum(T* begin, T* end){
     return re;
 }
 
-// template<typename T>
-// T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
-//     T re = 0;
-//     for(auto p = begin; p != end; ++p) re = re + *p;
-//     return re;
-// }
+
 int sum(vector<int>::iterator begin, vector<int>::iterator end){
     int re = 0;
     for(auto p = begin; p != end; ++p) re = re + *p;
@@ -104,8 +99,39 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
 }
 
 
+vector<ll> a;
+
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        // memset(a, 0, sizeof(a));
+        a.clear();
+        int n;
+        cin >> n;
+        a.resize(n);
+        rep(i, n) cin >> a[i];
+        // sort(a, a + n);
+
+        ll s = sum(a.begin(), a.end());
+        ll cur[2] = {0};
+        rep(i, n){
+            cur[i%2] = a[i] - 1;
+        }
+        rep(j, n){
+            if(cur[j] > s) continue;
+            else{
+                rep(i, n){
+                    if(i % 2 == j) a[i] = 1;
+                }
+
+                break;
+            }
+        }
+        
+        print(a);
+        
+    }
 }
 
 int main(){

@@ -103,9 +103,28 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
-
+int t;
 void solve(){
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        vi a, b;
+        rep(i, n){
+            int x;
+            cin >> x;
+            a.push_back(x);
+        }
+        rep(i, n){
+            int x;
+            cin >> x;
+            b.push_back(x);
+        }
     
+
+
+    }
 }
 
 int main(){

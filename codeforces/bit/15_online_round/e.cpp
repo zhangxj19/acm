@@ -103,9 +103,43 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
+struct Node{
+    int x, y;
+    double theta;
+    int id;
+};
+vector<Node> node;
 
 void solve(){
-    
+    int n;
+    cin >> n;
+    node.resize(n);
+    rep(i, n){
+        cin >> node[i].x >> node[i].y;
+        node[i].id = i+1;
+    }
+    sort(node.begin(), node.end(), [](Node& n1, Node& n2){
+        return n1.y != n2.y ? n1.y < n2.y : n1.x < n2.x;
+    });
+
+    Node origin = node[0];
+    each(x, node){
+        x.theta = acos((x.x - origin.x) / sqrt(pow(x.x - origin.x, 2) + pow(x.y - origin.y, 2)));
+    }
+
+    sort(node.begin()+1, node.end(), [](Node& n1, Node& n2){
+        return n1.theta < n2.theta;
+    });
+
+    if(n % 2 == 0){
+        cout << origin.id << " " << node[(1 + n-1) / 2].id << endl;
+    }
+    else{
+        cout << -1 << " " << -1 << endl;
+    }
+
+
+
 }
 
 int main(){

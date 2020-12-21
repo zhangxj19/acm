@@ -102,10 +102,45 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     for(auto p = begin; p != end; ++p) re = re + *p;
     return re;
 }
+const int maxn = 101, maxm = 101;
+int N, M;
+vi g, s;
+int re;
 
+void dfs(int i, int packed, int value){
+
+    re = max(re, value);
+    
+    repu(j, i+1, M+1){
+        // 
+        if(packed + g[j] <= N and g[j] <= g[i]){
+
+            dfs(j, packed+g[j], value + s[j]);
+        }
+            
+    }
+}
 
 void solve(){
-    
+    while(cin >> N >> M){
+
+        g.clear();
+        s.clear();
+        g.resize(M+1);
+        s.resize(M+1);
+        g[0] = 100;
+        // rep(i, M) cin >> g[i] >> s[i];
+        repu(i, 1, M+1){
+            cin >> g[i] >> s[i];
+        }
+        
+        dfs(0, 0, 0);
+
+        cout << re << endl;
+
+
+
+    }
 }
 
 int main(){

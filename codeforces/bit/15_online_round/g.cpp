@@ -105,7 +105,11 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
 
 
 void solve(){
-    
+    int N, M;
+    cin >> N >> M;
+    if(N == 1){
+        
+    }
 }
 
 int main(){

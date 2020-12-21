@@ -102,10 +102,47 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     for(auto p = begin; p != end; ++p) re = re + *p;
     return re;
 }
-
+const int maxn = 101, maxm = 101;
+int N, M, dp[maxm][maxn][maxm];
+vi g, s;
 
 void solve(){
-    
+    while(cin >> N >> M){
+        memset(dp, 0, sizeof(dp));
+        g.clear();
+        s.clear();
+        g.resize(M+1);
+        s.resize(M+1);
+        repu(i, 1, M+1){
+            cin >> g[i] >> s[i];
+        }
+        int re = 0;
+        g[0] = 100;
+        repu(i, 1, M+1){
+            repu(j, g[i], N+1){
+
+                // repu(k, 0, i){
+                // // repu(k, 0, g[i]){
+                //     if(g[k] >= g[i])
+                //         dp[i][j][k] = max(dp[i-1][j][k], dp[i-1][j-g[i]][k] + s[i]);
+                //     else
+                //         dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k]);
+                //     re = max(re, dp[i][j][k]);
+                // }
+                repu(k, g[i], N+1){
+                    dp[i][j][k] = max(dp[i-1][j][k], dp[i-1][j-g[i]][k] + s[i]);
+                    re = max(re, dp[i][j][k]);
+                }
+            }
+        }
+        cout << re << endl;
+        // rep(i, N+1)
+        //     cout << dp[M][N][i] << " ";
+        // cout << endl;
+
+
+
+    }
 }
 
 int main(){

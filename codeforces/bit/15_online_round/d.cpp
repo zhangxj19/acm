@@ -53,6 +53,7 @@ const double eps = 1e-8;
 #define vi vector<int>
 #define vvi vector<vector<int>>
 #define pii pair<int, int>
+#define pll pair<long long, long long>
 
 using namespace std;
 
@@ -103,9 +104,96 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
+const int P = 998244353, maxn = 1e5+1;
+
+struct Node{
+    int c;
+    vi n;
+    ll ola;
+    ll isprime;
+}node[maxn];
+
+int isprime(int x){
+    if(x <= 1)return 0;
+    repu(i, 2, sqrt(x)+1){
+        if(x % i == 0) return 0;
+    }
+    return 1;
+}
+
+long long ola(long long n) {
+    long long res = n;
+    for(int i = 2; i*i <=n; i++){
+        if(n%i == 0) {
+            res -= res/i;
+            while(n%i == 0)
+				n /= i;
+        }
+    }
+    if(n>1)
+		return res -= res/n;
+    return res;
+}
+
+
+int bk[maxn];
 
 void solve(){
-    
+    int n, p, q;
+    cin >> n >> p >> q;
+    repu(i, 1, n+1){
+        cin >> node[i].c;
+        // node[i].ola = node[i].ola = ola(node[i].c);
+        // node[i].isprime = isprime(node[i].c);
+        // if(node[i].isprime) node[i].ola = ola(node[i].c);
+        // else node[i].ola = 1;
+    }
+    int root = 0;
+    rep(i, n-1){
+        int u,v;
+        cin >> u >> v;
+        node[u].n.push_back(v);
+        node[v].n.push_back(u);
+    }
+    #ifdef DEBUG2
+    // cout << ola(1000000) << endl;
+    // repu(i, 1, 22) cout << "ola(" << i << ")=" << ola(i) << endl;
+    #endif
+
+    // find a route from u to v;
+    queue<pll> Q;
+
+    // Q.push(make_pair(p, node[p].ola));
+    Q.push(make_pair(p, node[p].c));
+
+    bk[p] = 1;
+    while(!Q.empty()){
+        pll x = Q.front(); Q.pop();
+        if(x.first == q){
+            // cout << x.second << endl;
+            cout << ola(x.second) << endl;
+            return ;
+        }
+
+        each(y, node[x.first].n){
+            if(bk[y] == 0){
+                #ifdef DEBUG
+                // cout << node[y].c << " " << node[y].ola << endl;
+                // pf("cx=%d, node[y[.c = %d, node[y].ola = %d\n", node[x.first].c, node[y].c, node[y].ola);
+                #endif
+                Q.push(make_pair(y, x.second * node[y].c % P));
+                // Q.push(make_pair(y, x.second * node[y].ola % P));
+            }
+        }
+
+    }
+
+
+
+
+
+
+
 }
 
 int main(){

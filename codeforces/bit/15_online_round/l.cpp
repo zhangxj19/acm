@@ -6,6 +6,15 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
+// override the () operator
+// struct cmp{
+//     bool operator()(const T &a, const T &b) const{
+//         return ;
+//     }
+// };
+// some useful functions:
+// unique(it1, it2) upper_bound(it1, it2) lower_bound(it1, it2) equal_range(it1, it2)
+// next_permutation(it1, it2)
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -42,6 +51,7 @@ const double eps = 1e-8;
 #define equ(a, b) (fabs(a - b) < eps)
 #define lcm(a, b) (a / gcd(a, b) * b)
 #define vi vector<int>
+#define vvi vector<vector<int>>
 #define pii pair<int, int>
 
 using namespace std;
@@ -50,7 +60,8 @@ int gcd(int a, int b){
     return !b ? a : gcd(b, a % b);
 }
 
-void print(vi &v){
+template<typename T>
+void print(vector<T> &v){
     rep(i, v.size()){
         if(i == 0) cout << v[i];
         else cout << " " << v[i];
@@ -58,11 +69,48 @@ void print(vi &v){
     cout << endl;
 }
 
+template<typename T>
+void print(T* begin, T* end){
+    for(T *p = begin; p != end; ++p){
+        if(p == begin) cout << *p;
+        else cout << " " << *p;
+    }
+    cout << endl;
+}
+
+template<typename T>
+T sum(T* begin, T* end){
+    T re = 0;
+    for(T *p = begin; p != end; ++p) re = re + *p;
+    return re;
+}
+
+// template<typename T>
+// T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
+//     T re = 0;
+//     for(auto p = begin; p != end; ++p) re = re + *p;
+//     return re;
+// }
+int sum(vector<int>::iterator begin, vector<int>::iterator end){
+    int re = 0;
+    for(auto p = begin; p != end; ++p) re = re + *p;
+    return re;
+}
+
+ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
+    ll re = 0;
+    for(auto p = begin; p != end; ++p) re = re + *p;
+    return re;
+}
+
 
 void solve(){
-    string a;
-    while(cin >> a){
-        cout << a << endl;
+    int T;
+    cin >> T;
+    while(T--){
+        double n, p, m, q;
+        cin >> n >> p >> m >> q;
+        cout << n*pow(p, q-1) / m << endl;
     }
 }
 
@@ -75,8 +123,8 @@ int main(){
     freopen("in", "r", stdin);
     freopen("o", "w", stdout);
     #endif
-    // cout << setiosflags(ios::fixed);
-    // cout << setprecision(2);
+    cout << setiosflags(ios::fixed);
+    cout << setprecision(1);
     // cout << setw(2) << setfill('0');  // add this every time when cout int with width and left padding '0'
     solve();
     

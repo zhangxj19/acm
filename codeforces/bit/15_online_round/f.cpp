@@ -103,9 +103,41 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
+struct Node{
+    string name;
+    int a, b;
+    double d;
+    int rk;
+};
+vector<Node> node;
 
 void solve(){
+    int n;
+    cin >> n;
+    node.resize(n);
+    rep(i, n){
+        cin >> node[i].name >> node[i].a >> node[i].b;
+        node[i].d = 0.85 * node[i].a + 0.15 * node[i].b;
+    }
     
+    sort(node.begin(), node.end(), [](Node & n1, Node & n2){
+        return !equ(n1.a, n2.a) ? n1.a < n2.a : n1.name < n2.name;
+    });
+    int nn = ceil(n * 0.3);
+    node.resize(nn);
+
+
+    int m = ceil(n * 0.186);
+    sort(node.begin(), node.end(), [](Node & n1, Node & n2){
+        return !equ(n1.d, n2.d) ? n1.d < n2.d : n1.name < n2.name;
+    });
+    #ifdef DEBUG
+    cout << m << endl;
+    each(x, node){
+        cout << x.name << " " << x.d << endl;
+    }
+    #endif
+    cout << node[m-1].name << endl;
 }
 
 int main(){

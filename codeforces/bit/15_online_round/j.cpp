@@ -102,10 +102,79 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     for(auto p = begin; p != end; ++p) re = re + *p;
     return re;
 }
+const int maxk = 5010, maxs = 1e6+1, maxlen=2*1e6+1;
+
+const int inf = 1e9;
+
+int bka[maxk], bkb[maxk], a[maxs], b[maxlen];
+
 
 
 void solve(){
+    // memset(bka, 0, sizeof(bka));
+    // memset(bkb, 0, sizeof(bkb));
+    int k, s;
+    // cin >> k >> s;
+    sf("%d%d", &k, &s);
+    rep(i, s){
+        // cin >> a[i];
+        sf("%d", &a[i]);
+        bka[a[i]]++;
+    }
+    int len;
+    // cin >> len;
+    sf("%d", &len);
+    rep(i, len){
+        // cin >> b[i];
+        sf("%d", &b[i]);
+        bkb[b[i]]++;
+    }
+
+    each(x, a){
+        if(bka[x] > bkb[x]){
+            // cout << "DragonXie" << endl;
+            pf("DragonXie\n");
+            return ;
+        }
+    }
     
+
+    int l = 0, r = len-1;
+    // int maxl = 0, minr = len-1;
+    int re = inf;
+    while(l <= r){ // r--
+        int e = b[r];
+        if(bka[e] > 0 and bkb[e] <= bka[e]){
+            re = min(re, r - l + 1);
+            break;
+        }
+        r--;
+        bkb[e]--;
+        re = min(re, r - l + 1);
+    }
+
+    for(; r < len;){ // r move right 
+        // right move left point 
+        while(l <= r){
+            int e = b[l];
+            if(bka[e] > 0 and bkb[e] <= bka[e]){
+                re = min(re, r - l + 1);
+                break;
+            }
+            l++;
+            bkb[e]--;
+            re = min(re, r - l + 1);
+        }   
+        r++;
+        if(r < len) bkb[b[r]]++;
+    }
+
+    // cout << re << endl;
+    pf("%d\n", re);
+    // cout << re << endl;
+
+        
+        
 }
 
 int main(){

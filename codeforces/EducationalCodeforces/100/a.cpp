@@ -70,42 +70,34 @@ void print(vector<T> &v){
 }
 
 template<typename T>
-void print(T* begin, T* end){
-    for(T *p = begin; p != end; ++p){
-        if(p == begin) cout << *p;
-        else cout << " " << *p;
-    }
-    cout << endl;
-}
-
-template<typename T>
 T sum(T* begin, T* end){
     T re = 0;
     for(T *p = begin; p != end; ++p) re = re + *p;
     return re;
 }
 
-// template<typename T>
-// T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
-//     T re = 0;
-//     for(auto p = begin; p != end; ++p) re = re + *p;
-//     return re;
-// }
-int sum(vector<int>::iterator begin, vector<int>::iterator end){
-    int re = 0;
+template<typename T>
+T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
+    T re = 0;
     for(auto p = begin; p != end; ++p) re = re + *p;
     return re;
 }
 
-ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
-    ll re = 0;
-    for(auto p = begin; p != end; ++p) re = re + *p;
-    return re;
-}
-
-
+ll t,a,b,c;
 void solve(){
-    
+    cin >> t;
+    while(t--){
+        cin >> a >> b >> c;
+        ll s;
+        s = a + b + c;
+        if(s % 9 == 0){
+            if(min(a, min(b, c)) >= (s / 9))
+                cout << "YES" << endl;
+            else 
+                cout << "NO" << endl;
+        }
+        else cout << "NO" << endl;
+    }
 }
 
 int main(){

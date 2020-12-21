@@ -103,9 +103,50 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
+const char * a[] = {
+    "                      *             ",
+    "   *     *   *        *          *  ",
+    "   *     ** **        *     **   *  ",
+    "   *  ***********     *   *  *   *  ",
+    "   *     *   *        *   *  **  *  ",
+    "******  *******    ****** *   *  *  ",
+    "  **   **     **      *   *      *  ",
+    "  **   **      *      *   *      *  ",
+    "  ***  *********      * * *      *  ",
+    " *** * *       *     **** *      *  ",
+    " *** * *********   ****   *  *   *  ",
+    "** *      **          *   * **  **  ",
+    "*  *      **          *   ***   **  ",
+    "   *  ***********     *   **   ***  ",
+    "   *      * **        *   *    * ** ",
+    "   *     **  **       *      **   * ",
+    "   *  ***     ***   ***    ***      ",
+    "   *  *                     *       ",
+};
 
 void solve(){
-    
+    int n;
+    cin >> n;
+    int r = 18, c = 36;
+
+    vector<vector<char>> mp(r*n, vector<char>(c*n));
+    rep(x, r){
+        rep(y, c){
+            repu(i, x*n, x*n+n){
+                repu(j, y*n, y*n+n){
+                    mp[i][j] = a[x][y];
+                }
+            }
+        }
+    }
+    rep(i, mp.size()){
+        rep(j, mp[i].size()){
+            cout << mp[i][j];
+            if(j == mp[i].size()-1) cout << endl;
+        }
+    }
+
+
 }
 
 int main(){

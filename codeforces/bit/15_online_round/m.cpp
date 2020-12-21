@@ -103,9 +103,137 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
     return re;
 }
 
+unsigned seed;
+unsigned myrand(unsigned m) {
+    seed = seed * 22695477 + 1;
+    return seed%m;
+}
+#define EGG 0
+#define DRAGON 1
+#define JUNIOR 2
+#define CARDE 3
+
+struct Node{
+    int type;
+    int h, v;
+    Node(int t=0):type(t){
+        if(type == EGG){
+            h = 5;
+            v = 1;
+        }
+        else if(type == DRAGON){
+            h = 4;
+            v = 4;
+        }
+        else if(type == JUNIOR){
+            h = 6;
+            v = 3;
+        }
+        else if(type == CARDE){
+            h = 2;
+            v = 2;
+        }
+    }
+};
+
+int cnt_carde[2];
+vector<Node> p[2];
+deque<int> d[2];
+int idx[2];
+
+void add1(int player){
+    idx[player]++;
+    idx[player] %= p[player].size();
+}
+
+void summon(vector<Node>& v, int type, int i, int player){  // insert at i
+    Node x(type);
+    v.push_back(x);
+    if(i < idx[player]) add1(player);
+    if(type == CARDE){
+        cnt_carde[player]++;
+    }
+}
+
+void die(vector<Node>& v, int i, int player){
+    if(v[i].type == EGG){
+
+        int cnt = cnt_carde[player];
+        while(v.size() < 7 and cnt > 0){
+            summon(v, DRAGON, i+1, player);
+            cnt--;
+        }
+
+        d[player].push_back(EGG);
+    }
+    else if(v[i].type == DRAGON){
+
+        d[player].push_back(DRAGON);
+    }
+    else if(v[i].type == JUNIOR){
+        
+        rep(i, min(2, (int)d[player].size())){
+            int cnt = cnt_carde[player];
+            while(v.size() < 7 and cnt > 0){
+                summon(v, d[player].front(), i+1, player);
+                d[player].pop_front();
+                cnt--;
+            }
+        }
+
+        d[player].push_back(JUNIOR);
+    }
+    else if(v[i].type == CARDE){
+
+        d[player].push_back(CARDE);
+        cnt_carde[player]--;
+    }
+
+}
 
 void solve(){
-    
+    cin >> seed;
+    int n;
+    cin >> n;
+    rep(i, n){
+        int x;
+        cin >> x;
+        summon(p[0], x, 0, 0);
+    }
+    cin >> n;
+    rep(i, n){
+        int x;
+        cin >> x;
+        summon(p[1], x, 0, 1);
+    }
+
+    rep(i, 10000){
+        int re = 0;
+
+        int first = myrand(2);
+        int rd = 0;
+        while(p[0].size() != 0 and p[1].size() != 0){
+            if(rd % 2 == first){
+                // player 0 attack 
+                int tar = myrand(p[1].size());
+                
+                p[1][tar].h -= p[0][idx[0]].v;
+
+                if(p[1][tar].h < 0){
+
+                }
+
+
+            }
+            else{
+                // player 1 attack 
+            }
+
+            rd++;
+        }
+
+        cout << re << endl;
+    }
 }
 
 int main(){
