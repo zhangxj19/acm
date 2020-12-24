@@ -56,52 +56,51 @@ const double eps = 1e-8;
 
 using namespace std;
 
-int gcd(int a, int b){
-    return !b ? a : gcd(b, a % b);
-}
-
-template<typename T>
-void print(vector<T> &v){
-    rep(i, v.size()){
-        if(i == 0) cout << v[i];
-        else cout << " " << v[i];
+struct UF{
+    vi f, sz; // father and component size
+    int cnt; // set number 
+    UF(int n): cnt(n), f(n), sz(n,1){
+        rep(i, n){f[i] = i;}
     }
-    cout << endl;
-}
 
-template<typename T>
-void print(T* begin, T* end){
-    for(T *p = begin; p != end; ++p){
-        if(p == begin) cout << *p;
-        else cout << " " << *p;
+    int find(int x){
+        return x == f[x] ? x : f[x] = find(f[x]);
     }
-    cout << endl;
-}
+
+    bool unite(int x, int y){
+        x=find(x), y=find(y);
+        if(x==y) return false;
+        else{
+            if(sz[x] < sz[y]) swap(x, y);
+            f[y] = x;
+            sz[x] += sz[y];
+            cnt--;
+            return true;
+        }
+    }
+
+    bool connected(int x, int y){
+        return find(x) == find(y);
+    }
+
+};
+
+int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
-T sum(T* begin, T* end){
-    T re = 0;
-    for(T *p = begin; p != end; ++p) re = re + *p;
-    return re;
-}
+void print(vector<T> &v){rep(i, v.size()){if(i == 0) cout << v[i];else cout << " " << v[i];}cout << endl;}
 
-// template<typename T>
-// T sum(typename vector<T>::iterator begin, typename vector<T>::iterator end){
-//     T re = 0;
-//     for(auto p = begin; p != end; ++p) re = re + *p;
-//     return re;
-// }
-int sum(vector<int>::iterator begin, vector<int>::iterator end){
-    int re = 0;
-    for(auto p = begin; p != end; ++p) re = re + *p;
-    return re;
-}
+template<typename T>
+void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p == begin) cout << *p;else cout << " " << *p;}cout << endl;}
 
-ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){
-    ll re = 0;
-    for(auto p = begin; p != end; ++p) re = re + *p;
-    return re;
-}
+template<typename T>
+T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;return re;}
+
+int sum(vector<int>::iterator begin, vector<int>::iterator end){int re = 0;for(auto p = begin; p != end; ++p) re = re + *p;return re;}
+
+ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto p = begin; p != end; ++p) re = re + *p;return re;}
+
+int read(){int x; cin >> x; return x;}
 
 
 void solve(){
