@@ -4,6 +4,7 @@
         "algorithm": "cpp",
         "random": "cpp",
         "ios": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "utility": "cpp"
     }
 }
