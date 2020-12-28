@@ -104,9 +104,47 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+int m, s, c;
+vi a, C;
 
 void solve(){
+    cin >> m >> s >> c;
+    a.resize(c);
+    C.resize(c-1);
+    rep(i, c){
+        cin >> a[i];
+    }
+
+    if(m >= c){
+        cout << c << endl;
+        return ;
+    }
+    sort(a.begin(), a.end());
     
+    int ans = a[c-1] - a[0] + 1;
+
+    rep(i, c-1){
+        C[i] = a[i+1] - a[i] - 1;
+    }
+    sort(C.begin(), C.end(), greater<int>());
+
+    #ifdef DEBUG
+    print(a);
+    print(C);
+    #endif
+
+    rep(i, m-1){
+        ans -= C[i];
+    }
+    cout << ans << endl;
+
+
+
+
+
+
+
+
 }
 
 int main(){

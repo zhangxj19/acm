@@ -54,7 +54,6 @@ const double eps = 1e-8;
 #define vi vector<int>
 #define vvi vector<vector<int>>
 #define pii pair<int, int>
-#define pll pair<ll, ll>
 
 using namespace std;
 
@@ -104,9 +103,46 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+#define pll pair<ll, ll>
+
 
 void solve(){
-    
+    int n;
+    cin >> n;
+    vector<pll> a;
+    rep(i, n){
+        pll x;
+        cin >> x.first >> x.second;
+        a.push_back(x);
+    }
+    sort(a.begin(), a.end(), [](pll& p1, pll& p2){
+        return p1.first < p2.first;
+    });
+
+    #ifdef DEBUG2
+    each(x, a){
+        cout << "(" << x.first << ", " << x.second << ") "; 
+    }
+    cout << endl;
+    #endif
+
+    ll re = 0;
+    priority_queue<ll, vector<ll>, greater<ll>> pq;
+    rep(i, n){
+        if(pq.size() >= a[i].first){
+            if(a[i].second > pq.top()){
+                re += a[i].second - pq.top();
+                pq.pop();
+                pq.push(a[i].second);
+            }
+        }
+        else{
+            re += a[i].second;
+            pq.push(a[i].second);
+        }
+    }
+    cout << re << endl;
+
 }
 
 int main(){

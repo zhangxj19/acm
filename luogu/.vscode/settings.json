@@ -5,6 +5,9 @@
         "random": "cpp",
         "ios": "cpp",
         "ostream": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "vector": "cpp",
+        "unordered_map": "cpp",
+        "queue": "cpp"
     }
 }

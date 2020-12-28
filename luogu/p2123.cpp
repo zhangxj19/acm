@@ -104,9 +104,46 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+int T, n;
+struct Node{
+    int a, b, d;
+};
 
-void solve(){
-    
+void solve(){   
+    cin >> T;
+    while(T--){
+        cin >> n;
+        vector<Node> v(n);
+        rep(i, n){
+            cin >> v[i].a >> v[i].b;
+            v[i].d = v[i].a - v[i].b; 
+            if(v[i].d) v[i].d /= abs(v[i].d);
+            // if(v[i].d < 0) v[i].d = -1;
+            // else if(v[i].d > 0) v[i].d = 1;
+        }
+        sort(v.begin(), v.end(), [](Node& x, Node& y){
+            if(x.d != y.d) return x.d < y.d;
+            else{
+                if(x.d <=0) return x.a < y.a;
+                else return x.b > y.b;
+            }
+        });
+
+        ll c = 0, suma = 0;
+        rep(i, n){
+            suma += v[i].a;
+            c = max(c, suma) + v[i].b;
+            // re = max(re, c);
+        }
+        cout << c << endl;
+
+        
+
+
+
+
+
+    }
 }
 
 int main(){

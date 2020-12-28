@@ -54,7 +54,6 @@ const double eps = 1e-8;
 #define vi vector<int>
 #define vvi vector<vector<int>>
 #define pii pair<int, int>
-#define pll pair<ll, ll>
 
 using namespace std;
 
@@ -106,7 +105,9 @@ int read(){int x; cin >> x; return x;}
 
 
 void solve(){
-    
+    vi a(10);
+    iota(a.begin(), a.end(), 1);
+    print(a);
 }
 
 int main(){
