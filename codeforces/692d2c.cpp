@@ -6,7 +6,6 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
-// 5) use cout << '\n'; instead of cout << endl; (cout << endl is really slow)
 // override the () operator
 // struct cmp{
 //     bool operator()(const T &a, const T &b) const{
@@ -88,16 +87,6 @@ struct UF{
 
 };
 
-int lowerbound(vector<int>& a, int x){
-    int l = 0, r = a.size() -1 ;
-    while(l < r){
-        int m = (l + r) >> 1;
-        if(a[m] < x) l = m + 1;
-        else r = m;
-    }
-    return l;
-}
-
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
@@ -115,8 +104,68 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+struct Node{
+    int d;
+    vi n;
+};
+vector<Node> node;
+vi bk;
+
+int is_loop= false;
+void check_loop(int u, int x){
+    each(v, node[u].n){
+        if(v == u) continue;
+        if(bk[v] == 0){
+            bk[v] = x;
+            check_loop(v, x);
+        }
+        else if(bk[v] == x){
+            is_loop = true;
+            break;
+        }
+    }
+}
 
 void solve(){
+    int t;
+    cin >> t;
+    while(t--){
+        int n, m;
+        cin >> n >> m;
+        node.clear();
+        node.resize(n+1);
+        bk.clear();
+        bk.resize(n+1, 0);
+        rep(i, m){
+            int x, y;
+            cin >> x >> y;
+            node[x].n.push_back(y);
+        }
+
+        int cnt_cycle = 0, cnt_loop = 0;
+
+        repu(u, 1, n+1){
+            each(v, node[u].n) if(v == u) cnt_cycle++;
+
+            if(bk[u] == 0){
+                is_loop = false;
+                bk[u] = u;
+                check_loop(u, u);
+                if(is_loop) cnt_loop++;
+            }
+        }
+        #ifdef DEBUG
+        cout << "loop is " << cnt_loop << ", cnt_cycle is " << cnt_cycle << endl;
+        #endif
+
+        cout << cnt_loop + m - cnt_cycle << endl;
+
+
+
+
+
+    }
+
     
 }
 

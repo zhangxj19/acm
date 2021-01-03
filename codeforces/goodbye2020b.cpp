@@ -117,7 +117,24 @@ int read(){int x; cin >> x; return x;}
 
 
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        map<int, int> mp;
+        rep(i, n){
+            int x;
+            cin >> x;
+            mp[x]++;
+        }
+        each(x, mp){
+            if(x.second > 1){
+                mp[x.first+1]++;
+            }
+        }
+        cout << mp.size() << endl;
+    }
 }
 
 int main(){

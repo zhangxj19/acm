@@ -115,9 +115,24 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+unordered_set<int> S;
+string x;
+
 
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        cin >> x;
+        S.clear();
+        for(int i = 1; i < x.size(); ++i){
+            // 2
+            if(x[i] == x[i-1] and S.count(i-1) == 0) S.insert(i);
+            // 3            
+            if(i - 2 >= 0 and x[i] == x[i-2] and S.count(i-2) == 0) S.insert(i);
+        }
+        cout << S.size() << endl;
+    }
 }
 
 int main(){

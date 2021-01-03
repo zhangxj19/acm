@@ -115,9 +115,83 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+struct Edge{
+    int from, to, t;
+    Edge(int from, int to, int t):from(from), to(to), t(t){}
+};
+vector<Edge> edge;
+
+struct Node{
+    vector<int> edgeid;
+};
+vector<Node> node;
+
+void add_edge(int from, int to, int t){
+    node[from].edgeid.push_back(edge.size());
+    edge.push_back(Edge(from, to ,t));
+}
 
 void solve(){
+    int n, m;
+    cin >> n >> m;
+    vector<vector<pii>> g(n);
+    rep(i, m){
+        int u, v, t;
+        cin >> u >> v >> t;
+        u--; v--;
+        // g[u].emplace_back(v, t);
+        g[v].emplace_back(u, t);
+        // add_edge(u, v, t);
+    }
+
+    const int inf = (int) 1e9;
+    // priority_queue<pii, vector<pii>, greater<pii>> pq; // distance and index
     
+    vector<vector<int>> dist(n, {inf, inf});
+    // dist[0][0] = dist[0][1] = 0;
+    dist[n-1][0] = dist[n-1][1] = 0;
+
+    // pq.emplace(0, 0);    
+    set<pii> s;
+    // s.emplace(0, 0); // distance and index;
+    s.emplace(0, n-1);
+
+    // s中放入抵达x点的最大距离(两种颜色取最大值)
+    // 从s中取出距离最小的点x; 
+    // 从x点出发抵达y点,x到y可能有不同的颜色,抵达后刷新以不同颜色
+    // 抵达y点的距离,s中持续放入抵达y点的最大距离.
+    // dijkstra结束后查看以不同颜色抵达城市最大距离,
+    // 若0色抵达大给其涂0,反之涂1色.
+    // Q:为什么需要反向dijkstra?
+    // A:原题中是从x出发到y,x和路径颜色一致.反向以后从x出发到y,
+    //   y和路径颜色一致, 根据抵达y的不同颜色方案选出最大值可以给y
+    //   染色.
+    while(!s.empty()){
+        int d = s.begin()->first;  // 维持d为抵达i城最大路径(白黑两种情况)
+                                    // d == max(dist[i][0], dist[i][1])
+        int i = s.begin()->second;
+        s.erase(s.begin());
+        each(p, g[i]){
+            int j = p.first;
+            int t = p.second;
+            if(d + 1 < dist[j][t]){ // 以颜色t到达j点可以松弛
+                auto it = s.find(make_pair(max(dist[j][0], dist[j][1]), j)); // 删除j点最大值
+                if(it != s.end()) s.erase(it);
+                dist[j][t] = d + 1;
+                s.emplace(max(dist[j][0], dist[j][1]), j); // s中放入抵达j点的最大距离
+            }
+        }
+    }
+    // int d = max(dist[n-1][0], dist[n-1][1]);
+    int d = max(dist[0][0], dist[0][1]);
+    cout << (d == inf ? -1 : d) << '\n';
+    rep(i, n){
+        cout << (dist[i][0] > dist[i][1] ? '0' : '1');
+    }
+    cout << '\n';
+
+
+
 }
 
 int main(){

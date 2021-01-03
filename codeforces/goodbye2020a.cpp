@@ -117,7 +117,23 @@ int read(){int x; cin >> x; return x;}
 
 
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        vi a;
+        rep(i, n){
+            a.push_back(read());
+        }
+        set<int> S;
+        rep(i, n){
+            repu(j, i+1, n){
+                S.insert(a[j] - a[i] + 1);
+            }
+        }
+        cout << S.size() << endl;
+    }
 }
 
 int main(){

@@ -6,7 +6,6 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
-// 5) use cout << '\n'; instead of cout << endl; (cout << endl is really slow)
 // override the () operator
 // struct cmp{
 //     bool operator()(const T &a, const T &b) const{
@@ -88,16 +87,6 @@ struct UF{
 
 };
 
-int lowerbound(vector<int>& a, int x){
-    int l = 0, r = a.size() -1 ;
-    while(l < r){
-        int m = (l + r) >> 1;
-        if(a[m] < x) l = m + 1;
-        else r = m;
-    }
-    return l;
-}
-
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
@@ -117,7 +106,34 @@ int read(){int x; cin >> x; return x;}
 
 
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        string s;
+        cin >> s;
+        int ok = 0;
+        int x = s.find('('), y = s.find(')');
+        int size=  s.size();
+        if(x < y){
+            // even ( even ) even
+            //      x      y
+            int a = x, b = y - 1 - x, c = size - 1 - y;
+            if((a + b + c) % 2 == 0) ok = 1;
+        }
+        else{
+            // odd ) even ( odd
+            //     y      x
+            int a = x, b = x - 1 - y, c = size - 1 - x;
+            if(a == 0) ok = 0;
+            if(b != 0) ok = 0;
+            if(c % 2 == 0) ok = 0;
+        }
+        
+
+        if(ok) cout << "YES" << endl;
+        else cout << "NO" << endl;
+
+    }
 }
 
 int main(){

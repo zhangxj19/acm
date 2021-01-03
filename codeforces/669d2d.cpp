@@ -117,7 +117,60 @@ int read(){int x; cin >> x; return x;}
 
 
 void solve(){
+    int n;
+    cin >> n;
+    vi a(n);
+    rep(i, n){
+        cin >> a[i];
+    }
+
     
+    
+    vector<set<int>> g(n);
+    auto add = [&](int i, int j){
+        g[i].insert(j);
+    };
+    rep(rot, 2){
+
+        stack<int> st;
+        rep(i, n){
+            while(!st.empty() and a[st.top()] < a[i]){ //不满足单调减则添加路径并出栈
+                add(st.top(), i);
+                st.pop();
+            }
+            if(!st.empty()){
+                add(st.top(), i);
+                if(a[st.top()] == a[i]) st.pop(); // 保证单调减(可能会相等),取后一个
+            }
+            st.push(i);
+        }
+        rep(i, n) a[i] = -a[i];  //max和min都尝试一遍
+    }
+
+
+    
+    queue<pii> que; // bfs
+    vi bk(n, 0);
+    int re;
+    que.push(make_pair(0, 0)); // idx and dist
+    bk[0] = 1;
+    while(!que.empty()){
+        pii x = que.front(); que.pop();
+        if(x.first == n-1) re = x.second;
+        each(v, g[x.first]){
+            if(bk[v] == 0){
+                bk[v] = 1;
+                que.push(make_pair(v, x.second+1));
+            }
+        }
+    }
+    cout << re << endl;
+
+
+
+
+
+
 }
 
 int main(){

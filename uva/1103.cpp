@@ -6,7 +6,6 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
-// 5) use cout << '\n'; instead of cout << endl; (cout << endl is really slow)
 // override the () operator
 // struct cmp{
 //     bool operator()(const T &a, const T &b) const{
@@ -88,16 +87,6 @@ struct UF{
 
 };
 
-int lowerbound(vector<int>& a, int x){
-    int l = 0, r = a.size() -1 ;
-    while(l < r){
-        int m = (l + r) >> 1;
-        if(a[m] < x) l = m + 1;
-        else r = m;
-    }
-    return l;
-}
-
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
@@ -115,9 +104,155 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+const int maxn = 201;
+
+int h, w, a[maxn][maxn], b[maxn][maxn];
+map<int, int> cnt;
+vector<char> re;
+
+inline int alpha2num(char x){
+    if(x >= '0' and x <= '9') return x - '0';
+    else return x - 'a' + 10;
+}
+
+string num2binary(int x){ // 4 bits
+    string re; 
+    for(int i = 3; i > -1; --i){
+        if((x & (1 << i))) re += '1';
+        else re += '0';
+    }
+    return re;
+}
+
+int dir[4][2] = {
+    {-1,  0},
+    { 0,  1},
+    { 1,  0},
+    { 0, -1},
+};
+
+int inbox(int x, int y){
+    return x >= 0 and x < h and y >= 0 and y < 4*w;
+}
+
+void dfs_black(int x, int y, int type){
+    rep(i, 4){
+        int nx = x + dir[i][0], ny = y + dir[i][1];
+        if(inbox(nx, ny) and a[nx][ny] == 1 and b[nx][ny] == 0 ){
+            b[nx][ny] = type;
+            dfs_black(nx, ny, type);
+        }
+    }
+}
+
+int is_back_gnd = false;
+int btype = 0;
+void dfs_w(int x, int y){
+    
+    rep(i, 4){
+        int nx = x + dir[i][0], ny = y + dir[i][1];
+        if(!inbox(nx, ny)){
+            is_back_gnd = 1;
+        }
+        else if(a[nx][ny] == 1) btype = b[nx][ny];
+        else if(a[nx][ny] == 0 and b[nx][ny] == 0){
+            b[nx][ny] = -1;
+            dfs_w(nx, ny);
+        }
+    }
+}
+
+
 
 void solve(){
-    
+    int kase = 0;
+    while(cin >> h >> w, !(h == 0 and w == 0)){
+        memset(a, 0, sizeof(a));
+        memset(b, 0, sizeof(b));
+        cnt.clear();
+        re.clear();
+        rep(i, h){
+            string s; 
+            cin >> s;
+            rep(j, s.size()){
+                string x = num2binary(alpha2num(s[j]));
+                #ifdef DEBUG2
+                cout << s[j] << " , " << x << endl;
+                #endif
+                repu(k, j*4, j*4 + 4){
+                    a[i][k] = x[k - 4*j] - '0';
+                }
+            }
+        }
+        #ifdef DEBUG2
+        rep(i, h){
+            rep(j, 4*w){
+                cout << a[i][j];
+            }
+            cout << endl;
+        }
+        #endif
+        // black
+
+        int type = 1;
+        rep(i, h){
+            rep(j, 4*w){
+                if(a[i][j] == 1 and b[i][j] == 0){
+                    b[i][j] = type;
+                    dfs_black(i, j, type);
+                    cnt[type] = 0;
+                    type++;
+                }
+            }
+        }
+
+
+        rep(i, h){
+            rep(j, 4*w){
+                if(a[i][j] == 0 and b[i][j] == 0){
+                    b[i][j] = -1;
+                    is_back_gnd = false;
+                    btype = 0;
+                    dfs_w(i, j);
+                    if(!is_back_gnd){
+                        cnt[btype]++;
+                    }
+                }
+            }
+        }
+
+        #ifdef DEBUG
+        rep(i, h){
+            rep(j, 4*w){
+                cout << b[i][j];
+            }
+            cout << endl;
+        }
+        #endif
+
+        each(x, cnt){
+            #ifdef DEBUG
+            cout << x.first << ", " << x.second << endl;
+            #endif
+            if(x.second == 1) re.push_back('A');
+            else if(x.second == 3) re.push_back('J');
+            else if(x.second == 5) re.push_back('D');
+            else if(x.second == 4) re.push_back('S');
+            else if(x.second == 0) re.push_back('W');
+            else if(x.second == 2) re.push_back('K');
+        }
+        sort(re.begin(), re.end());
+
+        cout << "Case " << ++kase << ": ";
+        each(ch, re){
+            cout << ch;
+        }
+        cout << endl;
+
+
+
+
+    }
 }
 
 int main(){

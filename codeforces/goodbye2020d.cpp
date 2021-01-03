@@ -115,9 +115,31 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+struct Node{
+    int w;
+    vi n;
+};
+vector<Node> node;
 
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        node.clear();
+        int n;
+        cin >> n;
+        node.resize(n+1);
+        repu(i, 1, n+1){
+            cin >> node[i].w;
+        }
+        rep(i, n-1){
+            int u, v;
+            cin >> u >> v;
+            node[u].n.push_back(v);
+            node[v].n.push_back(u);
+        }
+        
+    }    
 }
 
 int main(){

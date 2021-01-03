@@ -116,8 +116,37 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 int read(){int x; cin >> x; return x;}
 
 
+int ask(int x, int y){
+    cout << "? " << x << " " << y << "\n";
+    cout.flush();
+    int re;
+    cin >> re;    
+    return re;
+}
+
 void solve(){
-    
+    int n;
+    cin >> n;
+    vi re(n+1);
+
+    int i = 1;
+    for(int j = 2; j <= n; ++j){
+        int x = ask(i, j), y = ask(j, i);
+        if(x > y){
+            re[i] = x;
+            i = j;
+        }
+        else{
+            re[j] = y;
+        }
+    } 
+    re[i] = n;
+    cout << "! ";
+    for(int i = 1; i <= n; ++i){
+        if(i != 1) cout << " ";
+        cout << re[i];
+    }
+    cout << '\n';
 }
 
 int main(){

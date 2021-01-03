@@ -6,7 +6,6 @@
 // 2) dynamic map or tree can only use Node* 
 // 3) int bk[maxn] is much faster than unordered_set; bk << unordered_set << set
 // 4) int bk[maxn] = {0} is much faster than memset(bk, 0, sizeof(bk));
-// 5) use cout << '\n'; instead of cout << endl; (cout << endl is really slow)
 // override the () operator
 // struct cmp{
 //     bool operator()(const T &a, const T &b) const{
@@ -87,16 +86,6 @@ struct UF{
     }
 
 };
-
-int lowerbound(vector<int>& a, int x){
-    int l = 0, r = a.size() -1 ;
-    while(l < r){
-        int m = (l + r) >> 1;
-        if(a[m] < x) l = m + 1;
-        else r = m;
-    }
-    return l;
-}
 
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 

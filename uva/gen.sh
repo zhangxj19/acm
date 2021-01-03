@@ -23,3 +23,4 @@ rm .cpp
 fi
 
 rm -r ./*.dSYM
+python clean.py

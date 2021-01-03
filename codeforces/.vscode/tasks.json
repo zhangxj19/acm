@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "codeforces clang++ clang and lldb flags",
+			"label": "acm clang++ clang and lldb flags",
 			"command": "/usr/bin/clang++",
 			"args": [
 				"-std=c++14",
@@ -11,7 +11,7 @@
 				"-DDEBUG",
 				"-DLOCAL",
 				// "-glldb",
-				// "-D_GLIBCXX_DEBUG", 
+				// "-D_GLIBCXX_DEBUG",
 				"-g",
 				"${file}",
 				"-o",
@@ -23,8 +23,12 @@
 			"problemMatcher": [
 				"$gcc"
 			],
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"detail": "compiler: /usr/bin/clang++"
+
 		},
 		{
 			"type": "shell",
