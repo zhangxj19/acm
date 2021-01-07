@@ -178,7 +178,7 @@ void solve(){
             
             each(x, g[u]){
                 int v = x.first, c = x.second;
-                if(c == minc and b[v] == 0){
+                if(c == minc and b[v] == 0 and dist[v] == dist[u] - 1){
                     b[v] = 1;
                     nq.push({v, d+1});
                     considered[d+1].insert(v);
