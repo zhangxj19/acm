@@ -101,10 +101,10 @@ int lowerbound(vector<int>& a, int x){
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
-void print(vector<T> &v){rep(i, v.size()){if(i == 0) cout << v[i];else cout << " " << v[i];}cout << '\n';}
+void print(vector<T> &v){rep(i, v.size()){if(i == 0) cout << v[i];else cout << " " << v[i];}cout << endl;}
 
 template<typename T>
-void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p == begin) cout << *p;else cout << " " << *p;}cout << '\n';}
+void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p == begin) cout << *p;else cout << " " << *p;}cout << endl;}
 
 template<typename T>
 T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;return re;}
@@ -116,8 +116,44 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 int read(){int x; cin >> x; return x;}
 
 
+
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        vector<ll> a(n), dg(n);
+        rep(i, n) cin >> a[i];
+        rep(i, n-1){
+            int u, v;
+            cin >> u >> v; 
+            u--; v--;
+            dg[u]++;
+            dg[v]++;
+        }
+        priority_queue<pii, vector<pii>, less<pii>> s;
+        rep(i, n){
+            if(dg[i] > 1)
+                s.push({a[i], dg[i]});
+        }
+        ll sm = sum(a.begin(), a.end());
+        vector<ll> re(n, 0);
+        re[0] = sm;
+        repu(i, 1, n-1){
+            int w = s.top().first, d = s.top().second;
+            s.pop();
+            re[i] = re[i-1] + w;
+            d--;
+            if(d > 1)
+                s.push({w, d});
+        }
+        rep(i, n-1){
+            if(i != 0) cout << " ";
+            cout<< re[i];
+        }
+        cout << '\n';
+    }
 }
 
 int main(){

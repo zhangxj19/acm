@@ -117,7 +117,24 @@ int read(){int x; cin >> x; return x;}
 
 
 void solve(){
-    
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        vector<ll> a(n);
+        rep(i, n) cin >> a[i];
+        const ll P = 1e9+7;        
+        ll re = 0;
+        rep(i, n){
+            rep(j, n){
+                rep(k, n){
+                    re += (a[i] & a[j]) * (a[j] | a[k]) % P;
+                }
+            }
+        }
+        cout << re << '\n';
+    }    
 }
 
 int main(){

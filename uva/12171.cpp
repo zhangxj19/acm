@@ -115,9 +115,99 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
+const int maxn = 102;
+
+bool a[maxn][maxn][maxn];
+bool b[maxn][maxn][maxn];
+
+int dir[6][3] = {
+    { 1,  0,  0},
+    {-1,  0,  0},
+    { 0,  1,  0},
+    { 0, -1,  0},
+    { 0,  0,  1},
+    { 0,  0, -1},
+};
+
+int ssum = 0, vsum = 0, vcnt = 0, scnt = 0;
+int inbox(int x, int y, int z){
+    return 0 <= x and x < maxn and 0 <= y and y < maxn and 0 <= z and z < maxn;
+};
+
+int touchborder = 0;
+
+void bfs(int _x, int _y, int _z){
+    queue<vector<int>> que;
+    que.push({_x, _y, _z});
+    b[_x][_y][_z] = 1;
+    while(!que.empty()){
+        int x = que.front()[0], y = que.front()[1], z = que.front()[2];
+        vcnt++;
+        que.pop();
+        rep(i, 6){
+            int nx = x + dir[i][0], ny = y + dir[i][1], nz = z + dir[i][2];
+            if(!inbox(nx, ny, nz)) touchborder = 1;
+            else{
+                if(a[nx][ny][nz] == 0 and b[nx][ny][nz] == 0){
+                    b[nx][ny][nz] = 1;
+                    que.push({nx, ny, nz});
+                }
+                if(a[nx][ny][nz] == 1) scnt++;
+            }
+        } 
+    }
+
+}
 
 void solve(){
-    
+    int t;
+    cin >> t;
+
+    while(t--){
+        memset(a, 0, sizeof(a));
+        memset(b, 0, sizeof(b));
+        int n;
+        cin >> n;
+        rep(_, n){
+            int x0, y0, z0, x, y, z;
+            cin >> x0 >> y0 >> z0 >> x >> y >> z;
+            auto fill = [&](){
+                repu(i, x0, x0 + x){
+                    repu(j, y0, y0 + y){
+                        repu(k, z0, z0 + z){
+                            a[i][j][k] = 1;
+                        }
+                    }
+                }
+            };
+            fill();
+        }
+
+        ssum = 0; vsum = maxn*maxn*maxn; vcnt = 0; scnt = 0;
+
+        int quit = 0;
+        rep(i, maxn){
+            rep(j, maxn){
+                rep(k, maxn){
+                    if(a[i][j][k] == 0 and b[i][j][k] == 0){
+                        b[i][j][k] = 1;
+                        bfs(i, j, k);
+                        if(touchborder){
+                            ssum += scnt;
+                            vsum -= vcnt;
+                            quit = 1;
+                            break;
+                        } 
+                    }
+                }
+                if(quit) break;
+            }
+            if(quit) break;
+        }
+        cout << ssum << " " << vsum <<                                                                                                                                  "\n";
+
+
+    }    
 }
 
 int main(){
@@ -127,7 +217,7 @@ int main(){
     #endif
     #ifdef LOCAL
     freopen("in", "r", stdin);
-    freopen("o", "w", stdout);
+    // freopen("o", "w", stdout);
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);

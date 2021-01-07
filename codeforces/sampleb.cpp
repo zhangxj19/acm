@@ -117,7 +117,9 @@ int read(){int x; cin >> x; return x;}
 
 
 void solve(){
-    
+    ll a, b;
+    cin >> a >> b;
+    cout << a + b << '\n';
 }
 
 int main(){

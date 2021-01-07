@@ -5,6 +5,10 @@
         "random": "cpp",
         "ios": "cpp",
         "ostream": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "vector": "cpp",
+        "iosfwd": "cpp",
+        "iterator": "cpp",
+        "queue": "cpp"
     }
 }
