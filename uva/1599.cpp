@@ -126,6 +126,9 @@ void solve(){
             int u, v, c;
             cin >> u >> v >> c;
             u--; v--;
+            #ifdef DEBUG
+            cout << u << " " << v << " " << c << endl;
+            #endif
             g[u].push_back({v, c});
             g[v].push_back({u, c});
         }
@@ -157,41 +160,45 @@ void solve(){
         b.clear(); b.resize(n, 0);
 
         vi re;
-        nq.push({0, 0}); // index and dist
+        nq.push({0, 0}); // index and depth
         b[0] = 1;
         const int inf = (int) 1e9+1;
-        vector<set<int>> considered(n);
-        considered[0].insert(0);
+        vector<int> minc(n, inf); // minc along depth
+        each(v, g[0]){   
+            minc[0] = min(minc[0], v.second); // dep at 0 min color
+        }
         while(!nq.empty()){
             int u = nq.front().first, d = nq.front().second; nq.pop();
-            if(u == n-1) break;
-            int minc = inf;
-            each(uu, considered[d]){
-                each(x, g[uu]){
-                    int v = x.first;
-                    if(dist[v] == dist[uu] - 1 and b[v] == 0)
-                        minc = min(minc, x.second);
-                }
-            }
+            // if(u == n-1) break;
 
-            int added = 0;
             
-            each(x, g[u]){
+            each(x, g[u]){ // v are all the nodes that are depth + 1
                 int v = x.first, c = x.second;
-                if(c == minc and b[v] == 0 and dist[v] == dist[u] - 1){
+                if(c == minc[d] and b[v] == 0 and dist[v] == dist[u] - 1){
                     b[v] = 1;
                     nq.push({v, d+1});
-                    considered[d+1].insert(v);
-                    if(!added){
-                        added = 1;
-                        re.push_back(minc);
+
+                    // v is added to nq;
+                    each(xx, g[v]){
+                        int w = xx.first, c = xx.second;
+                        if(dist[w] == dist[v] - 1 and b[w] == 0)
+                            minc[d+1] = min(minc[d+1], c);
                     }
+
                 }
             }
         }
 
         cout << dist[0] << '\n';
-        print(re);
+        // rep(i, dist[0]){
+        //     if(i != 0) cout << " ";
+        //     cout << minc[i];
+        // }
+        for(int i = 0; minc[i] != inf; ++i){
+            if(i != 0) cout << " ";
+            cout << minc[i];
+        }
+        cout << '\n';
 
 
 

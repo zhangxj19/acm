@@ -14,7 +14,8 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "MIMode": "gdb"
+            // "MIMode": "gdb"
+            "MIMode": "lldb"
         }
     ]
 }

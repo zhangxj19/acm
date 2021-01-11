@@ -5,9 +5,13 @@
         "random": "cpp",
         "ios": "cpp",
         "ostream": "cpp",
-        "utility": "cpp",
+        "iostream": "cpp",
         "vector": "cpp",
-        "unordered_map": "cpp",
-        "queue": "cpp"
+        "iosfwd": "cpp",
+        "iterator": "cpp",
+        "queue": "cpp",
+        "iomanip": "cpp",
+        "stack": "cpp",
+        "utility": "cpp"
     }
 }

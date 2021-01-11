@@ -4,6 +4,14 @@
         "algorithm": "cpp",
         "random": "cpp",
         "ios": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "iostream": "cpp",
+        "vector": "cpp",
+        "iosfwd": "cpp",
+        "iterator": "cpp",
+        "queue": "cpp",
+        "iomanip": "cpp",
+        "stack": "cpp",
+        "utility": "cpp"
     }
 }
