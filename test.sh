@@ -1,4 +1,3 @@
-#!bin/bash
 while true; do
     ./r > input
     ./a < input > o.a

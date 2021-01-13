@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define int long long
+// #define int long long
 #define rep(i, n) for (int i = 0, size = (n); i < size; ++i)
 #define repu(i, a, b) for (int i = (a), _upper_bound = (b); i < _upper_bound; ++i)
 #define repd(i, a, b) for (int i = (a), _lower_bound = (b); i > _lower_bound; --i)
@@ -40,8 +40,51 @@ void solve(){
     int n;
     while(cin >> n){
         vi bfs(n), dfs(n);
-        rep(i, n) cin >> bfs[i];
-        rep(i, n) cin >> dfs[i];
+        vi bfs_posi(n+1);
+        #ifdef DEBUG2
+        cout << "ok here" << '\n';
+        #endif
+        rep(i, n){
+            cin >> bfs[i];
+            bfs_posi[bfs[i]] = i;
+        }
+        map<int, vi> re;
+        int root = bfs[0];
+        stack<int> st;
+        rep(i, n){
+            int x;
+            cin >> x;
+            if(x == root){
+                st.push(x); continue;
+            }
+            else{
+                while(1){
+                    if(st.top() == root || bfs_posi[st.top()] + 1 < bfs_posi[x]){
+                        re[st.top()].push_back(x);
+                        st.push(x);
+                        break;
+                    }
+                    else{
+                        st.pop();
+                    }
+                }
+            }
+        }
+        repu(key, 1, n+1){
+            cout << key << ":";
+            if(re.count(key)){
+                // vi opt = re[key];
+                sort(re[key].begin(), re[key].end());                
+                each(y, re[key]){
+                    cout << " " << y;
+                }
+            }
+
+            cout << '\n';
+        }
+        #ifdef DEBUG2
+        cout << "finish\n";
+        #endif
         
     }    
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# !/usr/bin/env bash
 echo "sh gen.sh [filename, filename.cpp]"
 f=$1
 f=${f%.*}
@@ -23,4 +23,5 @@ rm .cpp
 fi
 
 rm -r ./*.dSYM
-python clean.py
+python3 clean.py
+python3 statistic.py
