@@ -1,7 +1,5 @@
 #include <bits/stdc++.h>
 
-using namespace std;
-
 #define int long long
 #define rep(i, n) for (int i = 0, size = (n); i < size; ++i)
 #define repu(i, a, b) for (int i = (a), _upper_bound = (b); i < _upper_bound; ++i)
@@ -20,6 +18,19 @@ const double eps = 1e-8;
 #define vi vector<int>
 #define vvi vector<vector<int>>
 #define pii pair<int, int>
+#define pll pair<ll, ll>
+
+using namespace std;
+
+int lowerbound(vector<int>& a, int x){
+    int l = 0, r = a.size() -1 ;
+    while(l < r){
+        int m = (l + r) >> 1;
+        if(a[m] < x) l = m + 1;
+        else r = m;
+    }
+    return l;
+}
 
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
@@ -35,6 +46,35 @@ T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;r
 int sum(vector<int>::iterator begin, vector<int>::iterator end){int re = 0;for(auto p = begin; p != end; ++p) re = re + *p;return re;}
 
 int read(){int x; cin >> x; return x;}
+
+struct UF{
+    vi f, sz; // father and component size
+    int cnt; // set number 
+    UF(int n): cnt(n), f(n), sz(n,1){
+        rep(i, n){f[i] = i;}
+    }
+
+    int find(int x){
+        return x == f[x] ? x : f[x] = find(f[x]);
+    }
+
+    bool unite(int x, int y){
+        x=find(x), y=find(y);
+        if(x==y) return false;
+        else{
+            if(sz[x] < sz[y]) swap(x, y);
+            f[y] = x;
+            sz[x] += sz[y];
+            cnt--;
+            return true;
+        }
+    }
+
+    bool connected(int x, int y){
+        return find(x) == find(y);
+    }
+
+};
 
 void solve(){
     

@@ -148,7 +148,7 @@ void solve(){
                 int v = x.first, nd = x.second;
                 if(!vis[v] and nd < dist[v]){
                     dist[v] = nd;
-                    pq.push({nd, v});
+                    pq.pusawh({nd, v});
                 }
             }
         }

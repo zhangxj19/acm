@@ -101,10 +101,10 @@ int lowerbound(vector<int>& a, int x){
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
-void print(vector<T> &v){rep(i, v.size()){if(i == 0) cout << setw(2) << setfill('0') << v[i];else cout << " "  << setw(2) << setfill('0') << v[i];}cout << '\n';}
+void print(vector<T> &v){rep(i, v.size()){if(i != 0) cout << " "; cout << v[i];}cout << '\n';}
 
 template<typename T>
-void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p == begin) cout << *p;else cout << " " << *p;}cout << '\n';}
+void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p != begin) cout << " "; cout << *p;}cout << '\n';}
 
 template<typename T>
 T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;return re;}
@@ -115,66 +115,28 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
-int m, n, k;
-
-//////////gint dir[4][2] = {
-    {-1, 0},
-    {+1, 0},
-    { 0,-1},
-    { 0,+1},
-};
-
-int inbox(int x, int y){
-    return 0 <= x and x < m and 0 <= y and y < n;
-}
 
 void solve(){
-    int t;
-    cin >> t;
-    while(t--){
-        
-        cin >> m >> n >> k;
-        vvi mp(m, vi(n, 0));
-        rep(i, m){
-            rep(j, n){
-                cin >> mp[i][j];
-            }
+    int n;
+    cin >> n;
+    vvi dp(n, vi(n, 0));
+    vvi a(n, vi(n, 0));
+    int x, y, z;
+    while(cin >> x >> y >> z, !(x == 0 and y == 0 and z == 0)){
+        x--;y--;
+        a[x][y] = z;
+    }
+    dp[0][0] = a[0][0];
+    repu(i, 1, n){
+        dp[i][0] = dp[i-1][0] + a[i][0];
+    }
+    repu(j, 1, n){
+        dp[0][j] = dp[0][j-1] + a[0][j];
+    }
+    repu(i, 1, n){
+        repu(j, 1, n){
+            
         }
-        vvi vis(m, vi(n, 0));
-        vis[0][0] = 1;
-        queue<pii> que;
-        que.push({0, 0});
-        vvi dist(m, vi(n, 0));
-        while(!que.empty()){
-            int x = que.front().first, y = que.front().second; que.pop();
-
-            rep(i, 4){
-                int nx = x + dir[i][0], ny = y + dir[i][1];
-                int j = 0;
-                while(inbox(nx, ny) and mp[nx][ny] == 1 and j < k){
-                    j++;
-                    nx += dir[i][0];
-                    ny += dir[i][1];
-                }
-                if(inbox(nx, ny)){
-                    if(mp[nx][ny] == 0){
-                        if(!vis[nx][ny]){
-                            vis[nx][ny] = 1;
-                            dist[nx][ny] = dist[x][y] + 1 + j;
-                            que.push({nx, ny});
-                        }
-                    }
-                }
-            }
-        }
-
-        cout << (dist[m-1][n-1] == 0 ? -1 : dist[m-1][n-1]) << "\n";
-        #ifdef DEBUG
-        each(x, dist){
-            print(x);
-        }
-        #endif
-        
     }
 
 }

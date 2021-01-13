@@ -15,8 +15,7 @@
             "environment": [],
             "externalConsole": false,
             // "MIMode": "gdb"
-            "MIMode": "lldb",
-            // "miDebuggerPath": "/usr/bin/lldb-mi"
+            "MIMode": "lldb"
         }
     ]
 }

@@ -101,10 +101,10 @@ int lowerbound(vector<int>& a, int x){
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
-void print(vector<T> &v){rep(i, v.size()){if(i == 0) cout << setw(2) << setfill('0') << v[i];else cout << " "  << setw(2) << setfill('0') << v[i];}cout << '\n';}
+void print(vector<T> &v){rep(i, v.size()){if(i != 0) cout << " "; cout << v[i];}cout << '\n';}
 
 template<typename T>
-void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p == begin) cout << *p;else cout << " " << *p;}cout << '\n';}
+void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p != begin) cout << " "; cout << *p;}cout << '\n';}
 
 template<typename T>
 T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;return re;}
@@ -115,68 +115,115 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
-int m, n, k;
-
-//////////gint dir[4][2] = {
-    {-1, 0},
-    {+1, 0},
-    { 0,-1},
-    { 0,+1},
-};
-
-int inbox(int x, int y){
-    return 0 <= x and x < m and 0 <= y and y < n;
-}
+const int cardnum = 52;
 
 void solve(){
-    int t;
-    cin >> t;
-    while(t--){
+    while(1){
+        deque<int> deck;
+        unordered_set<string> s;
+        int x;
+        cin >> x;
+        if(x == 0) break;
+        else deck.push_back(x);
+        rep(i, cardnum - 1){
+            deck.push_back(read());
+        }
+        int pilenum = 7;
+        vector<deque<int>> piles(pilenum);
         
-        cin >> m >> n >> k;
-        vvi mp(m, vi(n, 0));
-        rep(i, m){
-            rep(j, n){
-                cin >> mp[i][j];
-            }
-        }
-        vvi vis(m, vi(n, 0));
-        vis[0][0] = 1;
-        queue<pii> que;
-        que.push({0, 0});
-        vvi dist(m, vi(n, 0));
-        while(!que.empty()){
-            int x = que.front().first, y = que.front().second; que.pop();
-
-            rep(i, 4){
-                int nx = x + dir[i][0], ny = y + dir[i][1];
-                int j = 0;
-                while(inbox(nx, ny) and mp[nx][ny] == 1 and j < k){
-                    j++;
-                    nx += dir[i][0];
-                    ny += dir[i][1];
+        int re = 0;
+        auto check = [&](deque<int>& dq){
+            if(dq.size() < 3) return 0;
+            // 2 .. 1
+            while(dq.size() >= 3){
+                int pick = 0;
+                if((dq[0] + dq[1] +dq.back()) % 10 == 0){
+                    deck.push_back(dq[0]); deck.push_back(dq[1]); deck.push_back(dq.back());
+                    dq.pop_front();
+                    dq.pop_front();
+                    dq.pop_back();
+                    pick = 1;
                 }
-                if(inbox(nx, ny)){
-                    if(mp[nx][ny] == 0){
-                        if(!vis[nx][ny]){
-                            vis[nx][ny] = 1;
-                            dist[nx][ny] = dist[x][y] + 1 + j;
-                            que.push({nx, ny});
-                        }
-                    }
+                // 1 .. 2
+                else if((dq[0] + dq[dq.size()-2] +dq.back()) % 10 == 0){
+                    deck.push_back(dq[0]); deck.push_back(dq[dq.size()-2]); deck.push_back(dq.back());
+                    dq.pop_front();
+                    dq.pop_back();
+                    dq.pop_back();
+                    pick = 1;
                 }
+                // .. 3
+                else if((dq[dq.size()-3] + dq[dq.size()-2] +dq.back()) % 10 == 0){
+                    deck.push_back(dq[dq.size()-3]); deck.push_back(dq[dq.size()-2]); deck.push_back(dq.back());
+                    dq.pop_back();
+                    dq.pop_back();
+                    dq.pop_back();
+                    pick = 1;
+                }
+                if(!pick)break;
             }
-        }
 
-        cout << (dist[m-1][n-1] == 0 ? -1 : dist[m-1][n-1]) << "\n";
-        #ifdef DEBUG
-        each(x, dist){
-            print(x);
-        }
-        #endif
+            
+            if(dq.size() == 0) return 1;
+            else return 0;
+        };
         
+        int i = 0;
+        int isdraw = 0;
+        while(!deck.empty()){
+
+            string key = "";
+            each(x, deck){
+                key += ",";
+                key += to_string(x);
+            }
+            rep(i, piles.size()){
+                key += ",";
+                key += to_string(i);
+                each(y, piles[i]){
+                    key += ",";
+                    key += to_string(y);
+                }
+            }
+            if(s.count(key)){
+                isdraw = 1;
+                break;
+            } 
+            else s.insert(key);
+
+            piles[i].push_back(deck.front()); re++;
+            deck.pop_front();
+
+            if(check(piles[i]) == 1){
+                piles.erase(piles.begin() + i);
+                pilenum--;
+                if(piles.empty()) break;
+            }
+            else{
+                i++;
+            }
+
+            i %= pilenum;
+        }
+
+        if(piles.empty()){
+            cout << "Win : " << re << '\n';
+            continue;
+        }
+
+        if(deck.empty()){
+            cout << "Loss: " << re << '\n';
+            continue;
+        }
+
+        if(isdraw){
+            cout << "Draw: " << re << '\n';
+            continue;
+        }
+
+
+
     }
-
 }
 
 int main(){

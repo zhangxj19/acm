@@ -101,10 +101,10 @@ int lowerbound(vector<int>& a, int x){
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
-void print(vector<T> &v){rep(i, v.size()){if(i == 0) cout << setw(2) << setfill('0') << v[i];else cout << " "  << setw(2) << setfill('0') << v[i];}cout << '\n';}
+void print(vector<T> &v){rep(i, v.size()){if(i != 0) cout << " "; cout << v[i];}cout << '\n';}
 
 template<typename T>
-void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p == begin) cout << *p;else cout << " " << *p;}cout << '\n';}
+void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p != begin) cout << " "; cout << *p;}cout << '\n';}
 
 template<typename T>
 T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;return re;}
@@ -115,66 +115,116 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
-int m, n, k;
+const int maxn = 100;
 
-//////////gint dir[4][2] = {
-    {-1, 0},
-    {+1, 0},
-    { 0,-1},
-    { 0,+1},
+struct Palace{
+    int d;
+    unordered_map<int, int> opt, ipt;
 };
 
-int inbox(int x, int y){
-    return 0 <= x and x < m and 0 <= y and y < n;
-}
+struct Transition{
+    int need;
+    unordered_map<int, int> opt, ipt;
+};
+
+
 
 void solve(){
-    int t;
-    cin >> t;
-    while(t--){
-        
-        cin >> m >> n >> k;
-        vvi mp(m, vi(n, 0));
-        rep(i, m){
-            rep(j, n){
-                cin >> mp[i][j];
-            }
+    int np, kcase = 0;
+    while(cin >> np && np != 0){
+        cout << "Case " << ++kcase << ": ";
+        vector<Palace> p(np);
+        rep(pid, np){
+            cin >> p[pid].d;
         }
-        vvi vis(m, vi(n, 0));
-        vis[0][0] = 1;
-        queue<pii> que;
-        que.push({0, 0});
-        vvi dist(m, vi(n, 0));
-        while(!que.empty()){
-            int x = que.front().first, y = que.front().second; que.pop();
-
-            rep(i, 4){
-                int nx = x + dir[i][0], ny = y + dir[i][1];
-                int j = 0;
-                while(inbox(nx, ny) and mp[nx][ny] == 1 and j < k){
-                    j++;
-                    nx += dir[i][0];
-                    ny += dir[i][1];
+        int nt;
+        cin >> nt;
+        vector<Transition> t(nt);
+        unordered_map<int, int> inputs; // for transitions
+        rep(tid, nt){
+            int pid;
+            while(cin >> pid){
+                if(pid == 0) break;
+                if(pid > 0){ // tran to palace
+                    pid--;
+                    t[tid].opt[pid]++;
+                    p[pid].ipt[tid]++;
                 }
-                if(inbox(nx, ny)){
-                    if(mp[nx][ny] == 0){
-                        if(!vis[nx][ny]){
-                            vis[nx][ny] = 1;
-                            dist[nx][ny] = dist[x][y] + 1 + j;
-                            que.push({nx, ny});
-                        }
-                    }
+                else if(pid < 0){ // palace to tran
+                    pid = -pid - 1;
+                    p[pid].opt[tid]++;
+                    t[tid].ipt[pid]++;
+                    t[tid].need++;
                 }
             }
         }
-
-        cout << (dist[m-1][n-1] == 0 ? -1 : dist[m-1][n-1]) << "\n";
-        #ifdef DEBUG
-        each(x, dist){
-            print(x);
+        each(x, p){
+            int d = x.d;
+            each(y, x.opt){
+                int tid = y.first;
+                inputs[tid] += d;
+            }
         }
-        #endif
-        
+
+        set<int> enable;
+        each(x, inputs){
+            int tid = x.first, num = x.second;
+            if(num >= t[tid].need) enable.insert(tid);
+        }
+
+        int nf;
+        cin >> nf;
+        int cnt = 0, died = 0;
+        while(cnt < nf){
+            if(enable.empty()){
+                died = 1;
+                break;
+            }
+            
+            int tid = *enable.begin();
+
+            each(x, t[tid].opt){
+                int pid = x.first, w = x.second;
+                p[pid].d += w;
+
+                each(y, p[pid].opt){
+                    int ttid = y.first;
+                    inputs[ttid] += w;
+                    if(inputs[ttid] >= t[ttid].need) enable.insert(ttid);
+                }
+            }
+            
+            each(x, t[tid].ipt){
+                int pid = x.first, w = x.second;
+                p[pid].d -= w;
+                inputs[tid] -= w;
+            }
+            if(inputs[tid] < t[tid].need) enable.erase(enable.find(tid));
+
+            #ifdef DEBUG2
+            cout << endl;
+            rep(i, np){
+                cout << "(" <<  i << ", " <<  p[i].d << ") ";
+            }
+            cout << endl;
+            #endif
+
+            cnt++;
+        }
+        if(!died){
+            cout << "still live after " << nf << " transitions" << '\n';
+        }
+        else{
+            cout << "dead after " << cnt <<  " transitions" << endl;
+        }
+
+        cout << "Places with tokens:";
+        rep(i, np){
+            if(p[i].d != 0)
+                cout << " " << i + 1 << " (" << p[i].d << ")";
+        }
+        cout << "\n\n";
+
     }
 
 }

@@ -12,12 +12,6 @@
         "queue": "cpp",
         "iomanip": "cpp",
         "stack": "cpp",
-        "utility": "cpp",
-        "__split_buffer": "cpp",
-        "deque": "cpp",
-        "string": "cpp",
-        "cstdlib": "cpp",
-        "set": "cpp",
-        "__node_handle": "cpp"
+        "utility": "cpp"
     }
 }

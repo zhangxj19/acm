@@ -1,0 +1,42 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "acm clang++ clang and lldb flags",
+			"command": "/usr/bin/clang++",
+			// "command": "/usr/bin/g++",
+			"args": [
+				"-std=c++14",
+				"-fstandalone-debug",
+				"-DDEBUG",
+				"-DLOCAL",
+				// "-glldb",
+				// "-D_GLIBCXX_DEBUG",
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "/usr/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: /usr/bin/clang++"
+
+		},
+		{
+			"type": "shell",
+			"label": "lldb test",
+			"command": "lldb ${fileBasenameNoExtension}",
+			"problemMatcher": []
+		},
+		
+	]
+}

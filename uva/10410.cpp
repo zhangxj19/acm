@@ -37,7 +37,13 @@ int sum(vector<int>::iterator begin, vector<int>::iterator end){int re = 0;for(a
 int read(){int x; cin >> x; return x;}
 
 void solve(){
-    
+    int n;
+    while(cin >> n){
+        vi bfs(n), dfs(n);
+        rep(i, n) cin >> bfs[i];
+        rep(i, n) cin >> dfs[i];
+        
+    }    
 }
 
 signed main(){

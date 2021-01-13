@@ -101,10 +101,10 @@ int lowerbound(vector<int>& a, int x){
 int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
 
 template<typename T>
-void print(vector<T> &v){rep(i, v.size()){if(i == 0) cout << setw(2) << setfill('0') << v[i];else cout << " "  << setw(2) << setfill('0') << v[i];}cout << '\n';}
+void print(vector<T> &v){rep(i, v.size()){if(i != 0) cout << " "; cout << v[i];}cout << '\n';}
 
 template<typename T>
-void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p == begin) cout << *p;else cout << " " << *p;}cout << '\n';}
+void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p != begin) cout << " "; cout << *p;}cout << '\n';}
 
 template<typename T>
 T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;return re;}
@@ -115,68 +115,165 @@ ll sum(vector<ll>::iterator begin, vector<ll>::iterator end){ll re = 0;for(auto 
 
 int read(){int x; cin >> x; return x;}
 
-int m, n, k;
 
-//////////gint dir[4][2] = {
-    {-1, 0},
-    {+1, 0},
-    { 0,-1},
-    { 0,+1},
+struct Node{
+    int c; // -1: gray 
+    vector<Node*> ch;
 };
+vvi a;
 
-int inbox(int x, int y){
-    return 0 <= x and x < m and 0 <= y and y < n;
+int color(int x, int y, int n){
+    // -1: gray, 0: white, 1: black
+    int c = a[x][y];
+    repu(i, x, x + n){
+        repu(j, y, y+n){
+            if(a[i][j] != c) return -1;
+        }
+    }
+    return c;
 }
 
-void solve(){
-    int t;
-    cin >> t;
-    while(t--){
-        
-        cin >> m >> n >> k;
-        vvi mp(m, vi(n, 0));
-        rep(i, m){
-            rep(j, n){
-                cin >> mp[i][j];
-            }
-        }
-        vvi vis(m, vi(n, 0));
-        vis[0][0] = 1;
-        queue<pii> que;
-        que.push({0, 0});
-        vvi dist(m, vi(n, 0));
-        while(!que.empty()){
-            int x = que.front().first, y = que.front().second; que.pop();
-
-            rep(i, 4){
-                int nx = x + dir[i][0], ny = y + dir[i][1];
-                int j = 0;
-                while(inbox(nx, ny) and mp[nx][ny] == 1 and j < k){
-                    j++;
-                    nx += dir[i][0];
-                    ny += dir[i][1];
-                }
-                if(inbox(nx, ny)){
-                    if(mp[nx][ny] == 0){
-                        if(!vis[nx][ny]){
-                            vis[nx][ny] = 1;
-                            dist[nx][ny] = dist[x][y] + 1 + j;
-                            que.push({nx, ny});
-                        }
-                    }
-                }
-            }
-        }
-
-        cout << (dist[m-1][n-1] == 0 ? -1 : dist[m-1][n-1]) << "\n";
-        #ifdef DEBUG
-        each(x, dist){
-            print(x);
-        }
-        #endif
-        
+Node* build_tree(int x, int y, int n){
+    Node *re = new Node;
+    if(n == 1){
+        re->c = a[x][y];
+        return re;
     }
+    else{
+        auto gen = [&](int x, int y, int n){
+            int c;
+            Node *child;
+            c = color(x, y, n);
+            if(c == -1){    
+                child = build_tree(x, y, n);
+                child->c = c;
+            }
+            else{
+                child = new Node;
+                child->c = c;
+            }
+            re->ch.push_back(child);
+        };
+        int c = color(x, y, n);
+        re->c = c;
+        if(c == -1){
+            gen(x, y, n/2);
+            gen(x, y+n/2, n/2);
+            gen(x+n/2, y, n/2);
+            gen(x+n/2, y+n/2, n/2);
+        }
+        return re;
+    }
+}
 
+vector<string> res;
+
+void dfs(Node* root, string x){
+    if(root->c == -1){
+        rep(i, 4){
+            dfs(root->ch[i], x + to_string(i + 1));
+        }
+    }
+    else if(root->c == 1){
+        res.push_back(x);
+    }
+}
+
+
+void img2tree(int n){
+    a.clear();
+    a.resize(n);
+    cin.ignore(100, '\n');
+    rep(i, n){
+        string x;
+        cin >> x;
+        each(ch, x){
+            a[i].push_back(ch - '0');
+        }
+    }
+    Node * root = build_tree(0, 0, n);
+    res.clear();
+    dfs(root, "");
+    vi re;
+    each(x, res){
+        int v = 0;
+        for(int i = x.size() - 1; i > -1; --i){
+            v *= 5;
+            v += x[i] - '0';
+        }
+        re.push_back(v);
+    }
+    sort(re.begin(), re.end());
+    if(re.size()){
+        rep(i, re.size()){
+            if(i % 12 == 0 and i != 0) cout << "\n";
+            if((i) % 12 != 0) cout << " ";
+            cout << re[i];   
+        }
+        cout << "\n";
+    }
+    cout << "Total number of black nodes = " << re.size() << "\n";
+}
+
+void paint(int x, int y, int n, string& base5, int d){
+    if(d == base5.size()){
+        repu(i, x, x + n){
+            repu(j, y, y+n){
+                a[i][j] = 1;
+            }
+        }
+    }
+    else{
+        char ch = base5[d];
+        if(ch == '1') paint(x, y, n/2, base5, d + 1);
+        if(ch == '2') paint(x, y+n/2, n/2, base5, d + 1);
+        if(ch == '3') paint(x+n/2, y, n/2, base5, d + 1);
+        if(ch == '4') paint(x+n/2, y+n/2, n/2, base5, d + 1);
+    }
+}
+
+void tree2img(int n){
+    a.clear();
+    a.resize(n, vi(n, 0));
+    int x;
+    while(cin >> x, x != -1){
+        if(x==0){
+            rep(i, n){
+                rep(j, n){
+                    a[i][j] = 1;
+                }
+            }
+            continue;
+        }
+        string base5 = "";
+        while(x){
+            base5 += x % 5 + '0';
+            x /= 5;
+        }
+        paint(0, 0, n, base5, 0);
+    }
+    rep(i, n){
+        rep(j, n){
+            cout << (a[i][j] == 1 ? "*" : ".");
+        }
+        cout << '\n';
+    }
+}
+
+
+void solve(){
+    int n;
+    int kcase = 0;
+    while(cin >> n, n){
+        if(kcase != 0) cout << "\n";
+        cout << "Image " << ++kcase << "\n";
+        if(n > 0){
+            img2tree(n);
+        }
+        else{
+            tree2img(abs(n));
+        }
+    }
 }
 
 int main(){

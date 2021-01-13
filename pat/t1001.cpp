@@ -138,6 +138,9 @@ void solve(){
 
         vi dist(n, inf);
         dist[st] = 0;
+        
+
+
         ll re = 0;
         while(!que.empty()){
             int d = que.top().first, u = que.top().second; que.pop();
