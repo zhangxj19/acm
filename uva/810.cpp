@@ -93,6 +93,19 @@ void solve(){
             flush();
         };
 
+        auto reset = [&](int u, int f){
+            up = u; front = f;
+            flush();
+        };
+
+        auto inbox = [&](int x, int y){
+            return 0 <= x and x < r and 0 <= y and y < c;
+        };
+
+        auto canset = [&](int x, int y){
+            return a[x][y] == -1 ? 1 : (a[x][y] == down);
+        };
+
         // [r][c][up][front]
         // vector<vector<vector<vector<int>>>> vis(r, vector<vector<vector<int>>>(c, vector<vector<int>>(7, vector<int>(7, 0))));
         set<vector<int>> vis; // vector have 4 elements as r, c, u, f
@@ -103,8 +116,31 @@ void solve(){
         que.push({sx, sy, up, front});
         while(!que.empty()){
             int x = que.front()[0], y = que.front()[1], u = que.front()[2], f = que.front()[3];
+            int nx = x, ny = y;
+            // l
+            reset(u, f);
+            gol();
+            nx = x; ny = y - 1;
+            if(inbox(nx, ny) and vis.count({nx, ny, up, front}) and canset(nx, ny)){
+                vis.insert({nx, ny, up, front});
+                que.push({nx, ny, up, front});
+                fa[{nx, ny, up, front}] = {x, y};
+            }
 
-            // 
+            // r
+            reset(u, f);
+            gor();
+
+
+            // u
+            reset(u, f);
+            gou();
+
+
+            // d
+            reset(u, f);
+            god();
+
         }   
 
     }    
