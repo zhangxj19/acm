@@ -37,7 +37,7 @@ int sum(vector<int>::iterator begin, vector<int>::iterator end){int re = 0;for(a
 int read(){int x; cin >> x; return x;}
 
 void solve(){
-    
+
 }
 
 signed main(){

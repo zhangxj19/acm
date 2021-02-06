@@ -36,32 +36,46 @@ int sum(vector<int>::iterator begin, vector<int>::iterator end){int re = 0;for(a
 
 int read(){int x; cin >> x; return x;}
 
-
-
-
-
+int dir[4][2] = {
+    { 0,-1},
+    { 0, 1},
+    {-1, 0},
+    { 1, 0},
+}; 
 
 void solve(){
+    // int findleft[7][7] = {
+    //     // find left if findleft[up][front]
+    //     {0, 0, 0, 0, 0, 0, 0}, // 
+    //     {0, 0, 3, 5, 2, 4, 0}, // 
+    //     {0, 4, 0, 1, 6, 0, 3}, // 
+    //     {0, 2, 6, 0, 0, 1, 5}, // 
+    //     {0, 5, 1, 0, 0, 6, 2}, // 
+    //     {0, 3, 0, 6, 1, 0, 4}, // 
+    //     {0, 0, 4, 2, 5, 3, 0}, // 
+    // };
     int findleft[7][7] = {
         // find left if findleft[up][front]
         {0, 0, 0, 0, 0, 0, 0}, // 
-        {0, 0, 3, 5, 2, 4, 0}, // 
-        {0, 4, 0, 1, 6, 0, 3}, // 
-        {0, 2, 6, 0, 0, 1, 5}, // 
-        {0, 5, 1, 0, 0, 6, 2}, // 
-        {0, 3, 0, 6, 1, 0, 4}, // 
         {0, 0, 4, 2, 5, 3, 0}, // 
+        {0, 3, 0, 6, 1, 0, 4}, // 
+        {0, 5, 1, 0, 0, 6, 2}, // 
+        {0, 2, 6, 0, 0, 1, 5}, // 
+        {0, 4, 0, 1, 6, 0, 3}, // 
+        {0, 0, 3, 5, 2, 4, 0}, // 
     };
 
     string name;
     while(cin >> name, name != "END"){
+        cout << name << '\n';
         int r, c, sx, sy, up, front;
         cin >> r >> c >> sx >> sy >> up >> front;
+        sx--;sy--;
         vvi a(r, vi(c, 0));
 
         rep(i, r){
             rep(j, c){
-                cin >> a[r][c];
+                cin >> a[i][j];
             }
         }
         int left, right, back, down;
@@ -78,8 +92,8 @@ void solve(){
             flush();
         };
         auto god = [&](){
-            up = back;
             front = up;
+            up = back;
             flush();
         };
         auto gol = [&](){
@@ -102,47 +116,84 @@ void solve(){
             return 0 <= x and x < r and 0 <= y and y < c;
         };
 
-        auto canset = [&](int x, int y){
-            return a[x][y] == -1 ? 1 : (a[x][y] == down);
+        auto canset = [&](int x, int y, int u){
+            return a[x][y] == -1 ? 1 : (a[x][y] == u);
         };
 
         // [r][c][up][front]
         // vector<vector<vector<vector<int>>>> vis(r, vector<vector<vector<int>>>(c, vector<vector<int>>(7, vector<int>(7, 0))));
         set<vector<int>> vis; // vector have 4 elements as r, c, u, f
         
-        map<vector<int>, pii> fa; 
+        map<vector<int>, vector<int>> fa; 
 
         queue<vector<int>> que;
         que.push({sx, sy, up, front});
+        vector<int> des;
+        int find = 0;
+        int gone = 0;
         while(!que.empty()){
-            int x = que.front()[0], y = que.front()[1], u = que.front()[2], f = que.front()[3];
-            int nx = x, ny = y;
-            // l
+            int x = que.front()[0], y = que.front()[1], u = que.front()[2], f = que.front()[3]; que.pop();
             reset(u, f);
-            gol();
-            nx = x; ny = y - 1;
-            if(inbox(nx, ny) and vis.count({nx, ny, up, front}) and canset(nx, ny)){
-                vis.insert({nx, ny, up, front});
-                que.push({nx, ny, up, front});
-                fa[{nx, ny, up, front}] = {x, y};
+            #ifdef DEBUG2
+            cout << "(" << x+1 << "," << y+1 << "," << u << "," << f<< ") ";
+            if(fa.count({x, y, u, f})){
+                vi father = fa[{x, y, u, f}];
+                cout << "<-" << "(" << father[0]+1 << "," << father[1]+1 << "," << father[2] << "," << father[3]<< ") \n";
             }
-
-            // r
-            reset(u, f);
-            gor();
-
-
-            // u
-            reset(u, f);
-            gou();
-
-
-            // d
-            reset(u, f);
-            god();
-
-        }   
-
+            else cout << "\n";
+            #endif
+            if(x == sx and y == sy and gone) {
+                des = {x, y, u, f};
+                find = 1;
+                break;
+            }
+            gone = 1;
+            rep(i, 4){
+                int nx = x + dir[i][0], ny = y + dir[i][1];
+                reset(u, f);
+                if(i == 0) gol();
+                else if(i == 1) gor();
+                else if(i == 2) gou();
+                else if(i == 3) god();
+                #ifdef DEBUG2
+                cout << "try nx = " << nx << ", ny = " << ny << " up = " << up << ", front = " << front << "\n";
+                cout << inbox(nx, ny) ;
+                if(inbox(nx, ny)){
+                    cout << ", " << !vis.count({nx, ny, up, front}) << ", " << canset(nx, ny, u) << "\n";
+                }
+                else cout << "\n";
+                #endif
+                if(inbox(nx, ny) and !vis.count({nx, ny, up, front}) and canset(nx, ny, u)){
+                    vis.insert({nx, ny, up, front});
+                    que.push({nx, ny, up, front});
+                    fa[{nx, ny, up, front}] = {x, y, u, f};
+                }
+            }
+            
+        }  
+        if(find){
+            vector<pii> re;
+            do{
+                re.push_back({des[0], des[1]});
+                
+                des = fa[des];
+                if(des[0] == sx and des[1] == sy){
+                    re.push_back({sx, sy});
+                    break;
+                }
+            }while(1);
+            reverse(re.begin(), re.end());
+            cout << "  ";
+            for(int i = 0; i < re.size(); ++i){
+                if(i != 0 and i % 9 == 0) cout << ",\n  ";
+                if(i != 0 and i % 9 != 0)cout << ",";
+                cout << "(" << re[i].first+1 << "," << re[i].second+1 << ")";
+            }
+            cout << "\n";
+        }
+        else{
+            cout << "  No Solution Possible\n";
+        }
     }    
 }
 
@@ -154,7 +205,7 @@ signed main(){
     #endif
     #ifdef LOCAL
     freopen("in", "r", stdin);
-    freopen("o", "w", stdout);
+    // freopen("o", "w", stdout);
     #endif
     // cout << setiosflags(ios::fixed);
     // cout << setprecision(2);
