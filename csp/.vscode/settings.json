@@ -5,12 +5,19 @@
         "random": "cpp",
         "ios": "cpp",
         "ostream": "cpp",
-        "cmath": "cpp",
-        "unordered_map": "cpp",
-        "complex": "cpp",
+        "iostream": "cpp",
+        "vector": "cpp",
         "iosfwd": "cpp",
+        "iterator": "cpp",
+        "queue": "cpp",
         "iomanip": "cpp",
-        "deque": "cpp",
-        "iostream": "cpp"
+        "stack": "cpp",
+        "utility": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "regex": "cpp",
+        "valarray": "cpp"
     }
 }

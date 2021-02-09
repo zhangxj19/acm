@@ -4,10 +4,11 @@
 		{
 			"type": "cppbuild",
 			"label": "acm clang++ clang and lldb flags",
-			"command": "/usr/bin/clang++",
+			// "command": "/usr/bin/clang++",
+			"command": "/usr/bin/g++",
 			"args": [
 				"-std=c++14",
-				"-fstandalone-debug",
+				// "-fstandalone-debug",
 				"-DDEBUG",
 				"-DLOCAL",
 				// "-glldb",
@@ -23,8 +24,12 @@
 			"problemMatcher": [
 				"$gcc"
 			],
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"detail": "compiler: /usr/bin/clang++"
+
 		},
 		{
 			"type": "shell",
