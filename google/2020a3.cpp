@@ -8,25 +8,32 @@ int n, k, a[maxn];
 void solve() {
     cin >> n >> k;
     for(int i = 0; i < n; ++i) cin >> a[i];
-    priority_queue<int, vector<int>, less<int>> pq;
-    for(int i = 0; i < n-1; ++i) {
-        int x;
-        x = abs(a[i] - a[i + 1]);
-        pq.push(x);
-    } 
-    while(k--) {
-        int x = pq.top(); pq.pop();
-        if(x == 1) continue;
-        if(x & 1) {
-            pq.push(x / 2);
-            pq.push(x / 2 + 1);
+    int l = 1, r = 1e9;
+    while(l < r) {
+        int mid = l + r  >> 1;
+        #ifdef DEBUG2
+        cout << mid << " ";
+        #endif
+        int cnt = 0;
+        for(int i = 0; i < n - 1; ++i) {
+            int d = a[i + 1] - a[i];
+            if(d >= mid) {
+                cnt += ceil((double)d / mid) - 1;
+                #ifdef DEBUG2
+                cout << ceil((double)d / mid) - 1 << " ";
+                #endif
+            }
         }
-        else {
-            pq.push(x / 2);
-            pq.push(x / 2);
-        }
+
+        if(cnt > k) l = mid + 1;
+        else r = mid;
+        #ifdef DEBUG2
+        cout << cnt << " l = " << l << ", r = " << r << "\n";
+        #endif
     }
-    cout << pq.top() << "\n";
+    cout << l << "\n";
+
+
 }
 
 signed main() {
