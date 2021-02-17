@@ -88,6 +88,8 @@ void solve() {
     cout << 1 - re << "\n";
 }
 //Recover39233875 Tusundere_north Keaiduo555(x121314666, tt22709991, aiheguozhi123(tuzi121314666)) nidevye jingjingsijiaoS(js, hot)
+// jingtianDom B7tchq7zh7 Dabai101296 Huihuizi_Dom QQ1826778718 Yoxiko2 YourMoonGod1 mekceo Yingyuyuzi
+// https://nhentai.com/zh/comic/c88-null-mayu-chimosaku-taihai-no-susume-fatestay-night-chinese-g/reader/27
 
 signed main() {
     #ifdef LOCAL
