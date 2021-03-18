@@ -3,7 +3,7 @@ using namespace std;
 #define int long long
 #define pii pair<int, int>
 const int N = 2e2 + 5, inf = 0x3f3f3f3f3f3f3f3f;
-int n, m, k, vis[N][N], dist[N][N];
+int n, m, k, dist[N][N];
 double r;
 pii a[N];
 vector<int> g[N];
@@ -38,22 +38,19 @@ signed main() {
     memset(dist, 0x3f, sizeof dist);
     queue<pii> que;
     que.push({0, 0});
-    vis[0][0] = 1;
     dist[0][0] = 0;
     // f[i][j] : 从1走到i,经过j个特殊节点的最短路径
     while(!que.empty()) {
         int u = que.front().first, x = que.front().second;
         que.pop();
         for(auto& v : g[u]) {
-            if(v >= n and !vis[v][x + 1] and x + 1 <= k) {
-                vis[v][x + 1] = 1;
-                dist[v][x + 1] = dist[u][x] + 1;
-                que.push({v, x + 1});
-            }
-            else if(v < n and !vis[v][x]) {
-                vis[v][x] = 1;
-                dist[v][x] = dist[u][x] + 1;
-                que.push({v, x});
+            int y = x;
+            if(v >= n) y++;
+            if(y <= k) {
+                if(dist[v][y] > dist[u][x] + 1) {
+                    dist[v][y] = dist[u][x] + 1;
+                    que.push({v, y});
+                }
             }
         }
     }
