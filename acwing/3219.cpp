@@ -14,8 +14,8 @@ signed main() {
     cin >> n >> m;
     vector<string> a;
 
-    cin.get();
     string cmd;
+    getline(cin, cmd);
     for(int i = 0; i < n; ++i) {
         getline(cin, cmd);
         a.push_back(cmd);
@@ -30,7 +30,7 @@ signed main() {
         getline(ss, val);
         mp[id] = val.substr(2, val.size() - 3);
     }
-    #ifdef DEBUG
+    #ifdef DEBUG2
     for(auto& [k, v] : mp) {
         cout << k << " " << v << "\n";
     }
@@ -38,21 +38,26 @@ signed main() {
 
 
     for(int i = 0; i < n; ++i) {
-        while(a[i].find("{{") != a[i].npos) {
-            int l = a[i].find("{{");
-            int r = l;
-            while(r < a[i].size() and a[i][r] != '}') {
-                r++;
+        int l = 0;
+        while((l = a[i].find("{{ ", l)) != a[i].npos) {
+            int r = a[i].find(" }}", l);
+            if(r == a[i].npos) {
+                break;
             }
+
             #ifdef DEBUG2
             cout << l << " " << r << "\n";
             #endif
-            string var = a[i].substr(l + 3, r - l - 4);
-            a[i].erase(a[i].begin() + l, a[i].begin() + r + 2);
+            string var = a[i].substr(l + 3, r - l - 3);
+            a[i].erase(a[i].begin() + l, a[i].begin() + r + 3);
             a[i].insert(l, mp[var]);
+
+            // l = r;
+            if(mp[var].substr(0, 3) == "{{ ") {
+                l++;
+            }
         }
         cout << a[i] << "\n";
     }
     
-
 }
