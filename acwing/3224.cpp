@@ -36,7 +36,7 @@ signed main() {
                     swap(y1, y2);
                 }
                 for(int i = y1; i <= y2; ++i) {
-                    if(a[x1][i] == '-') {
+                    if(a[x1][i] == '-' or a[x1][i] == '+') {
                         a[x1][i] = '+';
                     }
                     else {
@@ -50,7 +50,7 @@ signed main() {
                     swap(x1, x2);
                 }
                 for(int i = x1; i <= x2; ++i) {
-                    if(a[i][y1] == '|') {
+                    if(a[i][y1] == '|' or a[i][y1] == '+') {
                         a[i][y1] = '+';
                     }
                     else {
@@ -75,7 +75,7 @@ signed main() {
 
                 for(int i = 0; i < 4; ++i) {
                     int nx = x + dir[i][0], ny = y + dir[i][1];
-                    if(nx < 0 or nx > m or ny < 0 or ny > n or vis[nx][ny]) {
+                    if(nx < 0 or nx >= m or ny < 0 or ny >= n or vis[nx][ny]) {
                         continue;
                     }
                     if(a[nx][ny] == '-' or a[nx][ny] == '|' or a[nx][ny] == '+') {
