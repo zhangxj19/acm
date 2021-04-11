@@ -35,27 +35,25 @@ void change(int p, int x, int v) {
         t[p].dat = t[p].sum = t[p].lmax = t[p].rmax = v;
         return ;
     }
-    else {
-        int mid = (t[p].l + t[p].r) / 2;
-        if (x <= mid) {
-            change(2*p, x, v);
-        }
-        else {
-            change(2*p+1, x, v);
-        }
-        t[p].sum = t[2*p].sum + t[2*p+1].sum;
-        t[p].lmax = max(t[2*p].lmax, t[2*p].sum+t[2*p+1].lmax);
-        t[p].rmax = max(t[2*p+1].rmax, t[2*p+1].sum+t[2*p].rmax);
-        t[p].dat = max(t[p*2].dat, max(t[p*2+1].dat, t[p*2].rmax + t[p*2+1].lmax));
+    int mid = (t[p].l + t[p].r) / 2;
+    if (x <= mid) {
+        change(2*p, x, v);
     }
+    else {
+        change(2*p+1, x, v);
+    }
+    t[p].sum = t[2*p].sum + t[2*p+1].sum;
+    t[p].lmax = max(t[2*p].lmax, t[2*p].sum+t[2*p+1].lmax);
+    t[p].rmax = max(t[2*p+1].rmax, t[2*p+1].sum+t[2*p].rmax);
+    t[p].dat = max(t[p*2].dat, max(t[p*2+1].dat, t[p*2].rmax + t[p*2+1].lmax));
 }
 
 int ask(int p, int l, int r) {
-    if (t[p].l >= l and t[p].r <= r) {
+    if (l <= t[p].l and t[p].r <= r) {
         return t[p].dat;
     }
     int mid = (t[p].l + t[p].r) / 2;
-    int val = -1e9;
+    int val = -(1 << 30);
     if (l <= mid) {
         val = max(val, ask(p * 2, l, r));
     }
@@ -64,7 +62,6 @@ int ask(int p, int l, int r) {
     }
 
     return val;
-
 }
 
 
