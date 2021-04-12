@@ -24,7 +24,7 @@ struct UF{
         else{
             if(sz[x] < sz[y]) swap(x, y);
             sz[x] += sz[y];
-            f[y] = x;
+            f[y] = x;  // father 链接,  f[find(x)] = find(y);
             cnt--;
             return 1;
         }

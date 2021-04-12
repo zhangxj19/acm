@@ -24,7 +24,7 @@ bign change(string x){
     bign re;
     re.len = x.size();
     for(int i = 0; i < re.len; ++i){
-        re.d[i] = x[re.len - 1- i] - '0';
+        re.d[i] = x[re.len - 1 - i] - '0';
     }
     return re;
 }

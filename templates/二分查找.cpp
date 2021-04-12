@@ -6,42 +6,9 @@
 #include <bits/stdc++.h>
 
 #define int long long
-#define rep(i, n) for (int i = 0, size = (n); i < size; ++i)
-#define repu(i, a, b) for (int i = (a), _upper_bound = (b); i < _upper_bound; ++i)
-#define repd(i, a, b) for (int i = (a), _lower_bound = (b); i > _lower_bound; --i)
-#define each(it, a) for(auto & (it) : (a))
-#define pf printf
-#define sf scanf
-#define _max(a, b) ((a) > (b) ? (a) : (b))
-#define _min(a, b) ((a) < (b) ? (a) : (b))
-
-typedef long long ll;
-const double eps = 1e-8;
-#define lowbit(x) (x&(-x))
-#define equ(a, b) (fabs(a - b) < eps)
-#define lcm(a, b) (a / gcd(a, b) * b)
-#define vi vector<int>
-#define vvi vector<vector<int>>
-#define pii pair<int, int>
-#define pll pair<ll, ll>
 
 using namespace std;
 
-
-int gcd(int a, int b){return !b ? a : gcd(b, a % b);}
-
-template<typename T>
-void print(vector<T> &v){rep(i, v.size()){if(i != 0) cout << " "; cout << v[i];}cout << '\n';}
-
-template<typename T>
-void print(T* begin, T* end){for(T *p = begin; p != end; ++p){if(p != begin) cout << " "; cout << *p;}cout << '\n';}
-
-template<typename T>
-T sum(T* begin, T* end){T re = 0;for(T *p = begin; p != end; ++p) re = re + *p;return re;}
-
-int sum(vector<int>::iterator begin, vector<int>::iterator end){int re = 0;for(auto p = begin; p != end; ++p) re = re + *p;return re;}
-
-int read(){int x; cin >> x; return x;}
 
 // 当出现[l...xa[m]x...r]时r需要左缩
 int lowerbound(vector<int>& a, int x){

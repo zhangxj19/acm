@@ -23,6 +23,8 @@ void quick_sort(vector<int>& a, int l, int r){
         if(i < j) swap(a[i], a[j]);
     }
 
+    // [l ... j][j + 1 ... r]
+
     quick_sort(a, l, j);
     quick_sort(a, j+1, r);
 }

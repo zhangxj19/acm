@@ -13,6 +13,7 @@ int merge_sort(vector<int>& a, int l, int r){
     re += merge_sort(a, l, mid);
     re += merge_sort(a, mid+1, r);
     
+    // [l ... mid] [mid + 1 ... r]
     vector<int> t(r - l + 1, 0);
     int i = l, j = mid + 1, k = 0;
     while(i <= mid and j <= r){

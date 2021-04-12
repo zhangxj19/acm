@@ -13,6 +13,7 @@ int kth(vector<int>& a, int l, int r, int k){
         do j--; while(a[j] > x);
         if(i < j) swap(a[i], a[j]);
     }
+    // [l ... j] [j + 1 ... r]
     int sl = j - l + 1;
     if(k <= sl) return kth(a, l, j, k);
     
