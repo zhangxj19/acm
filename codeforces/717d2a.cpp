@@ -18,18 +18,26 @@ signed main() {
         for (int i = 0; i < n; ++i) {
             cin >> a[i];
         }
-        int i = 0, j = n - 1;
-        while(k > 0 and i < j) {
-            if (a[i] > 0) {
-                while(a[j] == 9 and j > i) {
-                    --j;
+
+        auto findl = [&]() {
+            int i = 0;
+            for (; i < n; ++i) {
+                if (a[i] > 0) {
+                    break;
                 }
-                a[j] += 1;
-                a[i] -= 1;
-                --k;
+            }
+            return i;
+        };
+
+        while (k--) {
+            int l = findl();
+            int r = n - 1;
+            if (l < r) {
+                a[l] -- ;
+                a[r] ++ ;
             }
             else {
-                ++i;
+                break;
             }
         }
         for (int i = 0; i < n; ++i) {
