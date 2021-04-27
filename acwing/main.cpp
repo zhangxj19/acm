@@ -12,4 +12,5 @@ signed main() {
     // cout << setiosflags(ios::fixed) << setprecision(2);
     // cout << setw(2) << setfill('0');
     
+    return 0;
 }
