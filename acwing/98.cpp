@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+int n, a, b;
+
+int solve() {
+
+}
+
+signed main() {
+    #ifdef LOCAL
+    freopen("in", "r", stdin);
+    #endif
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    // cout << setiosflags(ios::fixed) << setprecision(2);
+    // cout << setw(2) << setfill('0');
+    int T;
+    cin >> T;
+    while (T--) {
+        cin >> n >> a >> b;
+        int ans = solve();
+        cout << ans << "\n";
+    }
+    
+    return 0;
+}
