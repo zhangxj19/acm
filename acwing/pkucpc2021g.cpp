@@ -1,23 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-int a, b, p;
-
-int multiply(int a, int b, int p) {
-    int ret = 0;
-
-    while (b) {
-        if (b & 1) {
-            ret = (ret + a) % p;
-        }
-        a = 2 * a % p;
-
-        b >>= 1;
-    }
-
-    return ret;
-}
-
+double w, h, x, y;
 
 signed main() {
     #ifdef LOCAL
@@ -28,10 +12,7 @@ signed main() {
     cout.tie(0);
     // cout << setiosflags(ios::fixed) << setprecision(2);
     // cout << setw(2) << setfill('0');
-    cin >> a >> b >> p;
-
-
-    cout << multiply(a, b, p) << "\n";
+    cin >> w >> h >> x >> y;
     
     return 0;
 }

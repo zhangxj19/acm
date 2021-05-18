@@ -39,7 +39,7 @@ signed main() {
 
     int ret = 0;
     for (int l = 1; l <= n; ++l) {
-        int r = min(l + k - 1, n);
+        int r = min(l + k - 1, n); 
         ret = max(ret, getsum(l, r));
     }
 

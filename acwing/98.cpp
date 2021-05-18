@@ -1,23 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-int a, b, p;
+int n, a, b;
 
-int multiply(int a, int b, int p) {
-    int ret = 0;
+int solve() {
 
-    while (b) {
-        if (b & 1) {
-            ret = (ret + a) % p;
-        }
-        a = 2 * a % p;
-
-        b >>= 1;
-    }
-
-    return ret;
 }
-
 
 signed main() {
     #ifdef LOCAL
@@ -28,10 +16,13 @@ signed main() {
     cout.tie(0);
     // cout << setiosflags(ios::fixed) << setprecision(2);
     // cout << setw(2) << setfill('0');
-    cin >> a >> b >> p;
-
-
-    cout << multiply(a, b, p) << "\n";
+    int T;
+    cin >> T;
+    while (T--) {
+        cin >> n >> a >> b;
+        int ans = solve();
+        cout << ans << "\n";
+    }
     
     return 0;
 }
