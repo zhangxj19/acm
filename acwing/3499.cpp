@@ -2,7 +2,7 @@
 using namespace std;
 #define int long long
 const int N = 205;
-int n, k, m, a[N], w[N][N];
+int n, k, m, a[N], w[N][N], f[N][N];
 
 signed main() {
     #ifdef LOCAL
@@ -23,6 +23,25 @@ signed main() {
             cin >> w[i][j];
         }
     }
+
+    for (int i = 1; i <= m; ++i) {
+        for (int j = 0; j <= k; ++j) {
+            for (int u = 1; u < i; ++u) {
+                if (j - (i - 1 - u) >= 0) {
+                    f[i][j] = max(f[i][j], f[u][j - (i - 1 - u)] + w[a[u]][a[i]]);
+                }
+            }
+        }
+    }
+
+    int ans = 0;
+    for (int i = 1; i <= m; ++i) {
+        for (int j = 0; j <= k; ++j) {
+            ans = max(ans, f[i][j]);
+        }
+    }
+    cout << ans << "\n";
+
 
     
     return 0;

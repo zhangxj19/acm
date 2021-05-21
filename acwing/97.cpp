@@ -55,12 +55,12 @@ signed main() {
                 ++ c;
                 a /= p;
             }
-            ans = ans * sum(p, b * c) % mod;
+            ans = ans * sum(p, c * b) % mod;
         }
     }
 
     if (a != 1) {
-        ans = ans * sum(a, b) % mod;
+        ans = ans * sum(a, 1 * b) % mod;
     }
     cout << ans << "\n";
 
