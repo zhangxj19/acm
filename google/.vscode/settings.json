@@ -13,5 +13,6 @@
         "iomanip": "cpp",
         "stack": "cpp",
         "utility": "cpp"
-    }
+    },
+    "python.pythonPath": "/home/zhangxj/.pyenv/versions/3.8.8/bin/python"
 }
