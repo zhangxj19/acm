@@ -14,8 +14,15 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "MIMode": "gdb"
-            // "MIMode": "lldb"
+			"windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "/usr/bin/gdb",
+			},
+			"osx": {
+                "MIMode": "lldb",
+                // "miDebuggerPath": "/usr/local/opt/llvm/bin/lldb",
+			},
+            // "preLaunchTask": "g++ build active file",
         }
     ]
 }
