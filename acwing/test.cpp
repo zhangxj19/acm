@@ -14,8 +14,15 @@ signed main() {
         "Hello",
         "there",
     };
+    vector<int> vec {
+        1, 2, 3, 4,
+    };
     for (const auto& word : msg) {
         cout << word << " ";
+    }
+    cout << "\n";
+    for (auto& x : vec) {
+        cout << x << " ";
     }
     cout << "\n";
 
