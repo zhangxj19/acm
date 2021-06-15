@@ -1,4 +1,0 @@
-dhcp b OFR 1 70
-dhcp c OFR 2 70
-dhcp d OFR 3 120
-dhcp d NAK 1 0

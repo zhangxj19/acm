@@ -89,5 +89,6 @@
         "valarray": "cpp",
         "*.tcc": "cpp",
         "filesystem": "cpp"
-    }
+    },
+    "python.pythonPath": "/home/zhangxj/.pyenv/versions/3.8.8/bin/python"
 }
