@@ -1,21 +1,29 @@
 # !/usr/bin/env bash
+filenames=(
+A
+B
+C
+D
+E
+F
+G
+)
+
 echo "sh gen.sh [filename, filename.cpp]"
 f=$1
 f=${f%.*}
 
-if [ ! -f "./$f.cpp" ]; then
-    cp ./main.cpp ./$f.cpp
-fi 
-open $f.cpp
+mkdir $f
+cd $f
 
-if [ ! -f "./in" ]; then
-  touch "./in"
-fi
-# open "./in"
-if [ ! -f "./o" ]; then
-  touch "./o"
-fi
-# open "./o"
+for filename in ${filenames[@]}; do
+  if [ ! -f "./{filename}.cpp" ]; then
+    cp ../main.cpp ${filename}.cpp
+  fi
+  if [ ! -f "./in" ]; then
+    touch "./in"
+  fi
+done
 
 if [ -f ".cpp" ]
 then
@@ -23,5 +31,3 @@ rm .cpp
 fi
 
 rm -r ./*.dSYM
-python3 clean.py
-python3 statistic.py
