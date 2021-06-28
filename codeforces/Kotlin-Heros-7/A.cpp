@@ -1,11 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-const int N = 3e5 + 5;
-
-void solve() {
-
-}
 
 signed main() {
     #ifdef LOCAL
@@ -15,11 +10,11 @@ signed main() {
     cin.tie(0);
     cout.tie(0);
     int t;
-    int kase = 1;
     cin >> t;
-    while(t--) {
-        cout << "Case #" << kase++ << ": ";
-        solve();
+    while (t--) {
+        int a, b;
+        cin >> a >> b;
+        cout << a + b << "\n";
     }
-
+    
 }
