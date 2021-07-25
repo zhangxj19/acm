@@ -1,8 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-const int N = 1e5 +5;
-int a[N], head[N], next[N], n, tot;
+int n, c;
+const int N = 1e5 + 5;
+
+void solve() {
+
+}
 
 signed main() {
     #ifdef LOCAL
@@ -11,9 +15,12 @@ signed main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    // cout << setio
-    // cout << setiosflags(ios::fixed) << setprecision(2);
-    // cout << setw(2) << setfill('0');
-    
-    return 0;
+    int t;
+    int kase = 1;
+    cin >> t;
+    while(t--) {
+        cout << "Case #" << kase++ << ": ";
+        solve();
+    }
+
 }
