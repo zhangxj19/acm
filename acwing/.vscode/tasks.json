@@ -4,10 +4,11 @@
 		{
 			"type": "cppbuild",
 			"label": "g++ build active file",
-			"command": "/usr/bin/clang++",
+			// "command": "/usr/bin/clang++",
 			// "command": "/usr/bin/g++",
+			"command": "g++",
 			"args": [
-				"-std=c++17",
+				"-std=c++14",
 				// "-fstandalone-debug",
 				"-DDEBUG",
 				"-DLOCAL",
@@ -18,9 +19,9 @@
 				"-o",
 				"${fileDirname}/${fileBasenameNoExtension}"
 			],
-			"options": {
-				"cwd": "/usr/bin"
-			},
+			// "options": {
+			// 	"cwd": "/usr/bin"
+			// },
 			"problemMatcher": [
 				"$gcc"
 			],
