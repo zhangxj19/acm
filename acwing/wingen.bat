@@ -12,4 +12,5 @@ if not exist %filename% (
     echo %filename% exists!
 )
 
+python3 clean.py
 

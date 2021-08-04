@@ -8,7 +8,7 @@ if __name__ == "__main__":
         path = os.path.join(rootdir, list[i])
         # if os.path.isfile(path):
         # # 你想对文件的操作
-        if '.cpp' in filename or '.py' in filename or '.sh' in filename:
+        if '.cpp' in filename or '.py' in filename or '.sh' in filename or '.bat' in filename:
             continue
         
         if filename in protected:
