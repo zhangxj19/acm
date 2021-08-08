@@ -88,7 +88,18 @@
         "unordered_set": "cpp",
         "valarray": "cpp",
         "*.tcc": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "any": "cpp",
+        "cassert": "cpp",
+        "cerrno": "cpp",
+        "cfloat": "cpp",
+        "ciso646": "cpp",
+        "climits": "cpp",
+        "cuchar": "cpp",
+        "version": "cpp",
+        "variant": "cpp",
+        "charconv": "cpp",
+        "memory_resource": "cpp"
     },
     "python.pythonPath": "/home/zhangxj/miniconda3/bin/python"
 }
