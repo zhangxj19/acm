@@ -2,8 +2,6 @@
 using namespace std;
 #define int long long
 
-
-
 signed main() {
     #ifdef LOCAL
     freopen("in", "r", stdin);
@@ -15,4 +13,6 @@ signed main() {
     // cout << setw(2) << setfill('0');
     
     return 0;
+
+    
 }
