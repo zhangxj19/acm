@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-const int maxn = 1e5 + 1;
 int n;
-int a[maxn];
 
 signed main() {
     #ifdef LOCAL
@@ -13,6 +11,22 @@ signed main() {
     cin.tie(0);
     cout.tie(0);
     cin >> n;
-    for(int i = 0 ;i < n; ++i) cin >> a[i];
+    int sum = 0;
+    for (int i = 1; i <= n; ++i) {
+      int x;
+      cin >> x;
+      sum ^= x;
+    }
+
+    if (sum == 0) {
+      cout << "No\n";
+    }
+    else {
+      cout << "Yes\n";
+    }
+
+
+
+
 
 }
