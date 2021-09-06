@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
+int a, b;
 
 signed main() {
   #ifdef LOCAL
@@ -11,13 +12,9 @@ signed main() {
   cout.tie(0);
   // cout << setiosflags(ios::fixed) << setprecision(2);
   // cout << setw(2) << setfill('0');
-  int ans = 0;
-  for (int i =1; i < 1000; ++i) {
-    if (i % 3 == 0 or i % 5 == 0) {
-      ans += i;
-    }
+  while (cin >> a >> b, !(a == 0 and b == 0)) {
+    
   }
-  cout << ans << "\n";
 
     
   return 0;

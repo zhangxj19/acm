@@ -1,30 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-int n, k;
-int f[15][1 << 10];
+int n, K;
+int f[12][101][1 << 10];
+vector<int> state, pre[1 << 10];
 
-int isOk(int x, int y) {
-  // if y is matched to x
-  for (int i = 0; i < n; ++i) {
-    for (int j = -1; j <= 1; ++j) {
-      if (x >> i & 1) {
-        int nx = i + j;
-        if (nx < 0) {
-          nx = 0;
-        }
-        if (nx >= n) {
-          nx = n - 1;
-        }
-        if (y >> nx & 1) {
-          return false;
-        }
-      }
-    }
-  }
 
-  return true;
-}
 
 signed main() {
   #ifdef LOCAL
@@ -36,24 +17,35 @@ signed main() {
   // cout << setiosflags(ios::fixed) << setprecision(2);
   // cout << setw(2) << setfill('0');
 
-  cin >> n >> k;
+  cin >> n >> K;
+
   for (int i = 0; i < (1 << n); ++i) {
-    f[0][i] = 1;
-  }
-  for (int i = 1; i <= 10; ++i) {
-    for (int j = 0; j < (1 << n); ++j) {
-      // row i;
-      for (int k = 0; k < (1 << n); ++k) {
-        // row i - 1;
-        if (isOk(j, k)) {
-          f[]
-        } 
-
-      }
-
+    if ((i & (i >> 1)) == 0) {
+      state.push_back(i);
     }
   }
 
+  for (auto p : state) {
+    for (auto q : state) {
+      if ((p & q) == 0 and ((p | q) & ((p | q) >> 1)) == 0) {
+        pre[p].push_back(q);
+      }
+    }
+  }
+
+  f[0][0][0] = 1;
+  for (int r = 1; r <= n + 1; ++r) {
+    for (int i = 0; i <= K; ++i) {
+      for (auto p : state) {
+        for (auto q : pre[p]) {
+          if (i - __builtin_popcount(p) >= 0) {
+            f[r][i][p] += f[r-1][i - __builtin_popcount(p)][q];
+          }
+        }
+      }
+    }
+  }
+  cout << f[n + 1][K][0] << "\n";
     
   return 0;
 }

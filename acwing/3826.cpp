@@ -11,13 +11,15 @@ signed main() {
   cout.tie(0);
   // cout << setiosflags(ios::fixed) << setprecision(2);
   // cout << setw(2) << setfill('0');
-  int ans = 0;
-  for (int i =1; i < 1000; ++i) {
-    if (i % 3 == 0 or i % 5 == 0) {
-      ans += i;
-    }
+  int T;
+  cin >> T;
+  while (T--) {
+    int a, b, k;
+    cin >> a >> b >> k;
+    int sum = 0;
+    sum = -k / 2 * b + (k + 1) / 2 * a;
+    cout << sum << "\n";
   }
-  cout << ans << "\n";
 
     
   return 0;

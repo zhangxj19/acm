@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
+int n;
+char a[5005];
 
 signed main() {
   #ifdef LOCAL
@@ -11,13 +13,12 @@ signed main() {
   cout.tie(0);
   // cout << setiosflags(ios::fixed) << setprecision(2);
   // cout << setw(2) << setfill('0');
-  int ans = 0;
-  for (int i =1; i < 1000; ++i) {
-    if (i % 3 == 0 or i % 5 == 0) {
-      ans += i;
-    }
-  }
-  cout << ans << "\n";
+  cin >> n;
+  cin.ignore(1, '\n');
+  cin >> a + 1;
+
+  
+
 
     
   return 0;
