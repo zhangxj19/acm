@@ -4,6 +4,7 @@ using namespace std;
 using pis = pair<int, string>;
 const int n = 8;
 string a;
+const string beg = "12345678";
 
 string A(const string& x) {
   string ans(8, '0');
@@ -56,39 +57,57 @@ signed main() {
     a += x;
   }
 
-  priority_queue<pis, vector<pis>, greater<pis>> pq;
-  pq.push({0, "12345678"});
   unordered_set<string> vis;
-  unordered_map<string, char> pre;
-  int ans = 0; 
-  while (pq.size()) {
-    string cur = pq.top().second;
-    int dist = pq.top().first;
-    pq.pop();
+  unordered_map<string, int> dist;
+  unordered_map<string, pair<char, string>> pre;
+  queue<string> que;
+  que.push(beg);
+  vis.insert(beg);
+  dist[beg] = 0;
 
-    if (vis.count(cur)) {
-      continue;
-    }
-    vis.insert(cur);
+  int ans = 0; 
+  while (que.size()) {
+    string cur = que.front();
+    que.pop();
 
     if (cur == a) {
-      ans = dist;
+      ans = dist[cur];
       break;
     }
 
-    pq.push({dist + 1, A(cur)});
-    pre[A(cur)] = 'A';
-    pq.push({dist + 1, B(cur)});
-    pre[B(cur)] = 'B';
-    pq.push({dist + 1, C(cur)});
-    pre[C(cur)] = 'C';
+    string v[3];
+    v[0] = A(cur);
+    v[1] = B(cur);
+    v[2] = C(cur);
+
+    for (int i = 0; i < 3; ++i) {
+      if (!vis.count(v[i])) {
+        vis.insert(v[i]);
+        dist[v[i]] = dist[cur] + 1;
+        que.push(v[i]);
+        pre[v[i]] = {'A' + i, cur};
+      }
+    }
   }
 
   cout << ans << "\n";
 
-  vector<char> res;
-  string x = a;
-  string beg("12345678");
+  if (ans) {
+    vector<char> res;
+    string x = a;
+    string beg("12345678");
+
+    while (x != beg) {
+      char op = pre[x].first;
+      x = pre[x].second; 
+      res.push_back(op);
+    }
+    for (int i = res.size() - 1; i > -1; --i) {
+      cout << res[i];
+    }
+    cout << "\n";
+
+  }
 
 
     
