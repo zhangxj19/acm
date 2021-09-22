@@ -1,20 +1,6 @@
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <map>
-#include <unordered_map>
-#include <set>
-#include <unordered_set>
-#include <cmath>
-#include <cstdio>
-#include <stack>
-#include <queue>
-#include <cstring>
-
+#include <bits/stdc++.h>
 using namespace std;
 #define int long long
-using pii = pair<int, int>;
 
 void solve() {
 
