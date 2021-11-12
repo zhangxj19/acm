@@ -25,19 +25,30 @@ signed main() {
   cout.tie(0);
   // cout << setiosflags(ios::fixed) << setprecision(2);
   // cout << setw(2) << setfill('0');
-  int n, w;
-  cin >> n >> w;
-  int delta = 0;
-  int ub = 1e9, lb = 0;
-  for (int i = 0; i < n; ++i) {
-    int x;
-    cin >> x;
-    delta += x;
-    ub = min(ub, w - delta);
+  int T;
+  cin >> T;
+  while (T--) {
+    int k, l;
+    cin >> k >> l;
+    int ans = -1;
+    for (int i = 0; i <= 31; ++i) {
+      int t = pow(k, i);
+      if (t == l) {
+        ans = i;
+        break;
+      }
+      else if (t > l){
+        break;
+      }
+    }
+    if (ans == -1) {
+      cout << "NO\n";
+    }
+    else {
+      cout << "YES\n";
+    }
+
   }
-
-
-
 
     
   return 0;
