@@ -8,7 +8,7 @@
 			// "command": "/usr/bin/g++",
 			"command": "g++",
 			"args": [
-				"-std=c++14",
+				"-std=c++17",
 				// "-fstandalone-debug",
 				"-DDEBUG",
 				"-DLOCAL",

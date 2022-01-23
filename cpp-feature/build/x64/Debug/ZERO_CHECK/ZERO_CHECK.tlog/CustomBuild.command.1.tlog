@@ -1,0 +1,10 @@
+^D:\DESKTOP\WORKSPACE\ACM\CPP-FEATURE\BUILD\CMAKEFILES\976CF2A51E84EE1A354860C78515F8E6\GENERATE.STAMP.RULE
+setlocal
+D:\CMake\bin\cmake.exe -SD:/Desktop/workspace/acm/cpp-feature -BD:/Desktop/workspace/acm/cpp-feature/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Desktop/workspace/acm/cpp-feature/build/Tutorial.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

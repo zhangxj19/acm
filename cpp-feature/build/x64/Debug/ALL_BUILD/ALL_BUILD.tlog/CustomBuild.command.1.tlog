@@ -1,0 +1,10 @@
+^D:\DESKTOP\WORKSPACE\ACM\CPP-FEATURE\CMAKELISTS.TXT
+setlocal
+D:\CMake\bin\cmake.exe -SD:/Desktop/workspace/acm/cpp-feature -BD:/Desktop/workspace/acm/cpp-feature/build --check-stamp-file D:/Desktop/workspace/acm/cpp-feature/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

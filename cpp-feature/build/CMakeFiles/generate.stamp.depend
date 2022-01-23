@@ -1,0 +1,24 @@
+# CMake generation dependency list for this directory.
+D:/CMake/share/cmake-3.20/Modules/CMakeCInformation.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeCXXInformation.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeCommonLanguageInclude.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeGenericSystem.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeInitializeConfigs.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeLanguageInformation.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeRCInformation.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeSystemSpecificInformation.cmake
+D:/CMake/share/cmake-3.20/Modules/CMakeSystemSpecificInitialize.cmake
+D:/CMake/share/cmake-3.20/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+D:/CMake/share/cmake-3.20/Modules/Compiler/MSVC-C.cmake
+D:/CMake/share/cmake-3.20/Modules/Compiler/MSVC-CXX.cmake
+D:/CMake/share/cmake-3.20/Modules/Platform/Windows-MSVC-C.cmake
+D:/CMake/share/cmake-3.20/Modules/Platform/Windows-MSVC-CXX.cmake
+D:/CMake/share/cmake-3.20/Modules/Platform/Windows-MSVC.cmake
+D:/CMake/share/cmake-3.20/Modules/Platform/Windows.cmake
+D:/CMake/share/cmake-3.20/Modules/Platform/WindowsPaths.cmake
+D:/Desktop/workspace/acm/cpp-feature/CMakeLists.txt
+D:/Desktop/workspace/acm/cpp-feature/TutorialConfig.h.in
+D:/Desktop/workspace/acm/cpp-feature/build/CMakeFiles/3.20.4/CMakeCCompiler.cmake
+D:/Desktop/workspace/acm/cpp-feature/build/CMakeFiles/3.20.4/CMakeCXXCompiler.cmake
+D:/Desktop/workspace/acm/cpp-feature/build/CMakeFiles/3.20.4/CMakeRCCompiler.cmake
+D:/Desktop/workspace/acm/cpp-feature/build/CMakeFiles/3.20.4/CMakeSystem.cmake
