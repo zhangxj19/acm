@@ -1,20 +1,13 @@
-# !/usr/bin/env bash
-filenames=(
-A
-B
-C
-D
-E
-F
-G
-)
+# !/usr/bin/bash
+filenames=(A B C D E F G)
 
-echo "sh gen.sh [filename, filename.cpp]"
+echo "sh gen.sh dirname"
 f=$1
 f=${f%.*}
 
 mkdir $f
 cd $f
+echo dirname = $f
 
 for filename in ${filenames[@]}; do
   if [ ! -f "./{filename}.cpp" ]; then
